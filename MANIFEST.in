@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include polytechnic *.css
+recursive-include polytechnic *.csv
+recursive-include polytechnic *.html
+recursive-include polytechnic *.ico
+recursive-include polytechnic *.js
+recursive-include polytechnic *.json
+recursive-include polytechnic *.md
+recursive-include polytechnic *.png
+recursive-include polytechnic *.py
+recursive-include polytechnic *.svg
+recursive-include polytechnic *.txt
+recursive-exclude polytechnic *.pyc
