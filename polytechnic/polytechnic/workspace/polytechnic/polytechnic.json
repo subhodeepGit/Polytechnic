@@ -17,59 +17,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Masters",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Semester",
-   "link_to": "Program",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Course",
-   "link_to": "Course",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Topic",
-   "link_to": "Topic",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Room",
-   "link_to": "Room",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Programs",
-   "link_to": "Programs",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Student and Instructor",
    "link_type": "DocType",
    "onboard": 0,
@@ -123,7 +70,7 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Admission Masters",
+   "label": "Masters",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -131,8 +78,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Types of Documents ",
-   "link_to": "Documents",
+   "label": "Semester",
+   "link_to": "Program",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -140,8 +87,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Document Templates",
-   "link_to": "Documents Template",
+   "label": "Course",
+   "link_to": "Course",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -149,8 +96,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Academic Events",
-   "link_to": "Academic Events",
+   "label": "Topic",
+   "link_to": "Topic",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -158,8 +105,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Academic Event Template",
-   "link_to": "Academic Calendar Template",
+   "label": "Room",
+   "link_to": "Room",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -167,8 +114,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Academic Calenders",
-   "link_to": "Academic Calender",
+   "label": "Programs",
+   "link_to": "Programs",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -176,8 +123,61 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Eligibility Parameters",
-   "link_to": "Eligibility Parameters",
+   "label": "Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Education Settings",
+   "link_to": "Education Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Student Category",
+   "link_to": "Student Category",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Student Batch Name",
+   "link_to": "Student Batch Name",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Grading Scale",
+   "link_to": "Grading Scale",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Academic Term",
+   "link_to": "Academic Term",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Academic Year",
+   "link_to": "Academic Year",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -507,11 +507,11 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
-  },  
+  },
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Settings",
+   "label": "Admission Masters",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -519,8 +519,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Education Settings",
-   "link_to": "Education Settings",
+   "label": "Types of Documents ",
+   "link_to": "Documents",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -528,8 +528,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Student Category",
-   "link_to": "Student Category",
+   "label": "Document Templates",
+   "link_to": "Documents Template",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -537,8 +537,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Student Batch Name",
-   "link_to": "Student Batch Name",
+   "label": "Academic Events",
+   "link_to": "Academic Events",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -546,8 +546,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Grading Scale",
-   "link_to": "Grading Scale",
+   "label": "Academic Event Template",
+   "link_to": "Academic Calendar Template",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -555,8 +555,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Academic Term",
-   "link_to": "Academic Term",
+   "label": "Academic Calenders",
+   "link_to": "Academic Calender",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -564,14 +564,14 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Academic Year",
-   "link_to": "Academic Year",
+   "label": "Eligibility Parameters",
+   "link_to": "Eligibility Parameters",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2021-12-01 13:02:35.605673",
+ "modified": "2021-12-01 13:47:10.026101",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
@@ -638,6 +638,12 @@
    "label": "Dashboard",
    "link_to": "Education",
    "type": "Dashboard"
+  },
+  {
+   "doc_view": "",
+   "label": "Test Polytechnic",
+   "link_to": "Test Polytechnic",
+   "type": "DocType"
   }
  ],
  "shortcuts_label": "Your Shortcuts"
