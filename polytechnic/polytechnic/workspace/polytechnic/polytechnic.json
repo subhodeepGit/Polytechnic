@@ -571,7 +571,7 @@
    "type": "Link"
   }
  ],
- "modified": "2021-12-01 14:05:20.287920",
+ "modified": "2021-12-01 14:58:12.482882",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
@@ -638,12 +638,6 @@
    "label": "Dashboard",
    "link_to": "Education",
    "type": "Dashboard"
-  },
-  {
-   "doc_view": "",
-   "label": "Test Polytechnic",
-   "link_to": "Test Polytechnic",
-   "type": "DocType"
   }
  ],
  "shortcuts_label": "Your Shortcuts"
