@@ -253,8 +253,9 @@
    "type": "Link"
   },
   {
+   "dependencies": "Fees",
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Student Fee Collection Report",
    "link_to": "Student Fee Collection",
    "link_type": "Report",
@@ -262,8 +263,9 @@
    "type": "Link"
   },
   {
+   "dependencies": "Fees",
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Program wise Fee Collection Report",
    "link_to": "Program wise Fee Collection",
    "link_type": "Report",
@@ -307,8 +309,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Student Admission",
-   "link_to": "Student Admission",
+   "label": "Student Attendance",
+   "link_to": "Student Attendance",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -323,8 +325,9 @@
    "type": "Link"
   },
   {
+   "dependencies": "Student Attendance",
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Student Monthly Attendance Sheet",
    "link_to": "Student Monthly Attendance Sheet",
    "link_type": "Report",
@@ -332,8 +335,9 @@
    "type": "Link"
   },
   {
+   "dependencies": "Student Attendance",
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Absent Student Report",
    "link_to": "Absent Student Report",
    "link_type": "Report",
@@ -341,8 +345,9 @@
    "type": "Link"
   },
   {
+   "dependencies": "Student Attendance",
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Student Batch-Wise Attendance",
    "link_to": "Student Batch-Wise Attendance",
    "link_type": "Report",
@@ -423,6 +428,41 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Mentor-Mentee",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Mentor",
+   "link_to": "Mentor",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Mentor Allocation",
+   "link_to": "Mentor Allocation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Communication",
+   "link_to": "Mentor Mentee Communication",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Tools",
    "link_type": "DocType",
    "onboard": 0,
@@ -485,6 +525,15 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Branch Sliding Declaration (Notice)",
+   "link_to": "Branch sliding Declaration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Branch Sliding Application",
    "link_to": "Branch Sliding Application",
    "link_type": "DocType",
    "onboard": 0,
@@ -571,7 +620,7 @@
    "type": "Link"
   }
  ],
- "modified": "2021-12-01 14:58:12.482882",
+ "modified": "2021-12-02 11:16:43.072346",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
