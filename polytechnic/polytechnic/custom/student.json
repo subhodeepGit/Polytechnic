@@ -596,7 +596,7 @@
    "report_hide": 0,
    "reqd": 0,
    "search_index": 0,
-   "translatable": 1,
+   "translatable": 0,
    "unique": 1,
    "width": null
   },
@@ -656,7 +656,7 @@
    "report_hide": 0,
    "reqd": 0,
    "search_index": 0,
-   "translatable": 1,
+   "translatable": 0,
    "unique": 1,
    "width": null
   },
@@ -716,7 +716,7 @@
    "report_hide": 0,
    "reqd": 0,
    "search_index": 0,
-   "translatable": 1,
+   "translatable": 0,
    "unique": 1,
    "width": null
   }
