@@ -126,9 +126,10 @@ app_license = "MIT"
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "polytechnic.event.get_events"
-# }
+override_whitelisted_methods = {
+	# "frappe.desk.doctype.event.event.get_events": "polytechnic.event.get_events"
+	"ed_tec.ed_tec.doctype.student_applicant.enroll_student": "polytechnic.polytechnic.validations.student_applicant.enroll_student"
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
