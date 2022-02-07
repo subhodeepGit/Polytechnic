@@ -557,7 +557,7 @@
    "description": null,
    "docstatus": 0,
    "dt": "Student",
-   "fetch_from": "",
+   "fetch_from": "student_applicant.kiit_polytechnic_roll_number",
    "fetch_if_empty": 0,
    "fieldname": "kiit_polytechnic_roll_no",
    "fieldtype": "Data",
