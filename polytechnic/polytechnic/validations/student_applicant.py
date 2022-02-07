@@ -20,10 +20,11 @@ def enroll_student(source_name):
         program_enrollment.gender=st_applicant.gender
         program_enrollment.physically_disabled=st_applicant.physically_disabled
         program_enrollment.award_winner=st_applicant.award_winner
+        program_enrollment.boarding_student=st_applicant.hostel_required
         program_enrollment.sams_portal_id=st_applicant.sams_portal_id
         program_enrollment.vidyarthi_portal_id=st_applicant.vidyarthi_portal_id
         program_enrollment.kiit_polytechnic_roll_no=st_applicant.kiit_polytechnic_roll_number
-
+        
         for d in st_applicant.get("disable_type"):
             program_enrollment.append("disable_type",{
                 "disability_type":d.disability_type,
@@ -55,3 +56,17 @@ def enroll_student(source_name):
                 for d in get_academic_calender_table(st_admission.academic_calendar):
                     program_enrollment.append("academic_events_table",d)
         return program_enrollment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
