@@ -128,7 +128,11 @@ app_license = "MIT"
 #
 override_whitelisted_methods = {
 	# "frappe.desk.doctype.event.event.get_events": "polytechnic.event.get_events"
-	"ed_tec.ed_tec.doctype.student_applicant.enroll_student": "polytechnic.polytechnic.validations.student_applicant.enroll_student"
+	"ed_tec.ed_tec.doctype.student_applicant.enroll_student": "polytechnic.polytechnic.validations.student_applicant.enroll_student",
+	# "ed_tec.ed_tec.doctype.program_enrollment.get_students": "polytechnic.polytechnic.doctype.program_enrollment.get_students"
+	"ed_tec.ed_tec.doctype.program_enrollment.get_students":"polytechnic.polytechnic.validations.program_enrollment.get_students"
+	
+
 }
 #
 # each overriding function accepts a `data` argument;

@@ -1234,14 +1234,14 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2021-12-07 14:50:24.843789",
+   "creation": "2022-02-08 14:22:10.199127",
    "default_value": null,
    "doc_type": "Student",
    "docstatus": 0,
    "doctype_or_field": "DocType",
    "field_name": null,
    "idx": 0,
-   "modified": "2021-12-07 14:50:24.843789",
+   "modified": "2022-02-08 14:22:10.199127",
    "modified_by": "Administrator",
    "name": "Student-main-search_fields",
    "owner": "Administrator",
@@ -1251,7 +1251,7 @@
    "property": "search_fields",
    "property_type": "Data",
    "row_name": null,
-   "value": "kiit_polytechnic_roll_no,vidyarthi_portal_id,sams_portal_id"
+   "value": "sams_portal_id,kiit_polytechnic_roll_no,vidyarthi_portal_id"
   },
   {
    "_assign": null,
