@@ -2,8 +2,6 @@ import frappe
 
 @frappe.whitelist()
 def get_students(doctype, txt, searchfield, start, page_len, filters):
-    print("\n\n\n\n\n\n")
-    print("my hooks")
     return frappe.db.sql("""
                                 Select 
                                         distinct(st.name) as student, st.title as student_name,st.kiit_polytechnic_roll_no,st.vidyarthi_portal_id,st.sams_portal_id 
