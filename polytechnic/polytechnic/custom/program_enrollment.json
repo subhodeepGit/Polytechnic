@@ -557,7 +557,7 @@
    "description": null,
    "docstatus": 0,
    "dt": "Program Enrollment",
-   "fetch_from": null,
+   "fetch_from": "programs.program_grade",
    "fetch_if_empty": 0,
    "fieldname": "program_grade",
    "fieldtype": "Link",
