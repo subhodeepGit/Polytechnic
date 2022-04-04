@@ -182,3 +182,17 @@ user_data_fields = [
 # 	"polytechnic.auth.validate"
 # ]
 
+
+# fixtures = [
+# # 	{"dt": "Custom DocPerm", "filters": [
+# # 		[
+# # 			"parent", "not in", [
+# # 				"DocType"
+# # 			]
+# # 		]
+# # 	]},
+#     {"dt": "Letter Head"},
+# #     # {"dt": "Fee Type"},
+# #     # {"dt": "Workflow"}
+# ]
+
