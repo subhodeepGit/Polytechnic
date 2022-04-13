@@ -12,23 +12,6 @@ def execute(filters=None):
 	return get_columns_info,get_data_info
 
 def get_data(filters):
-	print("\n\n\n\n\n")
-
-	# _from, to = filters.get('from'), filters.get('to') # date range
-	# account=filters.get("fee_head")
-	# print(account)
-	# data=frappe.get_all("GL Entry")
-	# # conditions
-	# conditions = " AND 1=1 "
-	# if(filters.get('property')):conditions += f" AND name='{filters.get('property')}' "
-	# if(filters.get('account')):conditions += f" AND account='{filters.get('account')}' "
-
-	# print(f"\n\n\n\n\n{conditions}\n\n\n\n\n")
-	
-	# data = frappe.db.sql("""SELECT name, account from `tabGL Entry` WHERE (creation BETWEEN '{_from}' AND '{to}') {conditions};""")
-	# data = frappe.db.sql("""SELECT name, account, party_type from `tabGL Entry`""")
-	# print(data)
-	# Gl_entry=frappe.get_all("GL Entry",{"posting_date":""})
 	start_date=filters.get('from')
 	end_date=filters.get('to')
 	final_list=[]
@@ -141,20 +124,8 @@ def get_data(filters):
 		final_list.append(a)
 	a=["","Grand Total",total,"debit"]	
 	final_list.append(a)			
-	# return [
-	# 	['ACC-GLE-2022-00024', 'Cash - SOUL',""],
-	# 	['ACC-GLE-2022-00022', 'Cash - SOUL','ABCD'],
-	# ]
-	#############################################################
 	return final_list
 
-# def get_columns():
-# 	return[
-# 		"Sl. No.:Data:100",
-# 		"Particulars:Link/Account:150",
-# 		"Amount:Data:100",
-# 		"Debit/Credit:Data:100",
-# 	]
 
 def get_columns():
 	columns = [

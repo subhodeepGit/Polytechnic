@@ -1,0 +1,228 @@
+# Copyright (c) 2022, SUSTAINABLE OUTREACH AND UNIVERSAL LEADERSHIP LIMITED and contributors
+# For license information, please see license.txt
+
+from __future__ import unicode_literals
+from itertools import count
+from locale import currency
+from frappe import _
+import frappe
+
+def execute(filters=None):
+	# columns, data = [], []
+	get_data_info=get_data(filters)
+	get_columns_info=get_columns()
+	return get_columns_info,get_data_info
+
+def get_data(filters):
+	start_date= filters.get('from')
+	end_date=filters.get('to') 
+	party_type=filters.get("party_type")
+	party=filters.get("party")
+	print("\n\n\n\n\n")
+	Gl_entry_Pay_Rec=frappe.db.get_list('GL Entry', filters=[["docstatus",'!=',2],["docstatus",'=',1],['party','=',party],['posting_date', 'between', 
+								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","docstatus"])						
+
+	Gl_entry_Type_payment=frappe.db.get_list('GL Entry', filters=[["docstatus",'!=',2],["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
+								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","posting_date"])							
+	# "docstatus":("!=",2)
+	fees_head=[]
+	Payment_head=[]
+	currency_info=""
+	for t in Gl_entry_Pay_Rec:
+		if t["voucher_type"]=="Fees":
+			fees_head.append(t["account"])
+			currency_info=t["account_currency"]
+		elif t["voucher_type"]=="Payment Entry":
+			Payment_head.append(t["account"])
+			currency_info=t["account_currency"]	
+
+
+	fees_head = list(set(fees_head))
+	Payment_head = list(set(Payment_head))
+
+	fees_head_dic={}
+	for t in fees_head:
+		fees_head_dic['%s'%(t)]=[]
+
+	
+	for t in Gl_entry_Pay_Rec:
+		if t["voucher_type"]=="Fees":
+			fees_head_dic["%s"%(t["account"])].append(t["debit"])	
+
+	Payment_head_dic={}
+	for t in Payment_head:
+		Payment_head_dic['%s'%(t)]=[]
+	
+
+	for t in Gl_entry_Pay_Rec:
+		if t["voucher_type"]=="Payment Entry":
+			Payment_head_dic["%s"%(t["account"])].append(t["credit"])
+	
+	if len(Payment_head_dic)==0:
+		for t in fees_head:
+			Payment_head_dic['%s'%(t)]=[0]
+
+
+	fees_head_dic = dict(zip(fees_head_dic.keys(), [sum(item) for item in fees_head_dic.values()]))
+	Payment_head_dic = dict(zip(Payment_head_dic.keys(), [sum(item) for item in Payment_head_dic.values()]))
+	
+
+	Outsatnding_dict={}
+	for t in fees_head_dic:
+		for j in Payment_head_dic:
+			if t==j:
+				Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Payment_head_dic[j]
+				break
+			else:
+				Outsatnding_dict['%s'%(t)]=fees_head_dic[t]	
+
+	if len(Outsatnding_dict)==0:
+		Outsatnding_dict=fees_head_dic.copy()
+
+
+	Fee_DOC=[]
+	for t in Gl_entry_Pay_Rec:
+		if t["voucher_type"]=="Fees":
+			total_waiver_amount=frappe.db.get_all('Fee Component',{"parent":t['voucher_no']},["fees_category","total_waiver_amount","grand_fee_amount","receivable_account"])
+			Fee_DOC.append(total_waiver_amount)
+			# fees_head_dic["%s"%(t["account"])].append(t["debit"])		
+	
+	head_fee=[]
+	for Fee_components in Fee_DOC:
+		for i in range(len(Fee_components)):
+			head_fee.append(Fee_components[i]["receivable_account"])
+		head_fee=list(set(head_fee))    
+
+	Fee_cal={}    
+	for t in range(len(head_fee)):
+		Fee_cal['%s'%(head_fee[t])]=[]
+
+	Waver_amount={}
+	for t in range(len(head_fee)):
+		Waver_amount['%s'%(head_fee[t])]=[]
+
+	for Fee_components in Fee_DOC:
+		for i in range(len(Fee_components)):
+			Fee_cal['%s'%(Fee_components[i]["receivable_account"])].append(Fee_components[i]['grand_fee_amount'])
+			Waver_amount['%s'%(Fee_components[i]["receivable_account"])].append(Fee_components[i]['total_waiver_amount'])
+
+	Fee_cal = dict(zip(Fee_cal.keys(), [sum(item) for item in Fee_cal.values()]))
+	Waver_amount = dict(zip(Waver_amount.keys(), [sum(item) for item in Waver_amount.values()]))		
+			
+	# print(Waver_amount)        
+	# print(Fee_cal)
+
+
+
+	Final_list=["Sl_no","Fees Head","Currency","Dues","paid","Balance","Paid amount","Body","Waver_amount","Grand_total"]		
+	Final_list=[]	
+
+	Count=0
+	for t in fees_head_dic:
+		g_value=[]
+		Count=Count+1
+		g_value.append(Count)
+		g_value.append(t)
+		g_value.append(currency_info)
+		g_value.append(fees_head_dic[t])
+		for j in Payment_head_dic:
+			if t==j:
+				g_value.append(Payment_head_dic[j])
+		for i in Outsatnding_dict:
+			if t==i:
+				g_value.append(Outsatnding_dict[i])	
+		g_value.append("")			
+		g_value.append("Body")
+		for j in Waver_amount:
+			if j==t:
+				g_value.append(Waver_amount[t])
+		for j in Fee_cal:
+			if j==t:
+				g_value.append(Fee_cal[t])		
+		Final_list.append(g_value)
+	# Final_list=["Sl_no","Fees Head","Currency","Dues","paid","Balance","Body"]	
+	Count=0
+	for t in Gl_entry_Type_payment:
+		Count =Count+1
+		g_value=[]
+		payment_entry= frappe.db.get_value('Payment Entry', t["voucher_no"], ['name', 'mode_of_payment',"reference_date","reference_no","paid_amount"], as_dict=1)
+		g_value.append(Count)
+		g_value.append(t["posting_date"])
+		g_value.append(currency_info)
+		g_value.append(payment_entry.mode_of_payment)
+		g_value.append(payment_entry.reference_date)
+		g_value.append(payment_entry.reference_no)
+		g_value.append(payment_entry.paid_amount)
+		g_value.append("Lower")
+		g_value.append("")
+		g_value.append("")
+		Final_list.append(g_value)
+
+
+	return Final_list
+
+def get_columns():
+	columns = [
+		{
+			"label": _("Sl_no"),
+			"fieldname": "sl_no",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
+			"label": _("Fees Head"),
+			"fieldname": "fees_head",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
+			"label": _("Currency"),
+			"fieldname": "currency",
+			"fieldtype": "Data",
+			"width": 180
+		},
+		{
+			"label": _("Dues"),
+			"fieldname": "dues",
+			"fieldtype": "Data",
+			"width": 180
+		},
+		{
+			"label": _("Paid"),
+			"fieldname": "paid",
+			"fieldtype": "Data",
+			"width": 180
+		},
+		{
+			"label": _("Balance"),
+			"fieldname": "balance",
+			"fieldtype": "Data",
+			"width": 180
+		},
+		{
+			"label": _("Lower Table Amount"),
+			"fieldname": "ltamt",
+			"fieldtype": "Data",
+			"width": 180
+		},
+		{
+			"label": _("Table Posi"),
+			"fieldname": "table_posi",
+			"fieldtype": "Data",
+			"width": 180
+		},
+		{
+			"label": _("Waiver Amount"),
+			"fieldname": "waiver_amt",
+			"fieldtype": "Data",
+			"width": 180
+		},
+		{
+			"label": _("Grand Total"),
+			"fieldname": "grand_total",
+			"fieldtype": "Data",
+			"width": 180
+		},
+	]
+	return columns
+
