@@ -18,7 +18,6 @@ def get_data(filters):
 	end_date=filters.get('to') 
 	party_type=filters.get("party_type")
 	party=filters.get("party")
-	print("\n\n\n\n\n")
 	Gl_entry_Pay_Rec=frappe.db.get_list('GL Entry', filters=[["docstatus",'!=',2],["docstatus",'=',1],['party','=',party],['posting_date', 'between', 
 								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","docstatus"])						
 
@@ -137,6 +136,7 @@ def get_data(filters):
 
 
 	Final_list=["Sl_no","Fees Head","Currency","Dues","paid","Balance","Paid amount","Body","Waver_amount","Grand_total","Refund_fees_head_dic","Refund_Payment_head_dic"]		
+	# [1, 'Debtors - SOUL', 'INR', 80000.0, 80000.0, '', 'Body', 0.0, 160000.0, 0.0]
 	Final_list=[]	
 
 	Count=0
@@ -147,26 +147,81 @@ def get_data(filters):
 		g_value.append(t)
 		g_value.append(currency_info)
 		g_value.append(fees_head_dic[t])
+
+
+		flag=""
 		for j in Payment_head_dic:
 			if t==j:
-				g_value.append(Payment_head_dic[j])
+				flag="Done"
+				g_value.append(Payment_head_dic[j])	
+		if flag!="Done":
+			g_value.append(0)
+			flag=""	
+		else:
+			flag=""		
+
+
 		for i in Outsatnding_dict:
 			if t==i:
+				flag="Done"
 				g_value.append(Outsatnding_dict[i])	
+		if flag!="Done":
+			g_value.append(0)
+			flag=""	
+		else:
+			flag=""		
+
+
 		g_value.append("")			
 		g_value.append("Body")
+
+
+
 		for j in Waver_amount:
 			if j==t:
+				flag="Done"
 				g_value.append(Waver_amount[t])
+		if flag!="Done":
+			g_value.append(0)
+			flag=""	
+		else:
+			flag=""		
+
+
+
 		for j in Fee_cal:
 			if j==t:
-				g_value.append(Fee_cal[t])
+				flag="Done"
+				g_value.append(Fee_cal[t])	
+		if flag!="Done":
+			g_value.append(0)
+			flag=""	
+		else:
+			flag=""	
+
+
+
 		for j in Refund_fees_head_dic:
 			if j==t:
+				flag="Done"
 				g_value.append(Refund_fees_head_dic[j])	
+		if flag!="Done":
+			g_value.append(0)
+			flag=""
+		else:
+			flag=""			
+
+
 		for j in Refund_Payment_head_dic:
 			if j==t:
-				g_value.append(Refund_Payment_head_dic[j])							
+				flag="Done"
+				g_value.append(Refund_Payment_head_dic[j])
+		if flag!="Done":
+			g_value.append(0)
+			flag=""
+		else:
+			flag=""			
+									
 		Final_list.append(g_value)
 
 	Count=0
@@ -186,9 +241,6 @@ def get_data(filters):
 		g_value.append("")
 		g_value.append("")
 		g_value.append("")
-		Final_list.append(g_value)
-
-	print(Final_list)
 	return Final_list
 
 def get_columns():
