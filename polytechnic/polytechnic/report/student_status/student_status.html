@@ -1,3 +1,6 @@
+<html>
+<body>
+<!-- <div style="border:1px solid black;"> -->
 <div>
     <div>
         <img src="/files/logo-removebg-preview.png" alt="KIIT POLYTECHNIC" width="100" height="80" style="display: block; margin-left: auto; margin-right: auto;">
@@ -11,14 +14,87 @@
 AT/PO-KIIT, Bhubaneswar - 751024, Odisha<br>
 Tel. 0674-2725272, 2742103, 2725347<br> <br>
 </div>
-<div><h2><div style="font-family:verdana; font-weight: bold;"><center>FEE HEAD WISE COLLECTION ABSTRACT (IN INR)</center></div></h2>
-<h2 class="text-center" style="font-family:verdana; font-weight: bold;">{%= __("For The Period: ") %}{%= filters.from %}{%= __(" To ") %}{%= filters.to %}</h2>
+<div><h2><div style="font-family:verdana; font-weight: bold;"><center>STUDENT STATUS</center></div></h2>
+<h2 class="text-center" style="font-family:verdana; font-weight: bold;">{%= __("AS ON DATE : ") %}{%= filters.from %}</h2>
 </div>
 <br>
 <br>
 </div>
+<div>
 <p>{%= __("Name                 : ") %}{%= filters.party %}</p>
 <p>{%= __("Roll No              : ") %}{%= data[1].amount %}</p>
 <p>{%= __("Course               : ") %}{%= data[2].amount %}</p>
 <p>{%= __("Branch               : ") %}{%= data[3].amount %}</p>
 <p>{%= __("Batch                : ") %}{%= data[5].amount %}</p>
+</div>
+<div></div>
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center" style="width: 5%">{%= __("SL") %}</th>
+                <th class="text-center" style="width: 25%">{%= __("FEES HEAD") %}</th>
+                <th class="text-center" style="width: 10%">{%= __("CURR") %}</th>
+                <th class="text-center" style="width: 10%">{%= __("DUES") %}</th>
+                <th class="text-center" style="width: 10%">{%= __("EXEMPTION") %}</th>
+                <th class="text-center" style="width: 10%">{%= __("PAID") %}</th>
+                <th class="text-center" style="width: 10%">{%= __("REFUND BALANCE") %}</th>
+                <th class="text-center" style="width: 10%">{%= __("REFUNDED AMOUNT") %}</th>
+                <th class="text-center" style="width: 10%">{%= __("BALANCE") %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for(var i=0, l=data.length; i<l; i++) { %}
+            {% if((data[i].table_posi)=="Body") { %}
+                <tr>
+                    <td class="text-center">{%= data[i].sl_no %}</td>
+                    <td>{%= data[i].fees_head %}</td>
+                    <td class="text-center">{%= data[i].currency %}</td>
+                    <td class="text-right">{%= data[i].dues %}</td>
+                    <td class="text-right">{%= data[i].waiver_amt %}</td>
+                    <td class="text-right">{%= data[i].paid %}</td>
+                    <td class="text-right">{%= data[i].Refund_fees_head_dic %}</td>
+                    <td class="text-right">{%= data[i].Refund_Payment_head_dic %}</td>
+                    <td class="text-right">{%= data[i].balance %}</td>
+                </tr>
+                {% } %}
+            {% } %}
+        </tbody>
+    </table>
+    <br>
+    <div>
+        <p>{%= __("Received / Refund / Adjusted as per following details :") %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width: 5%">{%= __("SL") %}</th>
+                        <th class="text-center" style="width: 25%">{%= __("DATE") %}</th>
+                        <th class="text-center" style="width: 20%">{%= __("CURR") %}</th>
+                        <th class="text-center" style="width: 20%">{%= __("MODE") %}</th>
+                        <th class="text-center" style="width: 20%">{%= __("AMOUNT") %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for(var i=0, l=data.length; i<l; i++) { %}
+                    {% if((data[i].table_posi)=="Lower") { %}
+                        <tr>
+                            <td class="text-center">{%= data[i].sl_no %}</td>
+                            <td class="text-center">{%= data[i].fees_head %}</td>
+                            <td class="text-center">{%= data[i].currency %}</td>
+                            <td class="text-center">{%= data[i].dues %}</td>
+                            <td class="text-center">{%= data[i].ltamt %}</td>
+                        </tr>
+                        {% } %}
+                    {% } %}
+                </tbody>
+            </table>
+</div>
+<br><br><br><br><br>
+<div>
+<footer>
+    <p class="text-right text-muted">Printed On {%= frappe.datetime.str_to_user(frappe.datetime.get_datetime_as_string()) %}</p>
+</footer>
+</div>
+<!-- </div> -->
+</body>
+</html>

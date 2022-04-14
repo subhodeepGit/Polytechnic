@@ -109,12 +109,34 @@ def get_data(filters):
 	Fee_cal = dict(zip(Fee_cal.keys(), [sum(item) for item in Fee_cal.values()]))
 	Waver_amount = dict(zip(Waver_amount.keys(), [sum(item) for item in Waver_amount.values()]))		
 			
-	# print(Waver_amount)        
-	# print(Fee_cal)
+	Refund_fees_head_dic={}
+	for t in fees_head:
+		Refund_fees_head_dic['%s'%(t)]=[]
+
+	
+	for t in Gl_entry_Pay_Rec:
+		if t["voucher_type"]=="Fees":
+			Refund_fees_head_dic["%s"%(t["account"])].append(t["credit"])	
+
+	Refund_Payment_head_dic={}
+	for t in Payment_head:
+		Refund_Payment_head_dic['%s'%(t)]=[]
+	
+
+	for t in Gl_entry_Pay_Rec:
+		if t["voucher_type"]=="Payment Entry":
+			Refund_Payment_head_dic["%s"%(t["account"])].append(t["debit"])
+	
+	if len(Refund_Payment_head_dic)==0:
+		for t in fees_head:
+			Refund_Payment_head_dic['%s'%(t)]=[0]
 
 
+	Refund_fees_head_dic= dict(zip(Refund_fees_head_dic.keys(), [sum(item) for item in Refund_fees_head_dic.values()]))
+	Refund_Payment_head_dic = dict(zip(Refund_Payment_head_dic.keys(), [sum(item) for item in Refund_Payment_head_dic.values()]))
 
-	Final_list=["Sl_no","Fees Head","Currency","Dues","paid","Balance","Paid amount","Body","Waver_amount","Grand_total"]		
+
+	Final_list=["Sl_no","Fees Head","Currency","Dues","paid","Balance","Paid amount","Body","Waver_amount","Grand_total","Refund_fees_head_dic","Refund_Payment_head_dic"]		
 	Final_list=[]	
 
 	Count=0
@@ -138,9 +160,15 @@ def get_data(filters):
 				g_value.append(Waver_amount[t])
 		for j in Fee_cal:
 			if j==t:
-				g_value.append(Fee_cal[t])		
+				g_value.append(Fee_cal[t])
+		for j in Refund_fees_head_dic:
+			if j==t:
+				g_value.append(Refund_fees_head_dic[j])	
+		for j in Refund_Payment_head_dic:
+			if j==t:
+				g_value.append(Refund_Payment_head_dic[j])							
 		Final_list.append(g_value)
-	# Final_list=["Sl_no","Fees Head","Currency","Dues","paid","Balance","Body"]	
+
 	Count=0
 	for t in Gl_entry_Type_payment:
 		Count =Count+1
@@ -156,9 +184,11 @@ def get_data(filters):
 		g_value.append("Lower")
 		g_value.append("")
 		g_value.append("")
+		g_value.append("")
+		g_value.append("")
 		Final_list.append(g_value)
 
-
+	print(Final_list)
 	return Final_list
 
 def get_columns():
@@ -223,6 +253,19 @@ def get_columns():
 			"fieldtype": "Data",
 			"width": 180
 		},
+		{
+			"label": _("Refund Fees"),
+			"fieldname": "Refund_fees_head_dic",
+			"fieldtype": "Data",
+			"width": 180
+		},
+		{
+			"label": _("Refund Payment"),
+			"fieldname": "Refund_Payment_head_dic",
+			"fieldtype": "Data",
+			"width": 180
+		},
+		
 	]
 	return columns
 
