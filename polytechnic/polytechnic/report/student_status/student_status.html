@@ -1,6 +1,6 @@
 <html>
 <body>
-<!-- <div style="border:1px solid black;"> -->
+<div style="border:1px solid black;">
 <div>
     <div>
         <img src="/files/logo-removebg-preview.png" alt="KIIT POLYTECHNIC" width="100" height="80" style="display: block; margin-left: auto; margin-right: auto;">
@@ -22,10 +22,10 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 </div>
 <div>
 <p>{%= __("Name                 : ") %}{%= filters.party %}</p>
-<p>{%= __("Roll No              : ") %}{%= data[1].amount %}</p>
-<p>{%= __("Course               : ") %}{%= data[2].amount %}</p>
-<p>{%= __("Branch               : ") %}{%= data[3].amount %}</p>
-<p>{%= __("Batch                : ") %}{%= data[5].amount %}</p>
+<p>{%= __("Roll No              : ") %}{%= filters.party %}</p>
+<p>{%= __("Course               : ") %}{%= filters.party %}</p>
+<p>{%= __("Branch               : ") %}{%= filters.party %}</p>
+<p>{%= __("Batch                : ") %}{%= filters.party %}</p>
 </div>
 <div></div>
 <div>
@@ -95,6 +95,6 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
     <p class="text-right text-muted">Printed On {%= frappe.datetime.str_to_user(frappe.datetime.get_datetime_as_string()) %}</p>
 </footer>
 </div>
-<!-- </div> -->
+</div>
 </body>
 </html>
