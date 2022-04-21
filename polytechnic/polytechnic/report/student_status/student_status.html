@@ -21,11 +21,11 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 <br>
 </div>
 <div>
-<p>{%= __("Name                 : ") %}{%= filters.party %}</p>
-<p>{%= __("Roll No              : ") %}{%= filters.party %}</p>
-<p>{%= __("Course               : ") %}{%= filters.party %}</p>
-<p>{%= __("Branch               : ") %}{%= filters.party %}</p>
-<p>{%= __("Batch                : ") %}{%= filters.party %}</p>
+<p>{%= __("Name                 : ") %}{%= data[0].sl_no %}</p>
+<p>{%= __("Roll No              : ") %}{%= data[0].dues %}</p>
+<p>{%= __("Course               : ") %}{%= data[0].waiver_amt %}</p>
+<p>{%= __("Branch               : ") %}{%= data[0].currency %}</p>
+<p>{%= __("Batch                : ") %}{%= data[0].ltamt %}</p>
 </div>
 <div></div>
 <div>
@@ -44,7 +44,7 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
             </tr>
         </thead>
         <tbody>
-            {% for(var i=0, l=data.length; i<l; i++) { %}
+            {% for(var i=1, l=data.length; i<l; i++) { %}
             {% if((data[i].table_posi)=="Body") { %}
                 <tr>
                     <td class="text-center">{%= data[i].sl_no %}</td>
@@ -75,7 +75,7 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for(var i=0, l=data.length; i<l; i++) { %}
+                    {% for(var i=1, l=data.length; i<l; i++) { %}
                     {% if((data[i].table_posi)=="Lower") { %}
                         <tr>
                             <td class="text-center">{%= data[i].sl_no %}</td>
