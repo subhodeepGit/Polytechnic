@@ -139,7 +139,7 @@ def get_data(filters):
 	Final_list=[]
 
 	student=party
-	student_data_info=frappe.db.get_list("Current Educational Details",filters={"parent":student},fields=["name","Semesters","Programs"])
+	student_data_info=frappe.db.get_list("Current Educational Details",filters={"parent":student},fields=["name","Semesters","Programs","academic_year"])
 	student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","kiit_polytechnic_roll_no","vidyarthi_portal_id","title"])	
 	student_group=frappe.db.get_list("Student Group",filters={"programs":student_data_info[0]["Programs"]},fields=["name","batch","programs"])
 	student_Enrollment=frappe.db.sql(""" select DISTINCT `program_grade` from `tabProgram Enrollment` where `student`='%s'"""%(student))
@@ -154,7 +154,7 @@ def get_data(filters):
 	g_value.append(student_group[0]["batch"])
 	g_value.append("Header")
 	g_value.append(student_Enrollment[0][0])
-	g_value.append("")
+	g_value.append(student_data_info[0]["academic_year"])
 	g_value.append("")
 	g_value.append("")
 	Final_list.append(g_value)	
