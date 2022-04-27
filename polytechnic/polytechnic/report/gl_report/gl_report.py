@@ -68,7 +68,7 @@ def get_data(filters):
 		Gl_entry_info=frappe.get_all("GL Entry",{"name":t["name"],"voucher_type":"Payment Entry"},["name","account","debit","credit","voucher_no"])
 		if len(Gl_entry_info):
 			Gl_entry_info=Gl_entry_info[0]
-			Payment_Entry_info=frappe.get_all("Payment Entry",{"name":Gl_entry_info['voucher_no'],"payment_type":"Receive"})
+			Payment_Entry_info=frappe.get_all("Payment Entry",filters=[["name","=",Gl_entry_info['voucher_no']],["payment_type","=","Receive"],["docstatus",'=',1]])
 			if len(Payment_Entry_info):
 				if Gl_entry_info["debit"]!=0:
 					com_data=[Gl_entry_info["debit"],Gl_entry_info["account"]]

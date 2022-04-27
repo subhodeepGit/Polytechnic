@@ -18,11 +18,16 @@ def get_data(filters):
 	end_date=filters.get('to') 
 	party_type=filters.get("party_type")
 	party=filters.get("party")
-	Gl_entry_Pay_Rec=frappe.db.get_list('GL Entry', filters=[["docstatus",'!=',2],["docstatus",'=',1],['party','=',party],['posting_date', 'between', 
-								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","docstatus"])						
+	Gl_entry_Pay_Rec=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['party','=',party],['posting_date', 'between', 
+								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","docstatus"])	
 
-	
-
+	list_for_fee=[]
+	for gl in Gl_entry_Pay_Rec:
+		if gl['voucher_type']=="Fees":
+			ck_out=frappe.db.get_list("Fees",filters=[["name","=",gl['voucher_no']]],fields=["name","docstatus"])
+			if ck_out[0]["docstatus"]==1:
+				list_for_fee.append(gl)
+	Gl_entry_Pay_Rec=list_for_fee
 	# "docstatus":("!=",2)
 	fees_head=[]
 	Payment_head=[]
@@ -247,8 +252,15 @@ def get_data(filters):
 									
 		Final_list.append(g_value)
 
-	Gl_entry_Type_payment=frappe.db.get_list('GL Entry', filters=[["docstatus",'!=',2],["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
-								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","posting_date"])
+	Gl_entry_Type_payment=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
+								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","posting_date"])	
+	list_for_payment=[]					
+	for payment in Gl_entry_Type_payment:
+		if payment['voucher_type']=="Payment Entry":
+			ck_out=frappe.db.get_list("Payment Entry",filters=[["name","=",payment['voucher_no']]],fields=["name","docstatus"])
+			if ck_out[0]["docstatus"]==1:
+				list_for_payment.append(payment)
+	Gl_entry_Type_payment=list_for_payment					
 	Count=0
 	for t in Gl_entry_Type_payment:
 		Count =Count+1
