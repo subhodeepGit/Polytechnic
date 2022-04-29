@@ -71,6 +71,7 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
                         <th class="text-center" style="width: 25%">{%= __("DATE") %}</th>
                         <th class="text-center" style="width: 20%">{%= __("CURR") %}</th>
                         <th class="text-center" style="width: 20%">{%= __("MODE") %}</th>
+                        <th class="text-center" style="width: 20%">{%= __("INSTRUMENT NO") %}</th>
                         <th class="text-center" style="width: 20%">{%= __("AMOUNT") %}</th>
                     </tr>
                 </thead>
@@ -82,6 +83,7 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
                             <td class="text-center">{%= data[i].fees_head %}</td>
                             <td class="text-center">{%= data[i].currency %}</td>
                             <td class="text-center">{%= data[i].dues %}</td>
+                            <td class="text-center">{%= data[i].waiver_amt %}</td>
                             <td class="text-center">{%= data[i].ltamt %}</td>
                         </tr>
                         {% } %}
