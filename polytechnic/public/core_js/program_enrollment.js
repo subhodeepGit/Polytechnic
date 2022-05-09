@@ -200,3 +200,25 @@ frappe.ui.form.on('Program Enrollment Course', {
 		};
 	}
 });
+
+frappe.ui.form.on('Program Enrollment', {
+	student: function(frm) {
+		if (frm.doc.student) {
+			frappe.call({
+				method:"polytechnic.polytechnic.validations.program_enrollment.get_roll",
+				args: {
+					"student": frm.doc.student,
+				},
+				callback: function(r) {
+					if(r){
+                        var info=r.message
+                        if(info.vidyarthi_portal_id!=null){
+                            frm.set_value('vidyarthi_portal_id',info.vidyarthi_portal_id)
+                            frm.set_df_property('vidyarthi_portal_id','read_only',1)
+                        }
+					}
+				}
+			});
+		}
+	},
+});
