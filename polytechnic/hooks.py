@@ -87,9 +87,8 @@ doctype_js = {
 # ---------------
 # Override standard doctype classes
 
-override_doctype_class = {
-	"Student Reregistration Tool": "polytechnic.polytechnic.validations.student_reregistration_tool.StudentReregistrationTool"
-}
+# override_doctype_class = {
+# }
 
 # Document Events
 # ---------------
@@ -137,7 +136,7 @@ override_whitelisted_methods = {
 	# "frappe.desk.doctype.event.event.get_events": "polytechnic.event.get_events"
 	# "ed_tec.ed_tec.doctype.program_enrollment.get_students":"polytechnic.polytechnic.validations.program_enrollment.get_students",
 	"ed_tec.ed_tec.doctype.student_applicant.enroll_student": "polytechnic.polytechnic.validations.student_applicant.enroll_student",
-	"ed_tec.ed_tec.doctype.branch_sliding_application.branch_sliding_application.enroll_student": "polytechnic.polytechnic.validations.branch_sliding_application.enroll_student"
+	"ed_tec.ed_tec.doctype.branch_sliding_application.branch_sliding_application.enroll_student": "polytechnic.polytechnic.validations.branch_sliding_application.enroll_student",
 }
 #
 # each overriding function accepts a `data` argument;
