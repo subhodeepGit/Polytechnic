@@ -20,7 +20,8 @@ def enroll_student(source_name):
     program_enrollment.program = doc.sliding_in_semester
     program_enrollment.sams_portal_id=student.sams_portal_id
     program_enrollment.vidyarthi_portal_id=student.vidyarthi_portal_id
-    program_enrollment.kiit_polytechnic_roll_no=student.kiit_polytechnic_roll_no
+    # program_enrollment.kiit_polytechnic_roll_no=student.kiit_polytechnic_roll_no
+    program_enrollment.roll_no=student.roll_no
 
     for cr in get_courses_by_semester(doc.sliding_in_semester):
         program_enrollment.append("courses",{

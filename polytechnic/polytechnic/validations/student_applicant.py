@@ -22,8 +22,10 @@ def enroll_student(source_name):
         program_enrollment.award_winner=st_applicant.award_winner
         program_enrollment.boarding_student=st_applicant.hostel_required
         program_enrollment.sams_portal_id=st_applicant.sams_portal_id
-        program_enrollment.vidyarthi_portal_id=st_applicant.vidyarthi_portal_id
-        program_enrollment.kiit_polytechnic_roll_no=st_applicant.kiit_polytechnic_roll_number
+        program_enrollment.vidyarthi_portal_id=student.vidyarthi_portal_id
+        # program_enrollment.kiit_polytechnic_roll_no=st_applicant.kiit_polytechnic_roll_number
+        program_enrollment.roll_no=student.roll_no
+        program_enrollment.permanant_registration_number=student.permanant_registration_number
         
         for d in st_applicant.get("disable_type"):
             program_enrollment.append("disable_type",{
@@ -59,19 +61,33 @@ def enroll_student(source_name):
 
 
 
+# @frappe.whitelist()
+# def get_students(doctype, txt, searchfield, start, page_len, filters):
+#     print("\n\n\n\n\n\n")
+#     print("my hooks")
+#     return frappe.db.sql("""
+#                                 Select 
+#                                         distinct(st.name) as student, st.title as student_name,st.kiit_polytechnic_roll_no,st.vidyarthi_portal_id,st.sams_portal_id 
+#                                 from `tabCurrent Educational Details` ced 
+#                                 left join `tabStudent` st on st.name=ced.parent 
+#                                 where enabled=1 and (st.`{0}` LIKE %(txt)s or st.title  LIKE %(txt)s or 
+#                                 st.kiit_polytechnic_roll_no LIKE %(txt)s or st.vidyarthi_portal_id LIKE %(txt)s or
+#                                 st.sams_portal_id LIKE %(txt)s ) and ced.programs='{1}'
+#                                     """.format(searchfield,filters.get("programs")),dict(txt="%{}%".format(txt)))   
+
 @frappe.whitelist()
 def get_students(doctype, txt, searchfield, start, page_len, filters):
     print("\n\n\n\n\n\n")
     print("my hooks")
     return frappe.db.sql("""
                                 Select 
-                                        distinct(st.name) as student, st.title as student_name,st.kiit_polytechnic_roll_no,st.vidyarthi_portal_id,st.sams_portal_id 
+                                        distinct(st.name) as student, st.title as student_name,st.roll_no,st.vidyarthi_portal_id,st.sams_portal_id 
                                 from `tabCurrent Educational Details` ced 
                                 left join `tabStudent` st on st.name=ced.parent 
                                 where enabled=1 and (st.`{0}` LIKE %(txt)s or st.title  LIKE %(txt)s or 
-                                st.kiit_polytechnic_roll_no LIKE %(txt)s or st.vidyarthi_portal_id LIKE %(txt)s or
+                                st.roll_no LIKE %(txt)s or st.vidyarthi_portal_id LIKE %(txt)s or
                                 st.sams_portal_id LIKE %(txt)s ) and ced.programs='{1}'
-                                    """.format(searchfield,filters.get("programs")),dict(txt="%{}%".format(txt)))   
+                                    """.format(searchfield,filters.get("programs")),dict(txt="%{}%".format(txt)))  
 
 
 

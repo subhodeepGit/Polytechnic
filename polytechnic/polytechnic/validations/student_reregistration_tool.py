@@ -24,7 +24,8 @@ class StudentReregistrationTool(Document):
 			condition = 'and academic_term=%(academic_term)s' if self.academic_term else " "
 			self.get_students_from = "Program Enrollment"
 			condition2 = 'and student_batch_name=%(student_batch)s' if self.student_batch else " "
-			students = frappe.db.sql('''select student, student_name, student_batch_name, kiit_polytechnic_roll_no, student_category from `tabProgram Enrollment`
+			# students = frappe.db.sql('''select student, student_name, student_batch_name, kiit_polytechnic_roll_no, student_category from `tabProgram Enrollment`
+			students = frappe.db.sql('''select student, student_name, student_batch_name, roll_no, student_category from `tabProgram Enrollment`
 				where program=%(program)s and academic_year=%(academic_year)s {0} {1} and docstatus != 2'''
 				.format(condition, condition2), self.as_dict(), as_dict=1)
 

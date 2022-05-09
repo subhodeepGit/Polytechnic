@@ -145,7 +145,8 @@ def get_data(filters):
 
 	student=party
 	student_data_info=frappe.db.get_list("Current Educational Details",filters={"parent":student},fields=["name","Semesters","Programs","academic_year"])
-	student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","kiit_polytechnic_roll_no","vidyarthi_portal_id","title"])	
+	# student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","kiit_polytechnic_roll_no","vidyarthi_portal_id","title"])	
+	student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","roll_no","vidyarthi_portal_id","title"])	
 	student_group=frappe.db.get_list("Student Group",filters={"programs":student_data_info[0]["Programs"]},fields=["name","batch","programs"])
 	student_Enrollment=frappe.db.sql(""" select DISTINCT `program_grade` from `tabProgram Enrollment` where `student`='%s'"""%(student))
 
@@ -153,7 +154,8 @@ def get_data(filters):
 	g_value.append(student_info[0]["title"])
 	g_value.append(student_data_info[0]["Semesters"])
 	g_value.append(student_data_info[0]["Programs"])
-	g_value.append(student_info[0]["kiit_polytechnic_roll_no"])
+	# g_value.append(student_info[0]["kiit_polytechnic_roll_no"])
+	g_value.append(student_info[0]["roll_no"])
 	g_value.append(student_info[0]["vidyarthi_portal_id"])
 	g_value.append(student_info[0]["sams_portal_id"])
 	g_value.append(student_group[0]["batch"])
