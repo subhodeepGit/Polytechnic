@@ -2537,7 +2537,7 @@
    "description": null,
    "docstatus": 0,
    "dt": "Student",
-   "fetch_from": null,
+   "fetch_from": "student_applicant.sams_portal_id",
    "fetch_if_empty": 0,
    "fieldname": "sams_portal_id",
    "fieldtype": "Data",

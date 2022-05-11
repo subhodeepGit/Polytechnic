@@ -96,7 +96,7 @@ doctype_js = {
 
 doc_events = {
 	"Payment Entry": {
-		"validate": "polytechnic.polytechnic.validations.payment_entry_roll.validate",
+		"validate": "polytechnic.polytechnic.validations.payment_entry.validate",
 	},
     "Program Enrollment": {
 		"validate": "polytechnic.polytechnic.validations.program_enrollment.validate",
