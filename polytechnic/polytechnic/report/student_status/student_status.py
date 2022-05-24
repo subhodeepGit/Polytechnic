@@ -194,6 +194,7 @@ def get_data(filters):
 		for i in Outsatnding_dict:
 			if t==i:
 				flag="Done"
+				Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Waver_amount[t]-Payment_head_dic[j]    #Rupali:added to show balance in report
 				g_value.append(Outsatnding_dict[i])	
 		if flag!="Done":
 			g_value.append(0)
@@ -365,3 +366,5 @@ def get_columns():
 	]
 	return columns
 
+
+	
