@@ -14,6 +14,7 @@ def execute(filters=None):
 	return get_columns_info,get_data_info
 
 def get_data(filters):
+	print("\n\n\n\n\n")
 	start_date= filters.get('from')
 	end_date=filters.get('to') 
 	party_type=filters.get("party_type")
@@ -22,13 +23,21 @@ def get_data(filters):
 								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","docstatus"])	
 
 	list_for_fee=[]
+	list_of_payment=[]
 	for gl in Gl_entry_Pay_Rec:
 		if gl['voucher_type']=="Fees":
 			ck_out=frappe.db.get_list("Fees",filters=[["name","=",gl['voucher_no']]],fields=["name","docstatus"])
 			if ck_out[0]["docstatus"]==1:
 				list_for_fee.append(gl)
-	Gl_entry_Pay_Rec=list_for_fee
+		if gl['voucher_type']=='Payment Entry':
+			ck_out=frappe.db.get_list("Payment Entry",filters=[["name","=",gl['voucher_no']]],fields=["name","docstatus"])
+			if ck_out[0]["docstatus"]==1:
+				list_of_payment.append(gl)	
+	
+	Gl_entry_Pay_Rec=list_for_fee   ############### Fees 
+	Gl_entry_payment=list_of_payment #################### payment 
 	# "docstatus":("!=",2)
+
 	fees_head=[]
 	Payment_head=[]
 	currency_info=""
@@ -36,14 +45,17 @@ def get_data(filters):
 		if t["voucher_type"]=="Fees":
 			fees_head.append(t["account"])
 			currency_info=t["account_currency"]
-		elif t["voucher_type"]=="Payment Entry":
+
+
+
+	for t in Gl_entry_payment:
+		if t["voucher_type"]=="Payment Entry":
 			Payment_head.append(t["account"])
 			currency_info=t["account_currency"]	
 
-
 	fees_head = list(set(fees_head))
 	Payment_head = list(set(Payment_head))
-
+	########################### Fees
 	fees_head_dic={}
 	for t in fees_head:
 		fees_head_dic['%s'%(t)]=[]
@@ -52,22 +64,27 @@ def get_data(filters):
 	for t in Gl_entry_Pay_Rec:
 		if t["voucher_type"]=="Fees":
 			fees_head_dic["%s"%(t["account"])].append(t["debit"])	
-
+	############################# End Fees
+	############################ payment 
 	Payment_head_dic={}
 	for t in Payment_head:
 		Payment_head_dic['%s'%(t)]=[]
-	
 
-	for t in Gl_entry_Pay_Rec:
+	for t in Gl_entry_payment:
 		if t["voucher_type"]=="Payment Entry":
 			Payment_head_dic["%s"%(t["account"])].append(t["credit"])
-	
-	if len(Payment_head_dic)==0:
-		for t in fees_head:
-			Payment_head_dic['%s'%(t)]=[0]
+			if ('Fees Refundable / Adjustable' in t["account"])==False:
+				Payment_head_dic["%s"%(t["account"])].append(t["credit"])
+			else:
+				fees_head_dic['%s'%(t["account"])]=[]
+				fees_head_dic["%s"%(t["account"])].append(t["credit"])		
+	# if len(Payment_head_dic)==0:
+	# 	for t in fees_head:
+	# 		Payment_head_dic['%s'%(t)]=[0]
 
 
 	fees_head_dic = dict(zip(fees_head_dic.keys(), [sum(item) for item in fees_head_dic.values()]))
+	
 	Payment_head_dic = dict(zip(Payment_head_dic.keys(), [sum(item) for item in Payment_head_dic.values()]))
 	
 
@@ -146,8 +163,10 @@ def get_data(filters):
 	student=party
 	student_data_info=frappe.db.get_list("Current Educational Details",filters={"parent":student},fields=["name","Semesters","Programs","academic_year"])
 	# student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","kiit_polytechnic_roll_no","vidyarthi_portal_id","title"])	
-	student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","roll_no","vidyarthi_portal_id","title"])	
+	student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","roll_no","vidyarthi_portal_id","title"])
 	student_group=frappe.db.get_list("Student Group",filters={"programs":student_data_info[0]["Programs"]},fields=["name","batch","programs"])
+	if len(student_group)==0:
+		frappe.throw("Student Group Not Found")
 	student_Enrollment=frappe.db.sql(""" select DISTINCT `program_grade` from `tabProgram Enrollment` where `student`='%s'"""%(student))
 
 	g_value=[]
@@ -176,14 +195,15 @@ def get_data(filters):
 		g_value.append(Count)
 		g_value.append(t)
 		g_value.append(currency_info)
-		g_value.append(fees_head_dic[t])
-
-
+		if ('Fees Refundable / Adjustable' in t)==False:
+			g_value.append(fees_head_dic[t])
+		else:
+			g_value.append(0)	
 		flag=""
 		for j in Payment_head_dic:
 			if t==j:
 				flag="Done"
-				g_value.append(Payment_head_dic[j])	
+				g_value.append(Payment_head_dic[j])		
 		if flag!="Done":
 			g_value.append(0)
 			flag=""	
@@ -192,10 +212,23 @@ def get_data(filters):
 
 
 		for i in Outsatnding_dict:
+			print(Outsatnding_dict)
 			if t==i:
 				flag="Done"
-				Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Waver_amount[t]-Payment_head_dic[j]    #Rupali:added to show balance in report
-				g_value.append(Outsatnding_dict[i])	
+				if ('Fees Refundable / Adjustable' in t)==False:
+					print("\n\n\n\n\n\n\n")
+					print("t",t)
+					print("fees_head_dic[t]",fees_head_dic[t])
+					print("Waver_amount[t]",Waver_amount[t])
+					print("Payment_head_dic[j]",Payment_head_dic[j])
+					a=fees_head_dic[t]-Waver_amount[t]-Payment_head_dic[j] 
+					print("a",a)
+					Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Waver_amount[t]-Payment_head_dic[j]    #Rupali:added to show balance in report
+					print('%s'%(t))
+					print(Outsatnding_dict['%s'%(t)])
+					g_value.append(Outsatnding_dict[i])	
+				else:
+					g_value.append(0)	
 		if flag!="Done":
 			g_value.append(0)
 			flag=""	
