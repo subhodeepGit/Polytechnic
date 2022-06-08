@@ -72,12 +72,20 @@ def get_data(filters):
 
 	for t in Gl_entry_payment:
 		if t["voucher_type"]=="Payment Entry":
-			Payment_head_dic["%s"%(t["account"])].append(t["credit"])
 			if ('Fees Refundable / Adjustable' in t["account"])==False:
 				Payment_head_dic["%s"%(t["account"])].append(t["credit"])
 			else:
-				fees_head_dic['%s'%(t["account"])]=[]
-				fees_head_dic["%s"%(t["account"])].append(t["credit"])		
+				Payment_head_dic["%s"%(t["account"])].append(t["credit"])
+				ref_dic=fees_head_dic.keys()
+				flag=0
+				for t1 in ref_dic:
+					if "Fees Refundable / Adjustable" in t1:
+						flag=1
+				if flag==0:		
+					fees_head_dic['%s'%(t["account"])]=[]
+					fees_head_dic["%s"%(t["account"])].append(t["credit"])
+				else:
+					fees_head_dic["%s"%(t["account"])].append(t["credit"])			
 	# if len(Payment_head_dic)==0:
 	# 	for t in fees_head:
 	# 		Payment_head_dic['%s'%(t)]=[0]
@@ -212,20 +220,16 @@ def get_data(filters):
 
 
 		for i in Outsatnding_dict:
-			print(Outsatnding_dict)
 			if t==i:
 				flag="Done"
 				if ('Fees Refundable / Adjustable' in t)==False:
-					print("\n\n\n\n\n\n\n")
-					print("t",t)
-					print("fees_head_dic[t]",fees_head_dic[t])
-					print("Waver_amount[t]",Waver_amount[t])
-					print("Payment_head_dic[j]",Payment_head_dic[j])
-					a=fees_head_dic[t]-Waver_amount[t]-Payment_head_dic[j] 
-					print("a",a)
-					Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Waver_amount[t]-Payment_head_dic[j]    #Rupali:added to show balance in report
-					print('%s'%(t))
-					print(Outsatnding_dict['%s'%(t)])
+					payment_value=0
+					try:
+						print(Payment_head_dic[i])
+						payment_value=Payment_head_dic[i]
+					except:
+						pass
+					Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Waver_amount[t]-payment_value
 					g_value.append(Outsatnding_dict[i])	
 				else:
 					g_value.append(0)	
@@ -244,7 +248,8 @@ def get_data(filters):
 		for j in Waver_amount:
 			if j==t:
 				flag="Done"
-				g_value.append(Waver_amount[t])
+				if ('Fees Refundable / Adjustable' in t)==False:
+					g_value.append(Waver_amount[t])
 		if flag!="Done":
 			g_value.append(0)
 			flag=""	
