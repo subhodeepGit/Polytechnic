@@ -132,7 +132,7 @@ def get_data(filters):
 	Fee_cal={}    
 	for t in range(len(head_fee)):
 		Fee_cal['%s'%(head_fee[t])]=[]
-
+	############################################ need to correct
 	Waver_amount={}
 	for t in range(len(head_fee)):
 		Waver_amount['%s'%(head_fee[t])]=[]
@@ -144,7 +144,7 @@ def get_data(filters):
 
 	Fee_cal = dict(zip(Fee_cal.keys(), [sum(item) for item in Fee_cal.values()]))
 	Waver_amount = dict(zip(Waver_amount.keys(), [sum(item) for item in Waver_amount.values()]))		
-			
+	#######################################################################		
 	Refund_fees_head_dic={}
 	for t in fees_head:
 		Refund_fees_head_dic['%s'%(t)]=[]
@@ -219,6 +219,7 @@ def get_data(filters):
 		else:
 			g_value.append(0)	
 		flag=""
+		########################paid
 		for j in Payment_head_dic:
 			if t==j:
 				flag="Done"
@@ -239,9 +240,6 @@ def get_data(filters):
 						payment_value=Payment_head_dic[i]
 					except:
 						pass
-					print("\n\n\n\n\n")
-					print(Waver_amount[t])
-					print(fees_head_dic[t])
 					Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Waver_amount[t]-payment_value
 					g_value.append(Outsatnding_dict[i])	
 				else:
@@ -264,9 +262,8 @@ def get_data(filters):
 			if j==t:
 				flag="Done"
 				if ('Fees Refundable / Adjustable' in t)==False:
-					# print("\n\n\n\n\n")
-					# print(t)
-					# print(Waver_amount[t])
+					print("\n\n\n\n\n")
+					print(Waver_amount)
 					g_value.append(Waver_amount[t])
 		if flag!="Done":
 			g_value.append(0)
