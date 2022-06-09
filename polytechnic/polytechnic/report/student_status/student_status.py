@@ -108,14 +108,21 @@ def get_data(filters):
 	if len(Outsatnding_dict)==0:
 		Outsatnding_dict=fees_head_dic.copy()
 
-
-	Fee_DOC=[]
-	for t in Gl_entry_Pay_Rec:
-		if t["voucher_type"]=="Fees":
-			total_waiver_amount=frappe.db.get_all('Fee Component',{"parent":t['voucher_no']},["fees_category","total_waiver_amount","grand_fee_amount","receivable_account"])
-			Fee_DOC.append(total_waiver_amount)
-			# fees_head_dic["%s"%(t["account"])].append(t["debit"])		
 	
+	voucher_no=[]
+	for z in Gl_entry_Pay_Rec:
+		if z["voucher_type"]=="Fees":
+			voucher_no.append(z['voucher_no'])
+	voucher_no = list(set(voucher_no))	
+
+	########################
+	Fee_DOC=[]
+	for t in voucher_no:
+		total_waiver_amount=frappe.db.get_all('Fee Component',{"parent":t},["fees_category","total_waiver_amount","grand_fee_amount","receivable_account"])
+		Fee_DOC.append(total_waiver_amount)
+		# fees_head_dic["%s"%(t["account"])].append(t["debit"])		 	
+	############################
+
 	head_fee=[]
 	for Fee_components in Fee_DOC:
 		for i in range(len(Fee_components)):
@@ -194,15 +201,19 @@ def get_data(filters):
 	Final_list.append(g_value)	
 	# [1, 'Debtors - SOUL', 'INR', 80000.0, 80000.0, '', 'Body', 0.0, 160000.0, 0.0]
 		
-
+	# Final_list=["Sl_no","Fees Head","Currency","Dues","paid","Balance","Paid amount","Body","Waver_amount","Grand_total","Refund_fees_head_dic","Refund_Payment_head_dic"]	
 
 	Count=0
 	for t in fees_head_dic:
 		g_value=[]
 		Count=Count+1
+		############### Sl No 
 		g_value.append(Count)
+		############## Fees Head
 		g_value.append(t)
+		################# Currency
 		g_value.append(currency_info)
+		################## Dues
 		if ('Fees Refundable / Adjustable' in t)==False:
 			g_value.append(fees_head_dic[t])
 		else:
@@ -218,21 +229,25 @@ def get_data(filters):
 		else:
 			flag=""		
 
-
+		############################# Balance
 		for i in Outsatnding_dict:
 			if t==i:
 				flag="Done"
 				if ('Fees Refundable / Adjustable' in t)==False:
 					payment_value=0
 					try:
-						print(Payment_head_dic[i])
 						payment_value=Payment_head_dic[i]
 					except:
 						pass
+					print("\n\n\n\n\n")
+					print(Waver_amount[t])
+					print(fees_head_dic[t])
 					Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Waver_amount[t]-payment_value
 					g_value.append(Outsatnding_dict[i])	
 				else:
-					g_value.append(0)	
+					####################### nead update for ref/ad. amount. 
+					payment_value=Payment_head_dic[i]
+					g_value.append(payment_value)	
 		if flag!="Done":
 			g_value.append(0)
 			flag=""	
@@ -249,6 +264,9 @@ def get_data(filters):
 			if j==t:
 				flag="Done"
 				if ('Fees Refundable / Adjustable' in t)==False:
+					# print("\n\n\n\n\n")
+					# print(t)
+					# print(Waver_amount[t])
 					g_value.append(Waver_amount[t])
 		if flag!="Done":
 			g_value.append(0)
