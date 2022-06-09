@@ -135,8 +135,8 @@ doc_events = {
 override_whitelisted_methods = {
 	# "frappe.desk.doctype.event.event.get_events": "polytechnic.event.get_events"
 	# "ed_tec.ed_tec.doctype.program_enrollment.get_students":"polytechnic.polytechnic.validations.program_enrollment.get_students",
-	"kp_edtec.ed_tec.doctype.student_applicant.enroll_student": "polytechnic.polytechnic.validations.student_applicant.enroll_student",
-	"kp_edtec.ed_tec.doctype.branch_sliding_application.branch_sliding_application.enroll_student": "polytechnic.polytechnic.validations.branch_sliding_application.enroll_student",
+	"ed_tec.ed_tec.doctype.student_applicant.enroll_student": "polytechnic.polytechnic.validations.student_applicant.enroll_student",
+	"ed_tec.ed_tec.doctype.branch_sliding_application.branch_sliding_application.enroll_student": "polytechnic.polytechnic.validations.branch_sliding_application.enroll_student",
 }
 #
 # each overriding function accepts a `data` argument;
