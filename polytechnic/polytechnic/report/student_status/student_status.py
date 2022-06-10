@@ -133,6 +133,22 @@ def get_data(filters):
 	for t in range(len(head_fee)):
 		Fee_cal['%s'%(head_fee[t])]=[]
 	############################################ need to correct
+	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
+								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"]],fields=["name","account","debit","credit"])
+	###########ref balance calculation during payment entry
+	print("\n\n\n\n\n")
+	# print(Gl_entry_payment_ref)
+	fees_ref_adj_balance={}
+	if Gl_entry_payment_ref:
+		for t in Gl_entry_payment_ref:
+			fees_ref_adj_balance['%s'%(t['account'])]=[]
+			break
+		for t in Gl_entry_payment_ref:
+			fees_ref_adj_balance["%s"%(t['account'])].append(t['debit'])
+
+	fees_ref_adj_balance=dict(zip(fees_ref_adj_balance.keys(),[sum(items) for items in fees_ref_adj_balance.values()]))	
+	print(fees_ref_adj_balance)
+
 	Waver_amount={}
 	for t in range(len(head_fee)):
 		Waver_amount['%s'%(head_fee[t])]=[]
@@ -243,8 +259,19 @@ def get_data(filters):
 					Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Waver_amount[t]-payment_value
 					g_value.append(Outsatnding_dict[i])	
 				else:
-					####################### nead update for ref/ad. amount. 
-					payment_value=Payment_head_dic[i]
+					####################### nead update for ref/ad. amount.
+					# {'Fees Refundable / Adjustable -payable - KP': 34999.0}
+					fees_ref_adj_balance_key=fees_ref_adj_balance.keys()
+					flag_ck=0
+					account=""
+					for t1 in fees_ref_adj_balance_key:
+						if "Fees Refundable / Adjustable" in t1:
+							account=t1
+							flag_ck=1
+					if flag_ck==1:
+						payment_value=Payment_head_dic[i]-fees_ref_adj_balance[account]
+					else:
+						payment_value=Payment_head_dic[i]	
 					g_value.append(payment_value)	
 		if flag!="Done":
 			g_value.append(0)
@@ -256,21 +283,39 @@ def get_data(filters):
 		g_value.append("")			
 		g_value.append("Body")
 
+		################################# REFUND BALANCE
+		# fees_ref_adj_balance
+		# [{'name': 'ACC-GLE-2022-00860', 'account': 'Fees Refundable / Adjustable -payable - KP', 'debit': 34999.0, 'credit': 0.0}]
+		#  {'Fees Refundable / Adjustable -payable - KP': 34999.0}
+		for j in fees_ref_adj_balance:
+			print(j)
+			print(t)
+			pass
+			# if j==t:
+			# 	flag="Done"
+			# 	if ('Fees Refundable / Adjustable' in t)==False:
+			# 		g_value.append(Waver_amount[t])
+
+
+		# if flag!="Done":
+		# 	g_value.append(0)
+		# 	flag=""	
+		# else:
+		# 	flag=""	
+
 
 
 		for j in Waver_amount:
 			if j==t:
 				flag="Done"
 				if ('Fees Refundable / Adjustable' in t)==False:
-					print("\n\n\n\n\n")
-					print(Waver_amount)
 					g_value.append(Waver_amount[t])
 		if flag!="Done":
 			g_value.append(0)
 			flag=""	
 		else:
 			flag=""		
-
+		###################################
 
 
 		for j in Fee_cal:
