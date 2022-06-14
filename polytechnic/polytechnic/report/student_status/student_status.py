@@ -36,19 +36,19 @@ def get_data(filters):
 				list_of_payment.append(gl)
 		if gl['voucher_type']=='Journal Entry':
 			ck_out=frappe.db.get_list("Payment Refund",filters=[["jv_entry_voucher_no","=",gl['voucher_no']]],fields=["name","docstatus"])
-			# try:
-			# 	if ck_out[0]["docstatus"]==1:
-			# 		if gl['debit']!=0:
-			# 			je_entry_debit.append(gl)
-			# 		if gl['credit']!=0:
-			# 			je_enrty_credit.append(gl)	
-			# except:
-			# 	pass
-			if ck_out[0]["docstatus"]==1:
-				if gl['debit']!=0:
-					je_entry_debit.append(gl)
-				if gl['credit']!=0:
-					je_enrty_credit.append(gl)						
+			try:
+				if ck_out[0]["docstatus"]==1:
+					if gl['debit']!=0:
+						je_entry_debit.append(gl)
+					if gl['credit']!=0:
+						je_enrty_credit.append(gl)	
+			except:
+				pass
+			# if ck_out[0]["docstatus"]==1:
+			# 	if gl['debit']!=0:
+			# 		je_entry_debit.append(gl)
+			# 	if gl['credit']!=0:
+			# 		je_enrty_credit.append(gl)						
 
 	Gl_entry_Pay_Rec=list_for_fee   ############### Fees 
 	Gl_entry_payment=list_of_payment #################### payment 
@@ -473,29 +473,39 @@ def get_data(filters):
 		# paid amount = amount paid from payment(in the head - mode of payment(Pay))+ amount paid from payment refund(mode of payment)  
 		for i in Outsatnding_dict:
 			if t==i:
-				# flag="Done"
-				if ('Fees Refundable / Adjustable' in t)==False:
-					# g_value.append(0)
-					pass
-
-
-
-
-
-
-
-		for j in Refund_Payment_head_dic:
-			if j==t:
 				flag="Done"
-				g_value.append(Refund_Payment_head_dic[j])
+				if ('Fees Refundable / Adjustable' in t)==False:
+					g_value.append(0)
+				else:
+					paid_amount=0
+					payment_entry_ref_amount=0
+					payment_refund_amount=0
+					if payment_entry_adj_payment:
+						key=payment_entry_adj_payment.keys()
+						for z1 in key:
+							account1=z1		##################################################### Refunded amount
+						payment_entry_ref_amount=payment_entry_adj_payment[account1]
+					if payment_refund_adj_payment:
+						key=payment_refund_adj_payment.keys()
+						for z1 in key:
+							account1=z1
+						payment_refund_amount=payment_refund_adj_payment[account1]	
+					paid_amount=payment_entry_ref_amount+payment_refund_amount
+					g_value.append(Refund_Payment_head_dic[j])
+
+		# for j in Refund_Payment_head_dic:
+		# 	if j==t:
+		# 		flag="Done"
+		# 		g_value.append(Refund_Payment_head_dic[j])
 		if flag!="Done":
 			g_value.append(0)
 			flag=""
 		else:
-			flag=""			
+			flag=""
+		#############################################################				
 									
 		Final_list.append(g_value)
-
+	############################################################# payment entry
 	Gl_entry_Type_payment=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
 								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","posting_date"])	
 	list_for_payment=[]					
@@ -523,7 +533,8 @@ def get_data(filters):
 		g_value.append("")
 		g_value.append("")
 		Final_list.append(g_value)
-	
+	################################### payment refund 
+	payment_refund_data=frappe.get_all("Payment Refund")
 
 
 
