@@ -301,6 +301,24 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Payment Entry",
+   "link_to": "Payment Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payment Refund",
+   "link_to": "Payment Refund",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Tools",
    "link_type": "DocType",
    "onboard": 0,
@@ -386,7 +404,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-06-07 12:16:19.777930",
+ "modified": "2022-06-14 15:29:07.396930",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
