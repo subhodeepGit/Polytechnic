@@ -17,7 +17,7 @@ def get_data(filters):
 	print("\n\n\n\n\n")
 	start_date= filters.get('from')
 	end_date=filters.get('to') 
-	party_type=filters.get("party_type")
+	# party_type=filters.get("party_type")
 	party=filters.get("party")
 	Gl_entry_Pay_Rec=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['party','=',party],['posting_date', 'between', 
 								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","docstatus"])														
@@ -101,24 +101,35 @@ def get_data(filters):
 					fees_head_dic["%s"%(t["account"])].append(t["credit"])
 				else:
 					fees_head_dic["%s"%(t["account"])].append(t["credit"])
-
 	for t in je_enrty_credit:
 		if ('Fees Refundable / Adjustable' in t["account"])==True:
 			ref_dic=fees_head_dic.keys()
+			ref_dic1=Payment_head_dic.keys()
 			flag=0
+			flag1=0
 			for t1 in ref_dic:
 				if "Fees Refundable / Adjustable" in t1:
 					flag=1
+
+			ref_dic=Payment_head_dic.keys()		
+			for t2 in ref_dic:
+				if "Fees Refundable / Adjustable" in t2:
+					flag1=1	
 			if flag==0:		
 				fees_head_dic['%s'%(t["account"])]=[]
 				fees_head_dic["%s"%(t["account"])].append(t["credit"])
 			else:
-				fees_head_dic["%s"%(t["account"])].append(t["credit"])							
-	# if len(Payment_head_dic)==0:
-	# 	for t in fees_head:
-	# 		Payment_head_dic['%s'%(t)]=[0]
+				fees_head_dic["%s"%(t["account"])].append(t["credit"])
+
+			if flag1==0:
+				Payment_head_dic['%s'%(t["account"])]=[]
+				Payment_head_dic["%s"%(t["account"])].append(t["credit"])
+			else:
+				Payment_head_dic["%s"%(t["account"])].append(t["credit"])	
+
 	fees_head_dic = dict(zip(fees_head_dic.keys(), [sum(item) for item in fees_head_dic.values()]))
 	Payment_head_dic = dict(zip(Payment_head_dic.keys(), [sum(item) for item in Payment_head_dic.values()]))
+
 	
 
 	Outsatnding_dict={}
@@ -159,16 +170,16 @@ def get_data(filters):
 		Fee_cal['%s'%(head_fee[t])]=[]
 	############################################ Fees Refundable / Adjustable reconcelation 
 	########### Extra amount colleted during payment entry
-	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
+	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['party','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["debit","=",0]],
-								fields=["name","account","debit","credit"])
+								fields=["name","account","debit","credit"])						
 	fees_ref_adj_balance={}
 	if Gl_entry_payment_ref:
 		for t in Gl_entry_payment_ref:
 			fees_ref_adj_balance['%s'%(t['account'])]=[]
 			break
 		for t in Gl_entry_payment_ref:
-			fees_ref_adj_balance["%s"%(t['account'])].append(t['debit'])
+			fees_ref_adj_balance["%s"%(t['account'])].append(t['credit'])
 
 	fees_ref_adj_balance=dict(zip(fees_ref_adj_balance.keys(),[sum(items) for items in fees_ref_adj_balance.values()]))
 	################## Extra amount collected during payment refund
@@ -188,15 +199,34 @@ def get_data(filters):
 	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["debit","!=",0]],
 								fields=["name","account","debit","credit"])	
-	print(Gl_entry_payment_ref)	
+	payment_refund_adj_payment={}
+	if Gl_entry_payment_ref:
+		for t in Gl_entry_payment_ref:
+			payment_refund_adj_payment['%s'%(t['account'])]=[]
+			break
+		for t in Gl_entry_payment_ref:
+			payment_refund_adj_payment["%s"%(t['account'])].append(t['debit'])
 
+	payment_refund_adj_payment=dict(zip(payment_refund_adj_payment.keys(),[sum(items) for items in payment_refund_adj_payment.values()]))
 	######################## payment entry (mode of pay - pay)
 	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["credit","=",0]],
 								fields=["name","account","debit","credit"]) 
-	print(Gl_entry_payment_ref)													
+												
+	payment_entry_adj_payment={}
+	if Gl_entry_payment_ref:
+		for t in Gl_entry_payment_ref:
+			payment_entry_adj_payment['%s'%(t['account'])]=[]
+			break
+		for t in Gl_entry_payment_ref:
+			payment_entry_adj_payment["%s"%(t['account'])].append(t['debit'])
 
+	payment_entry_adj_payment=dict(zip(payment_entry_adj_payment.keys(),[sum(items) for items in payment_entry_adj_payment.values()]))
 	############################################
+
+
+
+
 	Waver_amount={}
 	for t in range(len(head_fee)):
 		Waver_amount['%s'%(head_fee[t])]=[]
@@ -207,8 +237,7 @@ def get_data(filters):
 			Waver_amount['%s'%(Fee_components[i]["receivable_account"])].append(Fee_components[i]['total_waiver_amount'])
 
 	Fee_cal = dict(zip(Fee_cal.keys(), [sum(item) for item in Fee_cal.values()]))
-	Waver_amount = dict(zip(Waver_amount.keys(), [sum(item) for item in Waver_amount.values()]))
-	######################## 		
+	Waver_amount = dict(zip(Waver_amount.keys(), [sum(item) for item in Waver_amount.values()]))	
 	#######################################################################		
 	Refund_fees_head_dic={}
 	for t in fees_head:
@@ -312,17 +341,13 @@ def get_data(filters):
 					#### Collected_amount(payment entry and payment refund)-paid amount (amount consumed in payment entry (Payment_head_dic) and payment refund (JE Entry)) 
 					fees_ref_adj_balance_key=fees_ref_adj_balance.keys()
 					flag_ck=0
-					flag_ck1=0
 					account=""
 					for t1 in fees_ref_adj_balance_key:
 						if "Fees Refundable / Adjustable" in t1:
 							account=t1
 							flag_ck=1
-
-					for t1 in Payment_head_dic.keys():
-						if "Fees Refundable / Adjustable" in t1:
-							flag_ck1=1
-					payment_value=0		
+					payment_value=0
+					paid_amount=0		
 					payment_entry_ref_amount=0
 					payment_refund_amount=0
 					
@@ -336,15 +361,22 @@ def get_data(filters):
 						for z1 in key:
 							account1=z1
 						collected_amount_payment_refund=payment_refund_adj_collection[account1]	
+					col_total_amount=collected_amount_payment_entry+collected_amount_payment_refund	
 					################### end collection
-						
-					if flag_ck1==1:
-						payment_refund_amount=0
-						############# need to work on it
-					col_total_amount=collected_amount_payment_entry+collected_amount_payment_refund
-
-
-					# payment_value=col_total_amount-payment_entry_ref_amount-payment_refund_amount
+					################## payment back
+					if payment_refund_adj_payment:
+						key=payment_refund_adj_payment.keys()
+						for z1 in key:
+							account1=z1
+						payment_refund_amount=payment_refund_adj_payment[account1]
+					if payment_entry_adj_payment:
+						key=payment_entry_adj_payment.keys()
+						for z1 in key:
+							account1=z1
+						payment_entry_ref_amount=payment_entry_adj_payment[account1]						
+					paid_amount=payment_entry_ref_amount+payment_refund_amount
+					############################# end payment back
+					payment_value=col_total_amount-paid_amount
 					g_value.append(payment_value)	
 		if flag!="Done":
 			g_value.append(0)
@@ -355,27 +387,7 @@ def get_data(filters):
 
 		g_value.append("")			
 		g_value.append("Body")
-
-		################################# REFUND BALANCE
-		# fees_ref_adj_balance
-		# [{'name': 'ACC-GLE-2022-00860', 'account': 'Fees Refundable / Adjustable -payable - KP', 'debit': 34999.0, 'credit': 0.0}]
-		#  {'Fees Refundable / Adjustable -payable - KP': 34999.0}
-		for j in fees_ref_adj_balance:
-			pass
-			# if j==t:
-			# 	flag="Done"
-			# 	if ('Fees Refundable / Adjustable' in t)==False:
-			# 		g_value.append(Waver_amount[t])
-
-
-		# if flag!="Done":
-		# 	g_value.append(0)
-		# 	flag=""	
-		# else:
-		# 	flag=""	
-
-
-
+		################################## Waiver amount
 		for j in Waver_amount:
 			if j==t:
 				flag="Done"
@@ -399,17 +411,77 @@ def get_data(filters):
 		else:
 			flag=""	
 
-
-
-		for j in Refund_fees_head_dic:
-			if j==t:
+		################################# REFUND BALANCE (only Fees Refundable / Adjustable)
+		# REFUND BALANCE=Total amount colleted(Payment entry & Payment Refund) - Total amount used for clearing(payment Entry and Payment Refund)
+		for i in Outsatnding_dict:
+			if t==i:
 				flag="Done"
-				g_value.append(Refund_fees_head_dic[j])	
+				if ('Fees Refundable / Adjustable' in t)==False:
+					g_value.append(0)
+				else:
+					####################### nead update for ref/ad. amount.
+					#### Collected_amount(payment entry and payment refund)-paid amount (amount consumed in payment entry (Payment_head_dic) and payment refund (JE Entry)) 
+					fees_ref_adj_balance_key=fees_ref_adj_balance.keys()
+					flag_ck=0
+					account=""
+					for t1 in fees_ref_adj_balance_key:
+						if "Fees Refundable / Adjustable" in t1:
+							account=t1
+							flag_ck=1
+					payment_value=0
+					paid_amount=0		
+					payment_entry_ref_amount=0
+					payment_refund_amount=0
+					
+					collected_amount_payment_entry=0
+					collected_amount_payment_refund=0
+					########### collection
+					if flag_ck==1:
+						collected_amount_payment_entry=fees_ref_adj_balance[account]
+					if payment_refund_adj_collection:
+						key=payment_refund_adj_collection.keys()
+						for z1 in key:
+							account1=z1
+						collected_amount_payment_refund=payment_refund_adj_collection[account1]	
+					col_total_amount=collected_amount_payment_entry+collected_amount_payment_refund	
+					################### end collection
+					################## payment back
+					if payment_refund_adj_payment:
+						key=payment_refund_adj_payment.keys()
+						for z1 in key:
+							account1=z1
+						payment_refund_amount=payment_refund_adj_payment[account1]
+					if payment_entry_adj_payment:
+						key=payment_entry_adj_payment.keys()
+						for z1 in key:
+							account1=z1		##################################################### Refunded amount
+						payment_entry_ref_amount=payment_entry_adj_payment[account1]						
+					paid_amount=payment_entry_ref_amount+payment_refund_amount
+					############################# end payment back
+					payment_value=col_total_amount-paid_amount
+					g_value.append(payment_value)
+		# for j in Refund_fees_head_dic:
+		# 	if j==t:
+		# 		flag="Done"
+		# 		g_value.append(Refund_fees_head_dic[j])	
 		if flag!="Done":
 			g_value.append(0)
 			flag=""
 		else:
 			flag=""			
+		################################################## Payment Refund to the studnet
+		# paid amount = amount paid from payment(in the head - mode of payment(Pay))+ amount paid from payment refund(mode of payment)  
+		for i in Outsatnding_dict:
+			if t==i:
+				# flag="Done"
+				if ('Fees Refundable / Adjustable' in t)==False:
+					# g_value.append(0)
+					pass
+
+
+
+
+
 
 
 		for j in Refund_Payment_head_dic:
@@ -534,6 +606,3 @@ def get_columns():
 		
 	]
 	return columns
-
-
-	
