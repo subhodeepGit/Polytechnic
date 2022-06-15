@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+from dataclasses import fields
 from itertools import count
 from locale import currency
 from frappe import _
@@ -14,7 +15,6 @@ def execute(filters=None):
 	return get_columns_info,get_data_info
 
 def get_data(filters):
-	print("\n\n\n\n\n")
 	start_date= filters.get('from')
 	end_date=filters.get('to') 
 	# party_type=filters.get("party_type")
@@ -491,7 +491,7 @@ def get_data(filters):
 							account1=z1
 						payment_refund_amount=payment_refund_adj_payment[account1]	
 					paid_amount=payment_entry_ref_amount+payment_refund_amount
-					g_value.append(Refund_Payment_head_dic[j])
+					g_value.append(paid_amount)
 
 		# for j in Refund_Payment_head_dic:
 		# 	if j==t:
@@ -529,12 +529,42 @@ def get_data(filters):
 		g_value.append(payment_entry.paid_amount)
 		g_value.append("Lower")
 		g_value.append(payment_entry.name)
-		g_value.append("")
+		g_value.append("Pay")
 		g_value.append("")
 		g_value.append("")
 		Final_list.append(g_value)
 	################################### payment refund 
-	payment_refund_data=frappe.get_all("Payment Refund")
+	print("\n\n\n\n\n\n")
+	payment_refund_data=frappe.get_all("Payment Refund",filters=[["docstatus","=",1],['party','=',party],['posting_date', 'between',[start_date, end_date]]],
+									fields=['name','posting_date','mode_of_payment','payment_type','paid_from_account_currency','paid_to_account_currency'])
+	for data in payment_refund_data:
+		payment_refund_data_amount=frappe.get_all("Payment Entry Reference Refund",{"parent":data['name']},["name","total_amount"])	
+		amount=payment_refund_data_amount[0]["total_amount"]
+		data['amount']=amount   													
+	print("payment_refund_data",payment_refund_data)
+	for t in payment_refund_data:
+		Count=Count+1
+		g_value=[]
+		g_value.append(Count)
+		g_value.append(t["posting_date"])
+		if t['mode_of_payment']=="Pay":
+			g_value.append(t['paid_from_account_currency'])
+		if t['mode_of_payment']=="Receive":
+			g_value.append(t['paid_to_account_currency'])
+		g_value.append(t['mode_of_payment'])
+		g_value.append("")
+		g_value.append(t['name'])
+		g_value.append(t['amount'])
+		g_value.append("Lower")
+		g_value.append(t['name'])
+		g_value.append(t['payment_type'])
+		g_value.append("")
+		g_value.append("")
+		print("\n\n\n\n\n\n")
+		print(g_value)
+		Final_list.append(g_value)	
+
+
 
 
 
