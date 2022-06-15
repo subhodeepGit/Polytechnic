@@ -73,6 +73,7 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
                         <th class="text-center" style="width: 20%">{%= __("MODE") %}</th>
                         <th class="text-center" style="width: 20%">{%= __("INSTRUMENT NO") %}</th>
                         <th class="text-center" style="width: 20%">{%= __("AMOUNT") %}</th>
+                        <th class="text-center" style="width: 20%">{%= __("Payment Type") %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,6 +86,7 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
                             <td class="text-center">{%= data[i].dues %}</td>
                             <td class="text-center">{%= data[i].waiver_amt %}</td>
                             <td class="text-center">{%= data[i].ltamt %}</td>
+                            <td class="text-center">{%= data[i].grand_total %}</td>
                         </tr>
                         {% } %}
                     {% } %}

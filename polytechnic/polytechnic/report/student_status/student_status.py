@@ -534,22 +534,20 @@ def get_data(filters):
 		g_value.append("")
 		Final_list.append(g_value)
 	################################### payment refund 
-	print("\n\n\n\n\n\n")
 	payment_refund_data=frappe.get_all("Payment Refund",filters=[["docstatus","=",1],['party','=',party],['posting_date', 'between',[start_date, end_date]]],
 									fields=['name','posting_date','mode_of_payment','payment_type','paid_from_account_currency','paid_to_account_currency'])
 	for data in payment_refund_data:
 		payment_refund_data_amount=frappe.get_all("Payment Entry Reference Refund",{"parent":data['name']},["name","total_amount"])	
 		amount=payment_refund_data_amount[0]["total_amount"]
-		data['amount']=amount   													
-	print("payment_refund_data",payment_refund_data)
+		data['amount']=amount
 	for t in payment_refund_data:
 		Count=Count+1
 		g_value=[]
 		g_value.append(Count)
 		g_value.append(t["posting_date"])
-		if t['mode_of_payment']=="Pay":
+		if t['payment_type']=="Pay":
 			g_value.append(t['paid_from_account_currency'])
-		if t['mode_of_payment']=="Receive":
+		if t['payment_type']=="Receive":
 			g_value.append(t['paid_to_account_currency'])
 		g_value.append(t['mode_of_payment'])
 		g_value.append("")
@@ -560,14 +558,7 @@ def get_data(filters):
 		g_value.append(t['payment_type'])
 		g_value.append("")
 		g_value.append("")
-		print("\n\n\n\n\n\n")
-		print(g_value)
 		Final_list.append(g_value)	
-
-
-
-
-
 	return Final_list
 
 def get_columns():
