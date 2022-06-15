@@ -505,6 +505,8 @@ def get_data(filters):
 		#############################################################				
 									
 		Final_list.append(g_value)
+	print("\n\n\n\n\n\n")
+	print(Final_list)	
 	############################################################# payment entry
 	Gl_entry_Type_payment=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
 								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","posting_date"])	
