@@ -505,8 +505,41 @@ def get_data(filters):
 		#############################################################				
 									
 		Final_list.append(g_value)
-	print("\n\n\n\n\n\n")
-	print(Final_list)	
+	dew=0
+	paid=0
+	Balance=0
+	Waiver=0
+	Fee_cal=0
+	Refund_balance=0
+	Payment_ref=0
+	for z in Final_list:
+		head_of_report=z[7]
+		if head_of_report=="Body":
+			dew=dew+z[3]
+			paid=paid+z[4]
+			if ("Fees Refundable / Adjustable" in z[1])==True:
+				Balance=Balance-z[5]
+			else:
+				Balance=Balance+z[5]
+			Waiver=Waiver+z[8]
+			Fee_cal=Fee_cal+z[8]
+			Refund_balance=Refund_balance+z[10]
+			Payment_ref=Payment_ref+z[11]
+			
+	g_value=[]
+	g_value.append("")
+	g_value.append("Total")
+	g_value.append(currency_info)
+	g_value.append(dew)
+	g_value.append(paid)
+	g_value.append(Balance)
+	g_value.append("")			
+	g_value.append("Body")
+	g_value.append(Waiver)
+	g_value.append(Fee_cal)
+	g_value.append(Refund_balance)
+	g_value.append(Payment_ref)
+	Final_list.append(g_value)	
 	############################################################# payment entry
 	Gl_entry_Type_payment=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
 								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","posting_date"])	

@@ -9,7 +9,7 @@
  "filters": [],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2022-04-08 17:35:13.642533",
+ "modified": "2022-06-16 12:35:37.364276",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Student Status",
@@ -21,9 +21,6 @@
  "roles": [
   {
    "role": "Accounts User"
-  },
-  {
-   "role": "Auditor"
   },
   {
    "role": "Accounts Manager"

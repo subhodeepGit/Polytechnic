@@ -404,7 +404,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-06-14 15:29:07.396930",
+ "modified": "2022-06-15 11:23:49.068718",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
@@ -447,6 +447,18 @@
    "doc_view": "List",
    "label": "Fees",
    "link_to": "Fees",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Account",
+   "link_to": "Account",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "",
+   "label": "Mode Of Payment",
+   "link_to": "Mode of Payment",
    "type": "DocType"
   }
  ],
