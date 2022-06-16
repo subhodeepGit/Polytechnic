@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.utils import today,getdate
-from ed_tec.ed_tec.utils import get_courses_by_semester
+from kp_edtec.kp_edtec.utils import get_courses_by_semester
 
 @frappe.whitelist()
 def enroll_student(source_name):

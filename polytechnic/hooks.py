@@ -16,7 +16,7 @@ app_license = "MIT"
 # app_include_css = "/assets/polytechnic/css/polytechnic.css"
 # app_include_js = "/assets/polytechnic/js/polytechnic.js"
 app_include_js = [
-                    "/assets/ed_tec/core_js/program_enrollment.js"
+                    "/assets/kp_edtec/core_js/program_enrollment.js"
                 ]
 
 # include js, css files in header of web template
@@ -134,9 +134,9 @@ doc_events = {
 #
 override_whitelisted_methods = {
 	# "frappe.desk.doctype.event.event.get_events": "polytechnic.event.get_events"
-	# "ed_tec.ed_tec.doctype.program_enrollment.get_students":"polytechnic.polytechnic.validations.program_enrollment.get_students",
-	"ed_tec.ed_tec.doctype.student_applicant.enroll_student": "polytechnic.polytechnic.validations.student_applicant.enroll_student",
-	"ed_tec.ed_tec.doctype.branch_sliding_application.branch_sliding_application.enroll_student": "polytechnic.polytechnic.validations.branch_sliding_application.enroll_student",
+	# "kp_edtec.kp_edtec.doctype.program_enrollment.get_students":"polytechnic.polytechnic.validations.program_enrollment.get_students",
+	"kp_edtec.kp_edtec.doctype.student_applicant.enroll_student": "polytechnic.polytechnic.validations.student_applicant.enroll_student",
+	"kp_edtec.kp_edtec.doctype.branch_sliding_application.branch_sliding_application.enroll_student": "polytechnic.polytechnic.validations.branch_sliding_application.enroll_student",
 }
 #
 # each overriding function accepts a `data` argument;

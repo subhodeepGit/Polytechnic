@@ -2,8 +2,8 @@ import frappe
 
 @frappe.whitelist()
 def enroll_student(source_name):
-    from ed_tec.ed_tec.doctype.student_exchange_applicant.student_exchange_applicant import get_academic_calender_table
-    from ed_tec.ed_tec.doctype.semesters.semesters import get_courses
+    from kp_edtec.kp_edtec.doctype.student_exchange_applicant.student_exchange_applicant import get_academic_calender_table
+    from kp_edtec.kp_edtec.doctype.semesters.semesters import get_courses
     st_applicant=frappe.get_doc("Student Applicant", source_name)
     for student in frappe.get_all("Student",{"student_applicant":source_name},['name','student_category','title']):
         program_enrollment = frappe.new_doc("Program Enrollment")
