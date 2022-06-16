@@ -184,15 +184,18 @@ user_data_fields = [
 
 
 # fixtures = [
-# # 	{"dt": "Custom DocPerm", "filters": [
-# # 		[
-# # 			"parent", "not in", [
-# # 				"DocType"
-# # 			]
-# # 		]
-# # 	]},
-#     {"dt": "Letter Head"},
-# #     # {"dt": "Fee Type"},
-# #     # {"dt": "Workflow"}
+# 	{"dt": "Custom DocPerm", "filters": [
+# 		[
+# 			"parent", "not in", [
+# 				"DocType"
+# 			]
+# 		]
+# 	]},
+#     {"dt": "Role"},
+#     {"dt": "Role Profile"},
+#     {"dt": "Module Profile"},
 # ]
-
+after_migrate = [
+        'polytechnic.patches.migrate_patch.add_roles',
+        'polytechnic.patches.migrate_patch.set_custom_role_permission',
+]
