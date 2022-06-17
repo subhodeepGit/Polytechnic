@@ -196,6 +196,6 @@ user_data_fields = [
 #     {"dt": "Module Profile"},
 # ]
 after_migrate = [
-        'polytechnic.patches.migrate_patch.add_roles',
+        # 'polytechnic.patches.migrate_patch.add_roles',
         'polytechnic.patches.migrate_patch.set_custom_role_permission',
 ]
