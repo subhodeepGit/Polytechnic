@@ -564,7 +564,7 @@ def get_data(filters):
 		g_value.append(payment_entry.paid_amount)
 		g_value.append("Lower")
 		g_value.append(payment_entry.name)
-		g_value.append("Pay")
+		g_value.append("Receive")
 		g_value.append("")
 		g_value.append("")
 		Final_list.append(g_value)
