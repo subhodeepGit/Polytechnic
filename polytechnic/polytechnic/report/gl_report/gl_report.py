@@ -77,6 +77,41 @@ def get_data(filters):
 				elif Gl_entry_info["credit"]!=0:
 					com_data=[Gl_entry_info["credit"],Gl_entry_info["account"]]
 					credit.append(com_data)
+	print("\n\n\n\n\n\n")
+
+	#######Payment Refund - Receive
+	for i in Gl_entry:
+		JV_entry_info=frappe.get_all("GL Entry",{"name":i["name"],"voucher_type":"Journal Entry"},["name","account","debit","credit","voucher_no"])
+		if len(JV_entry_info):
+			print("JV Name",i["name"])
+			# print("2",JV_entry_info)
+			JV_entry_info=JV_entry_info[0]
+			print("JV_entry_info",JV_entry_info)
+			Payment_Refund_info_pay=frappe.get_all("Payment Refund",filters=[["jv_entry_voucher_no","=",JV_entry_info['voucher_no']],["payment_type","=","Pay"],["docstatus",'=',1]])
+			print("Payment_Refund_info_pay",Payment_Refund_info_pay)
+			Payment_Refund_info=frappe.get_all("Payment Refund",filters=[["jv_entry_voucher_no","=",JV_entry_info['voucher_no']],["payment_type","=","Receive"],["docstatus",'=',1]])
+			print("Payment_Refund_info",Payment_Refund_info)
+			print("\n\n\n\n\n\n")
+			if len(Payment_Refund_info):
+				if JV_entry_info["debit"]!=0:
+					cal_data=[JV_entry_info["debit"],JV_entry_info["account"]]
+					print("cal_data_dr",cal_data)
+					debit.append(cal_data)
+					if len(Payment_Refund_info_pay):
+						if JV_entry_info["debit"]!=0:
+							negd=JV_entry_info["debit"]*-1
+							# cal_data=[negd,JV_entry_info["account"]]
+					del cal_data
+				elif JV_entry_info["credit"]!=0:
+					cal_data=[JV_entry_info["credit"],JV_entry_info["account"]]
+					print("cal_data_cr",cal_data)
+					credit.append(cal_data)
+					if len(Payment_Refund_info_pay):
+						if JV_entry_info["credit"]!=0:
+							negc=JV_entry_info["credit"]*-1
+							# cal_data=[negc,JV_entry_info["account"]]
+	print("debit",debit)
+	print("credit",credit)
 		
 	#################################### credit
 	credit_head=[]
