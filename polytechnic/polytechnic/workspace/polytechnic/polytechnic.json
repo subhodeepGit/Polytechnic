@@ -319,6 +319,15 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Auto Reconciliation",
+   "link_to": "Auto Reconciliation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Tools",
    "link_type": "DocType",
    "onboard": 0,
@@ -329,6 +338,15 @@
    "is_query_report": 0,
    "label": "Student Reregistration Tool",
    "link_to": "Student Reregistration Tool Fees",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Fees Due Tool",
+   "link_to": "Fees Due Tool",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -404,7 +422,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-06-15 11:23:49.068718",
+ "modified": "2022-06-28 11:15:00.002895",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
