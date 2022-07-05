@@ -23,6 +23,8 @@ def get_data(filters):
 	########## Gl Entry data
 	Gl_entry_Pay_Rec=gl_entry(studnet_info,start_date,end_date)
 	######################## payment and Fee segression 
+
+
 	list_for_fee=[]
 	list_of_payment=[]
 	je_entry_debit=[]
@@ -48,7 +50,13 @@ def get_data(filters):
 				pass
 				
 	Gl_entry_Pay_Rec=list_for_fee   ############### Fees 
-	Gl_entry_payment=list_of_payment #################### payment 
+	Gl_entry_payment=list_of_payment #################### payment
+	print("\n\n\n\n\n")
+	print("Gl_entry_Pay_Rec",Gl_entry_Pay_Rec)
+	# print("Gl_entry_payment",Gl_entry_payment) 
+	########################## dynamic allocation of head in fees
+	
+
 	################# out-put for front end  	
 	final_list=[]	
 	for t in studnet_info:
