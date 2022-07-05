@@ -6,8 +6,8 @@ from frappe import _
 
 def execute(filters=None):
 	# columns, data = [], []
-	get_data_info=get_data(filters)
-	get_columns_info=get_columns()
+	get_data_info,head_name=get_data(filters)
+	get_columns_info=get_columns(head_name)
 	return  get_columns_info,get_data_info
 
 def get_data(filters):
@@ -51,20 +51,20 @@ def get_data(filters):
 				
 	Gl_entry_Pay_Rec=list_for_fee   ############### Fees 
 	Gl_entry_payment=list_of_payment #################### payment
-	print("\n\n\n\n\n")
-	print("Gl_entry_Pay_Rec",Gl_entry_Pay_Rec)
-	# print("Gl_entry_payment",Gl_entry_payment) 
-	########################## dynamic allocation of head in fees
 	
+	########################## dynamic allocation of head in fees
+	head_name=head_finding(Gl_entry_Pay_Rec) 
 
 	################# out-put for front end  	
 	final_list=[]	
 	for t in studnet_info:
 		a=list(t.values())
 		b=['' if v is None else v for v in a]
+		b.append(0)
+		b.append(0)
 		final_list.append(b)
 	####################### 		
-	return final_list
+	return final_list,head_name
 
 def student_info(branch=None,semester=None):
 	student_all_data=[]
@@ -103,12 +103,16 @@ def gl_entry(studnet_list,start_date,end_date):
 								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","docstatus"])
 	return Gl_entry_Pay_Rec
 
+def head_finding(Gl_entry_dew_fees):
+	head_name=[]
+	for t in Gl_entry_dew_fees:
+		head_name.append(t['account'])
+	head_name=list(set(head_name))
+	return head_name
 
 
 
-
-
-def get_columns():
+def get_columns(head_name=None):
 	columns = [
 		{
 			"label": _("Sl no"),
@@ -160,4 +164,15 @@ def get_columns():
 		},
 
 	]
+	if len(head_name)!=0:
+		for t in head_name:
+			label=t
+			fieldname=label.replace(" ", "")
+			columns_add={
+				"label": _("%s"%(label)),
+				"fieldname": "%s"%(fieldname),
+				"fieldtype": "Data",
+				"width":200
+			}
+			columns.append(columns_add)
 	return columns	
