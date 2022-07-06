@@ -17,68 +17,66 @@ def get_data(filters):
 	end_date=filters.get('end_date')
 	######################## Student Info 
 	studnet_info=student_info(branch,semester)
-	if not studnet_info:
-		frappe.throw("No studnet Record Found")
-
-	########## Gl Entry data
-	Gl_entry_Pay_Rec=gl_entry(studnet_info,start_date,end_date)
-	######################## payment and Fee segression 
+	if studnet_info:
+		########## Gl Entry data
+		Gl_entry_Pay_Rec=gl_entry(studnet_info,start_date,end_date)
+		######################## payment and Fee segression 
 
 
-	list_for_fee=[]
-	list_of_payment=[]
-	je_entry_debit=[]
-	je_enrty_credit=[]
-	for gl in Gl_entry_Pay_Rec:
-		if gl['voucher_type']=="Fees":
-			ck_out=frappe.db.get_list("Fees",filters=[["name","=",gl['voucher_no']]],fields=["name","docstatus"])
-			if ck_out[0]["docstatus"]==1:
-				list_for_fee.append(gl)
-		if gl['voucher_type']=='Payment Entry':
-			ck_out=frappe.db.get_list("Payment Entry",filters=[["name","=",gl['voucher_no']]],fields=["name","docstatus"])
-			if ck_out[0]["docstatus"]==1:
-				list_of_payment.append(gl)
-		if gl['voucher_type']=='Journal Entry':
-			ck_out=frappe.db.get_list("Payment Refund",filters=[["jv_entry_voucher_no","=",gl['voucher_no']]],fields=["name","docstatus"])
-			try:
+		list_for_fee=[]
+		list_of_payment=[]
+		je_entry_debit=[]
+		je_enrty_credit=[]
+		for gl in Gl_entry_Pay_Rec:
+			if gl['voucher_type']=="Fees":
+				ck_out=frappe.db.get_list("Fees",filters=[["name","=",gl['voucher_no']]],fields=["name","docstatus"])
 				if ck_out[0]["docstatus"]==1:
-					if gl['debit']!=0:
-						je_entry_debit.append(gl)
-					if gl['credit']!=0:
-						je_enrty_credit.append(gl)	
-			except:
-				pass
-				
-	Gl_entry_Pay_Rec=list_for_fee   ############### Fees 
-	Gl_entry_payment=list_of_payment #################### payment
-	
-	########################## dynamic allocation of head in fees
-	head_name=head_finding(Gl_entry_Pay_Rec) 
-	################################### Currency Info
-	fees_head=[]
-	Payment_head=[]
-	currency_info=""
-	for t in Gl_entry_Pay_Rec:
-		if t["voucher_type"]=="Fees":
-			fees_head.append(t["account"])
-			currency_info=t["account_currency"]
-	for t in Gl_entry_payment:
-		if t["voucher_type"]=="Payment Entry":
-			Payment_head.append(t["account"])
-			currency_info=t["account_currency"]	
+					list_for_fee.append(gl)
+			if gl['voucher_type']=='Payment Entry':
+				ck_out=frappe.db.get_list("Payment Entry",filters=[["name","=",gl['voucher_no']]],fields=["name","docstatus"])
+				if ck_out[0]["docstatus"]==1:
+					list_of_payment.append(gl)
+			if gl['voucher_type']=='Journal Entry':
+				ck_out=frappe.db.get_list("Payment Refund",filters=[["jv_entry_voucher_no","=",gl['voucher_no']]],fields=["name","docstatus"])
+				try:
+					if ck_out[0]["docstatus"]==1:
+						if gl['debit']!=0:
+							je_entry_debit.append(gl)
+						if gl['credit']!=0:
+							je_enrty_credit.append(gl)	
+				except:
+					pass
+					
+		Gl_entry_Pay_Rec=list_for_fee   ############### Fees 
+		Gl_entry_payment=list_of_payment #################### payment
+		
+		########################## dynamic allocation of head in fees
+		head_name=head_finding(Gl_entry_Pay_Rec) 
+		################################### Currency Info
+		fees_head=[]
+		Payment_head=[]
+		currency_info=""
+		for t in Gl_entry_Pay_Rec:
+			if t["voucher_type"]=="Fees":
+				fees_head.append(t["account"])
+				currency_info=t["account_currency"]
+		for t in Gl_entry_payment:
+			if t["voucher_type"]=="Payment Entry":
+				Payment_head.append(t["account"])
+				currency_info=t["account_currency"]	
 
-	################# out-put for front end  	
-	final_list=[]	
-	for t in studnet_info:
-		stu_info=list(t.values())
-		stu_info=['' if v is None else v for v in stu_info]
-		stu_info.append(currency_info)
-		for v in head_name:
-			##### fee due head
-			stu_info.append(0)
-		final_list.append(stu_info)
-	####################### 		
-	return final_list,head_name
+		################# out-put for front end  	
+		final_list=[]	
+		for t in studnet_info:
+			stu_info=list(t.values())
+			stu_info=['' if v is None else v for v in stu_info]
+			stu_info.append(currency_info)
+			for v in head_name:
+				##### fee due head
+				stu_info.append(0)
+			final_list.append(stu_info)
+		####################### 		
+		return final_list,head_name
 
 def student_info(branch=None,semester=None):
 	student_all_data=[]
@@ -122,8 +120,6 @@ def head_finding(Gl_entry_dew_fees):
 	for t in Gl_entry_dew_fees:
 		head_name.append(t['account'])
 	head_name=list(set(head_name))
-	print("\n\n\n\n\n\n")
-	print(head_name)
 	return head_name
 
 
