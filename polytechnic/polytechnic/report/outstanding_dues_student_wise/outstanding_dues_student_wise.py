@@ -54,15 +54,29 @@ def get_data(filters):
 	
 	########################## dynamic allocation of head in fees
 	head_name=head_finding(Gl_entry_Pay_Rec) 
+	################################### Currency Info
+	fees_head=[]
+	Payment_head=[]
+	currency_info=""
+	for t in Gl_entry_Pay_Rec:
+		if t["voucher_type"]=="Fees":
+			fees_head.append(t["account"])
+			currency_info=t["account_currency"]
+	for t in Gl_entry_payment:
+		if t["voucher_type"]=="Payment Entry":
+			Payment_head.append(t["account"])
+			currency_info=t["account_currency"]	
 
 	################# out-put for front end  	
 	final_list=[]	
 	for t in studnet_info:
-		a=list(t.values())
-		b=['' if v is None else v for v in a]
-		b.append(0)
-		b.append(0)
-		final_list.append(b)
+		stu_info=list(t.values())
+		stu_info=['' if v is None else v for v in stu_info]
+		stu_info.append(currency_info)
+		for v in head_name:
+			##### fee due head
+			stu_info.append(0)
+		final_list.append(stu_info)
 	####################### 		
 	return final_list,head_name
 
@@ -108,6 +122,8 @@ def head_finding(Gl_entry_dew_fees):
 	for t in Gl_entry_dew_fees:
 		head_name.append(t['account'])
 	head_name=list(set(head_name))
+	print("\n\n\n\n\n\n")
+	print(head_name)
 	return head_name
 
 
@@ -159,6 +175,12 @@ def get_columns(head_name=None):
 		{
 			"label": _("Student Category"),
 			"fieldname": "student_category",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
+			"label": _("Currency Info"),
+			"fieldname": "currency_info",
 			"fieldtype": "Data",
 			"width":200
 		},
