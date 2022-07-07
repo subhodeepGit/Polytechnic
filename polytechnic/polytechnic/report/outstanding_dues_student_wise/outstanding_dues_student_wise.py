@@ -53,9 +53,7 @@ def get_data(filters):
 		Gl_entry_payment=list_of_payment #################### payment
 		
 		########################## dynamic allocation of head in fees
-		head_name=head_finding(Gl_entry_Pay_Rec) 
-		############################### Fees Due 
-		total_fee_due=total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info)
+		head_name=head_finding(Gl_entry_Pay_Rec)
 		################################### Currency Info
 		fees_head=[]
 		Payment_head=[]
@@ -69,13 +67,25 @@ def get_data(filters):
 				Payment_head.append(t["account"])
 				currency_info=t["account_currency"]	
 		########### Fee due		
-
+		total_fee_due=total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info)
 		################# out-put for front end  	
 		final_list=[]	
 		for t in studnet_info:
 			stu_info=list(t.values())
 			stu_info=['' if v is None else v for v in stu_info]
 			stu_info.append(currency_info)
+			############## net due
+			flag="not found"
+			for z in total_fee_due:
+				if t['stu_no']==z['student']:
+					stu_info.append(z['net_due'])
+					flag="done"
+					break
+			if flag=="not found":
+				stu_info.append(0)
+			else:
+				flag="not found"
+			######################### end of net due	
 			for v in head_name:
 				##### fee due head
 				stu_info.append(0)
@@ -142,10 +152,14 @@ def total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info):
 		for gl_rep in Gl_entry_Pay_Rec:
 			if t['student']==gl_rep['party']:
 				t['%s'%(gl_rep['account'])].append(gl_rep["debit"])
+	
 	for student in fee_student:
+		net_due=0
 		for z in student:
 			if z!="student":
-				student[z]=sum(student[z])	
+				student[z]=sum(student[z])
+				net_due=net_due+student[z]
+		student['net_due']=net_due			
 	return fee_student
 
 def get_columns(head_name=None):
@@ -201,6 +215,12 @@ def get_columns(head_name=None):
 		{
 			"label": _("Currency Info"),
 			"fieldname": "currency_info",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
+			"label": _("Net Due"),
+			"fieldname": "net_due",
 			"fieldtype": "Data",
 			"width":200
 		},
