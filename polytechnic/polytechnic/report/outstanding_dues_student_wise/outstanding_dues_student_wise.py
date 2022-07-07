@@ -15,6 +15,8 @@ def get_data(filters):
 	semester=filters.get('semester')
 	start_date=filters.get('start_date')
 	end_date=filters.get('end_date')
+	final_list=[]
+	head_name=[]
 	######################## Student Info 
 	studnet_info=student_info(branch,semester)
 	if studnet_info:
@@ -52,6 +54,8 @@ def get_data(filters):
 		
 		########################## dynamic allocation of head in fees
 		head_name=head_finding(Gl_entry_Pay_Rec) 
+		############################### Fees Due 
+		total_fee_due=total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info)
 		################################### Currency Info
 		fees_head=[]
 		Payment_head=[]
@@ -64,6 +68,7 @@ def get_data(filters):
 			if t["voucher_type"]=="Payment Entry":
 				Payment_head.append(t["account"])
 				currency_info=t["account_currency"]	
+		########### Fee due		
 
 		################# out-put for front end  	
 		final_list=[]	
@@ -75,8 +80,9 @@ def get_data(filters):
 				##### fee due head
 				stu_info.append(0)
 			final_list.append(stu_info)
-		####################### 		
-		return final_list,head_name
+		####################### 
+		return final_list,head_name		
+	return final_list,head_name
 
 def student_info(branch=None,semester=None):
 	student_all_data=[]
@@ -110,9 +116,10 @@ def student_info(branch=None,semester=None):
 def gl_entry(studnet_list,start_date,end_date):
 	party=[]
 	for t in studnet_list:
-		party.append(t['stu_no'])
+		party.append(t['stu_no'])	
 	Gl_entry_Pay_Rec=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['party','in',tuple(party)],['posting_date', 'between', 
-								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","docstatus"])
+											[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type",
+											"account_currency","docstatus","against","party"])							
 	return Gl_entry_Pay_Rec
 
 def head_finding(Gl_entry_dew_fees):
@@ -122,7 +129,24 @@ def head_finding(Gl_entry_dew_fees):
 	head_name=list(set(head_name))
 	return head_name
 
+def total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info):
+	fee_student=[]
+	for t in studnet_info:
+		fees_head_dic={}
+		fees_head_dic['student']=t['stu_no']
+		for z in head_name:
+				fees_head_dic['%s'%(z)]=[]
+		fee_student.append(fees_head_dic)		
 
+	for t in fee_student:
+		for gl_rep in Gl_entry_Pay_Rec:
+			if t['student']==gl_rep['party']:
+				t['%s'%(gl_rep['account'])].append(gl_rep["debit"])
+	for student in fee_student:
+		for z in student:
+			if z!="student":
+				student[z]=sum(student[z])	
+	return fee_student
 
 def get_columns(head_name=None):
 	columns = [
