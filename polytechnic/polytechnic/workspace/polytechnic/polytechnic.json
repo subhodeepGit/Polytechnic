@@ -430,9 +430,18 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Student Wise Outstanding Dues",
+   "link_to": "OUTSTANDING DUES STUDENT WISE",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-07-08 11:53:04.589039",
+ "modified": "2022-07-08 14:44:57.637501",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
