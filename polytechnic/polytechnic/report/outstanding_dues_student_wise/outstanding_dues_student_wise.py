@@ -66,8 +66,10 @@ def get_data(filters):
 			if t["voucher_type"]=="Payment Entry":
 				Payment_head.append(t["account"])
 				currency_info=t["account_currency"]	
-		########### Fee due		
+		########### Total Fee due		
 		total_fee_due=total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info)
+		####################### head wise outstanding 
+		head_wise_outsatnding(Gl_entry_Pay_Rec,studnet_info,head_name)
 		################# out-put for front end  	
 		final_list=[]	
 		for t in studnet_info:
@@ -161,6 +163,44 @@ def total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info):
 				net_due=net_due+student[z]
 		student['net_due']=net_due			
 	return fee_student
+
+def head_wise_outsatnding(Gl_entry_Pay_Rec,studnet_info,head_name):
+	outsatnding_fee_student=[]
+	for t in studnet_info:
+		fees_head_dic={}
+		fees_head_dic['student']=t['stu_no']
+		for z in head_name:
+				fees_head_dic['%s'%(z)]=[]
+		fees_head_dic['fee_voucher']=[]	
+		outsatnding_fee_student.append(fees_head_dic)
+
+	
+	for t in Gl_entry_Pay_Rec:
+		for z in outsatnding_fee_student:
+			if z['student']==t["party"]:
+				z['fee_voucher'].append(t['voucher_no'])
+
+
+	for t in outsatnding_fee_student:
+		t['fee_voucher']=list(set(t['fee_voucher']))
+
+	for t in outsatnding_fee_student:
+		for voucher_no in t['fee_voucher']:
+			component=frappe.get_all("Fee Component",filters=[["parent","=",voucher_no],["Outstanding Fees","!=",0]],
+												fields=["fees_category","outstanding_fees","receivable_account"])
+			print(t['student'])
+			print(voucher_no)
+
+
+	print("\n\n\n\n\n")
+	print(outsatnding_fee_student)
+
+
+
+
+
+
+
 
 def get_columns(head_name=None):
 	columns = [
