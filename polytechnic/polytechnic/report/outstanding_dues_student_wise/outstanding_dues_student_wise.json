@@ -11,7 +11,7 @@
  "is_standard": "Yes",
  "json": "{}",
  "letter_head": "",
- "modified": "2022-07-04 15:10:29.707525",
+ "modified": "2022-07-08 14:36:23.575967",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "OUTSTANDING DUES STUDENT WISE",
@@ -32,6 +32,9 @@
   },
   {
    "role": "Education Administrator"
+  },
+  {
+   "role": "Administrator"
   }
  ]
 }

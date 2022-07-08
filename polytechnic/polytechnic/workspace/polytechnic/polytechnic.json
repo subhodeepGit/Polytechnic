@@ -354,6 +354,16 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Review Request",
+   "link_to": "Review Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "only_for": "",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Bank Reconcilation",
    "link_type": "DocType",
    "onboard": 0,
@@ -420,9 +430,18 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Student Wise Outstanding Dues",
+   "link_to": "OUTSTANDING DUES STUDENT WISE",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-06-28 11:15:00.002895",
+ "modified": "2022-07-08 14:44:57.637501",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
