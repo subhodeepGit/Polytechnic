@@ -69,8 +69,8 @@ def get_data(filters):
 		########### Total Fee due		
 		total_fee_due=total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info)
 		####################### head wise outstanding 
-		head_wise_outsatnding(Gl_entry_Pay_Rec,studnet_info,head_name)
-		################# out-put for front end  	
+		outsatnding_fee_student=head_wise_outsatnding(Gl_entry_Pay_Rec,studnet_info,head_name)
+		################# out-put for front end 	
 		final_list=[]	
 		for t in studnet_info:
 			stu_info=list(t.values())
@@ -87,10 +87,14 @@ def get_data(filters):
 				stu_info.append(0)
 			else:
 				flag="not found"
-			######################### end of net due	
-			for v in head_name:
-				##### fee due head
-				stu_info.append(0)
+			######################### end of net due
+			########################################## Head wise due 	
+			for z in outsatnding_fee_student:
+				if t['stu_no']==z['student']:
+					for v in head_name:
+						stu_info.append(z["%s"%(v)])
+					stu_info.append(z['net_due'])			
+			###################################### end 	of Head wise due 		
 			final_list.append(stu_info)
 		####################### 
 		return final_list,head_name		
@@ -184,16 +188,23 @@ def head_wise_outsatnding(Gl_entry_Pay_Rec,studnet_info,head_name):
 	for t in outsatnding_fee_student:
 		t['fee_voucher']=list(set(t['fee_voucher']))
 
-	for t in outsatnding_fee_student:
-		for voucher_no in t['fee_voucher']:
-			component=frappe.get_all("Fee Component",filters=[["parent","=",voucher_no],["Outstanding Fees","!=",0]],
+	for student in outsatnding_fee_student:
+		for voucher_no in student['fee_voucher']:
+			component=frappe.get_all("Fee Component",filters=[["parent","=",voucher_no],["outstanding_fees","!=",0]],
 												fields=["fees_category","outstanding_fees","receivable_account"])
-			print(t['student'])
-			print(voucher_no)
+			if component:
+				for fee_component in component:
+					student["%s"%(fee_component["receivable_account"])].append(fee_component['outstanding_fees'])
 
+	for student in outsatnding_fee_student:
+		net_due=0
+		for z in student:
+			if z!="student" and z !="fee_voucher":
+				student[z]=sum(student[z])
+				net_due=net_due+student[z]
+		student['net_due']=net_due										
 
-	print("\n\n\n\n\n")
-	print(outsatnding_fee_student)
+	return outsatnding_fee_student
 
 
 
@@ -259,8 +270,8 @@ def get_columns(head_name=None):
 			"width":200
 		},
 		{
-			"label": _("Net Due"),
-			"fieldname": "net_due",
+			"label": _("DUES AMOUNT"),
+			"fieldname": "due_amount",
 			"fieldtype": "Data",
 			"width":200
 		},
@@ -277,4 +288,11 @@ def get_columns(head_name=None):
 				"width":200
 			}
 			columns.append(columns_add)
+		columns_add={
+				"label": _("Total Due"),
+				"fieldname":"total_due",
+				"fieldtype": "Data",
+				"width":200
+			}
+		columns.append(columns_add)	
 	return columns	
