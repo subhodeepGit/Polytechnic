@@ -66,9 +66,13 @@ def get_data(filters):
 			if t["voucher_type"]=="Payment Entry":
 				Payment_head.append(t["account"])
 				currency_info=t["account_currency"]	
-		########### Fee due		
+		########### Total Fee due		
 		total_fee_due=total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info)
-		################# out-put for front end  	
+		####################### head wise outstanding 
+		outsatnding_fee_student=head_wise_outsatnding(Gl_entry_Pay_Rec,studnet_info,head_name)
+		##################### Toatl payment data 
+		payment_entry(Gl_entry_payment,je_enrty_credit,Gl_entry_Pay_Rec,head_name,studnet_info)
+		################# out-put for front end 	
 		final_list=[]	
 		for t in studnet_info:
 			stu_info=list(t.values())
@@ -85,10 +89,14 @@ def get_data(filters):
 				stu_info.append(0)
 			else:
 				flag="not found"
-			######################### end of net due	
-			for v in head_name:
-				##### fee due head
-				stu_info.append(0)
+			######################### end of net due
+			########################################## Head wise due 	
+			for z in outsatnding_fee_student:
+				if t['stu_no']==z['student']:
+					for v in head_name:
+						stu_info.append(z["%s"%(v)])
+					stu_info.append(z['net_due'])			
+			###################################### end 	of Head wise due 		
 			final_list.append(stu_info)
 		####################### 
 		return final_list,head_name		
@@ -162,6 +170,133 @@ def total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info):
 		student['net_due']=net_due			
 	return fee_student
 
+def head_wise_outsatnding(Gl_entry_Pay_Rec,studnet_info,head_name):
+	outsatnding_fee_student=[]
+	for t in studnet_info:
+		fees_head_dic={}
+		fees_head_dic['student']=t['stu_no']
+		for z in head_name:
+				fees_head_dic['%s'%(z)]=[]
+		fees_head_dic['fee_voucher']=[]	
+		outsatnding_fee_student.append(fees_head_dic)
+
+	
+	for t in Gl_entry_Pay_Rec:
+		for z in outsatnding_fee_student:
+			if z['student']==t["party"]:
+				z['fee_voucher'].append(t['voucher_no'])
+
+
+	for t in outsatnding_fee_student:
+		t['fee_voucher']=list(set(t['fee_voucher']))
+
+	for student in outsatnding_fee_student:
+		for voucher_no in student['fee_voucher']:
+			component=frappe.get_all("Fee Component",filters=[["parent","=",voucher_no],["outstanding_fees","!=",0]],
+												fields=["fees_category","outstanding_fees","receivable_account"])
+			if component:
+				for fee_component in component:
+					student["%s"%(fee_component["receivable_account"])].append(fee_component['outstanding_fees'])
+
+	for student in outsatnding_fee_student:
+		net_due=0
+		for z in student:
+			if z!="student" and z !="fee_voucher":
+				student[z]=sum(student[z])
+				net_due=net_due+student[z]
+		student['net_due']=net_due										
+
+	return outsatnding_fee_student
+
+def payment_entry(Gl_entry_payment,je_enrty_credit,Gl_entry_Pay_Rec,head_name,studnet_info):
+	payment_entry_student=[]
+	for t in studnet_info:
+		payment_head_dic={}
+		payment_head_dic['student']=t['stu_no']
+		for z in head_name:
+			payment_head_dic['%s'%(z)]=[]
+		payment_head_dic['payment_voucher']=[]	
+		payment_entry_student.append(payment_head_dic)
+
+	print("\n\n\n\n")
+	print(Gl_entry_payment)
+
+
+	# for t in Gl_entry_payment:
+	# 	for z in payment_entry_student:
+	# 		if z['student']==t["party"]:
+	# 			if t["voucher_type"]=="Payment Entry":
+	# 				if ('Fees Refundable / Adjustable' in t["account"])==False:
+	#work on
+	# 					Payment_head_dic["%s"%(t["account"])].append(t["credit"])
+					# else:
+					# 	Payment_head_dic["%s"%(t["account"])].append(t["credit"])
+					# 	ref_dic=fees_head_dic.keys()
+					# 	flag=0
+					# 	for t1 in ref_dic:
+					# 		if "Fees Refundable / Adjustable" in t1:
+					# 			flag=1
+					# 	if flag==0:		
+					# 		fees_head_dic['%s'%(t["account"])]=[]
+					# 		fees_head_dic["%s"%(t["account"])].append(t["credit"])
+					# 	else:
+					# 		fees_head_dic["%s"%(t["account"])].append(t["credit"])
+	# for t in je_enrty_credit:
+	# 	if ('Fees Refundable / Adjustable' in t["account"])==True:
+	# 		ref_dic=fees_head_dic.keys()
+	# 		ref_dic1=Payment_head_dic.keys()
+	# 		flag=0
+	# 		flag1=0
+	# 		for t1 in ref_dic:
+	# 			if "Fees Refundable / Adjustable" in t1:
+	# 				flag=1
+
+	# 		ref_dic=Payment_head_dic.keys()		
+	# 		for t2 in ref_dic:
+	# 			if "Fees Refundable / Adjustable" in t2:
+	# 				flag1=1	
+	# 		if flag==0:		
+	# 			fees_head_dic['%s'%(t["account"])]=[]
+	# 			fees_head_dic["%s"%(t["account"])].append(t["credit"])
+	# 		else:
+	# 			fees_head_dic["%s"%(t["account"])].append(t["credit"])
+
+	# 		if flag1==0:
+	# 			Payment_head_dic['%s'%(t["account"])]=[]
+	# 			Payment_head_dic["%s"%(t["account"])].append(t["credit"])
+	# 		else:
+	# 			Payment_head_dic["%s"%(t["account"])].append(t["credit"])	
+
+	# fees_head_dic = dict(zip(fees_head_dic.keys(), [sum(item) for item in fees_head_dic.values()]))
+	# Payment_head_dic = dict(zip(Payment_head_dic.keys(), [sum(item) for item in Payment_head_dic.values()]))
+
+	
+
+	# Outsatnding_dict={}
+	# for t in fees_head_dic:
+	# 	for j in Payment_head_dic:
+	# 		if t==j:
+				
+	# 			Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Payment_head_dic[j]
+	# 			break
+	# 		else:
+	# 			Outsatnding_dict['%s'%(t)]=fees_head_dic[t]	
+
+	# if len(Outsatnding_dict)==0:
+	# 	Outsatnding_dict=fees_head_dic.copy()
+
+	# voucher_no=[]
+	# for z in Gl_entry_Pay_Rec:
+	# 	if z["voucher_type"]=="Fees":
+	# 		voucher_no.append(z['voucher_no'])
+	# voucher_no = list(set(voucher_no))	
+
+
+
+
+
+
+
 def get_columns(head_name=None):
 	columns = [
 		{
@@ -219,8 +354,8 @@ def get_columns(head_name=None):
 			"width":200
 		},
 		{
-			"label": _("Net Due"),
-			"fieldname": "net_due",
+			"label": _("DUES AMOUNT"),
+			"fieldname": "due_amount",
 			"fieldtype": "Data",
 			"width":200
 		},
@@ -237,4 +372,11 @@ def get_columns(head_name=None):
 				"width":200
 			}
 			columns.append(columns_add)
+		columns_add={
+				"label": _("Total Due"),
+				"fieldname":"total_due",
+				"fieldtype": "Data",
+				"width":200
+			}
+		columns.append(columns_add)	
 	return columns	

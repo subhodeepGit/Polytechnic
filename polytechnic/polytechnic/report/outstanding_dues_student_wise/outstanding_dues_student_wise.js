@@ -10,6 +10,7 @@ frappe.query_reports["OUTSTANDING DUES STUDENT WISE"] = {
 			"fieldtype": "Link",
 			"options": "Programs",
 			"width": 150,
+			"reqd": 1,
 		},
 		{
 			"fieldname": "semester",
@@ -17,6 +18,7 @@ frappe.query_reports["OUTSTANDING DUES STUDENT WISE"] = {
 			"fieldtype": "MultiSelectList",
 			"options": "Program",
 			"width": 150,
+			"reqd": 1,
 			get_data: function(txt) {
 				return frappe.db.get_link_options('Program', txt, {
 					programs: frappe.query_report.get_filter_value("programs")
@@ -28,12 +30,16 @@ frappe.query_reports["OUTSTANDING DUES STUDENT WISE"] = {
 			"label": __("Start Date"),
 			"fieldtype": "Date",
 			"width": 80,
+			"reqd": 1,
+			"default": dateutil.year_start()
 		},
 		{
 			"fieldname": "end_date",
 			"label": __("End Date"),
 			"fieldtype": "Date",
 			"width": 80,
+			"reqd": 1,
+			"default": dateutil.year_end()
 		},
 	]
 };
