@@ -72,6 +72,8 @@ def get_data(filters):
 		payment_entry_student=payment_entry(Gl_entry_payment,je_enrty_credit,studnet_info)
 		########################## Fee waiver doc
 		fee_waiver_student=fee_waiver(studnet_info,head_name,Gl_entry_Pay_Rec)
+		############################ Fees Refundable / Adjustable collection
+		refundable_entry_student=fees_refundable_adjustable(studnet_info,start_date,end_date)
 		################# out-put for front end 	
 		final_list=[]	
 		for t in studnet_info:
@@ -106,7 +108,12 @@ def get_data(filters):
 			for z in fee_waiver_student:
 				if t['stu_no']==z['student']:
 					stu_info.append(z['net_due'])	
-			################## end of fee waiver 			
+			################## end of fee waiver 
+			##################### 	Fees Refundable / Adjustable collection		
+			for z in refundable_entry_student:
+				if t['stu_no']==z['student']:
+					stu_info.append(z['refundable_amount_collected'])	
+			#################### end Fees Refundable / Adjustable collection	
 			final_list.append(stu_info)
 			################### end fee waiver
 		####################### 
@@ -159,8 +166,6 @@ def head_finding(Gl_entry_dew_fees):
 	return head_name
 
 def total_fee_due_studnet(head_name,Gl_entry_Pay_Rec,studnet_info):
-	print("\n\n\n\n\n")
-	print(Gl_entry_Pay_Rec)
 	fee_student=[]
 	for t in studnet_info:
 		fees_head_dic={}
@@ -289,6 +294,49 @@ def fee_waiver(studnet_info,head_name,Gl_entry_Pay_Rec):
 	return fee_waiver_student
 
 
+def fees_refundable_adjustable(studnet_info,start_date,end_date):
+	party=[]
+	for t in studnet_info:
+		party.append(t['stu_no'])	
+	########### Extra amount colleted during payment entry
+	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['party','in',tuple(party)],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
+								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["debit","=",0]],
+								fields=["name","account","debit","credit","party","voucher_no"])	
+	refundable_entry_student=[]
+	for t in studnet_info:
+		refundable_head_dic={}	
+		refundable_head_dic['student']=t['stu_no']
+		refundable_head_dic['refundable_amount_collected']=[]
+		refundable_head_dic['payment_voucher']=[]
+		refundable_entry_student.append(refundable_head_dic)		
+			
+	for t in Gl_entry_payment_ref:
+		for z in refundable_entry_student:
+			if z['student']==t["party"]:
+				z['refundable_amount_collected'].append(t['credit'])
+				z['payment_voucher'].append(t['voucher_no'])
+
+	# ################## Extra amount collected during payment refund
+	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','in',tuple(party)],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
+								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["credit","!=",0]],
+								fields=["name","account","debit","credit","party","voucher_no"])		
+	for t in Gl_entry_payment_ref:
+		for z in refundable_entry_student:
+			if z['student']==t["party"]:
+				z['refundable_amount_collected'].append(t['credit'])
+				z['payment_voucher'].append(t['voucher_no'])
+
+	for student in refundable_entry_student:
+		for z in student:
+			if z!="student" and z !="payment_voucher":
+				student[z]=sum(student[z])
+	return refundable_entry_student
+
+
+
+
+
+
 
 def get_columns(head_name=None):
 	columns = [
@@ -382,6 +430,13 @@ def get_columns(head_name=None):
 		columns_add={
 				"label": _("EXEMPTION"),
 				"fieldname":"exemption",
+				"fieldtype": "Data",
+				"width":200
+			}
+		columns.append(columns_add)	
+		columns_add={
+				"label": _("REFUNDABLE AMOUNT COLLECTED"),
+				"fieldname":"refundable_amount_collected",
 				"fieldtype": "Data",
 				"width":200
 			}
