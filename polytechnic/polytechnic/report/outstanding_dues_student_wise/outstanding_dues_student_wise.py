@@ -121,6 +121,10 @@ def get_data(filters):
 				if t['stu_no']==z['student']:
 					stu_info.append(z['refunded_amount'])		
 			#################### End Fees Refundable / Adjustable  paid	
+			########################### ADJUSTMENT AMOUNT = Fees Refundable / Adjustable collection - Fees Refundable / Adjustable  paid
+			adj_balance=stu_info[15]-stu_info[16]
+			stu_info.append(adj_balance)
+			########################### end ADJUSTMENT AMOUNT = Fees Refundable / Adjustable collection - Fees Refundable / Adjustable  paid
 			final_list.append(stu_info)
 			################### end fee waiver
 		####################### 
@@ -492,6 +496,13 @@ def get_columns(head_name=None):
 		columns_add={
 				"label": _("REFUNDED AMOUNT"),
 				"fieldname":"refunded_amount",
+				"fieldtype": "Data",
+				"width":200
+			}
+		columns.append(columns_add)	
+		columns_add={
+				"label": _("ADJUSTMENT AMOUNT"),
+				"fieldname":"adjustment_amount",
 				"fieldtype": "Data",
 				"width":200
 			}
