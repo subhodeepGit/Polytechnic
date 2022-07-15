@@ -94,12 +94,14 @@ def get_data(filters):
 			else:
 				flag="not found"
 			######################### end of net due
-			########################################## Head wise due 	
+			########################################## Head wise due
+			net_due=0 	
 			for z in outsatnding_fee_student:
 				if t['stu_no']==z['student']:
 					for v in head_name:
 						stu_info.append(z["%s"%(v)])
-					stu_info.append(z['net_due'])			
+					stu_info.append(z['net_due'])
+					net_due=z['net_due']			
 			###################################### end 	of Head wise due 
 			#################### paid amount
 			for z in payment_entry_student:
@@ -125,6 +127,11 @@ def get_data(filters):
 			adj_balance=stu_info[15]-stu_info[16]
 			stu_info.append(adj_balance)
 			########################### end ADJUSTMENT AMOUNT = Fees Refundable / Adjustable collection - Fees Refundable / Adjustable  paid
+			############################ Balance = Total -(REFUND BALANCE-REFUNDED AMOUNT)
+			balance=net_due-adj_balance
+			stu_info.append(balance)
+			
+			#####################
 			final_list.append(stu_info)
 			################### end fee waiver
 		####################### 
@@ -503,6 +510,13 @@ def get_columns(head_name=None):
 		columns_add={
 				"label": _("ADJUSTMENT AMOUNT"),
 				"fieldname":"adjustment_amount",
+				"fieldtype": "Data",
+				"width":200
+			}
+		columns.append(columns_add)	
+		columns_add={
+				"label": _("BALANCE AMOUNT"),
+				"fieldname":"balance_amount",
 				"fieldtype": "Data",
 				"width":200
 			}
