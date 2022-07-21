@@ -26,6 +26,14 @@ frappe.query_reports["OUTSTANDING DUES STUDENT WISE"] = {
 			}
 		},
 		{
+			"fieldname": "academic_term",
+			"label": __("Academic Term"),
+			"fieldtype": "Link",
+			"options": "Academic Term",
+			"width": 150,
+			"reqd": 1,
+		},
+		{
 			"fieldname": "start_date",
 			"label": __("Start Date"),
 			"fieldtype": "Date",

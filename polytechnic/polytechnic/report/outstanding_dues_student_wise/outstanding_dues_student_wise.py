@@ -15,10 +15,11 @@ def get_data(filters):
 	semester=filters.get('semester')
 	start_date=filters.get('start_date')
 	end_date=filters.get('end_date')
+	academic_term=filters.get("academic_term")
 	final_list=[]
 	head_name=[]
 	######################## Student Info 
-	studnet_info=student_info(branch,semester)
+	studnet_info=student_info(branch,semester,academic_term)
 	if studnet_info:
 		########## Gl Entry data
 		Gl_entry_Pay_Rec=gl_entry(studnet_info,start_date,end_date)
@@ -138,10 +139,12 @@ def get_data(filters):
 		return final_list,head_name		
 	return final_list,head_name
 
-def student_info(branch=None,semester=None):
+def student_info(branch=None,semester=None,academic_term=None):
 	student_all_data=[]
-	if branch!=None and semester!=None:
-		student_data=frappe.get_all("Current Educational Details",filters=[["programs","=",branch],["semesters","in",tuple(semester)],["parenttype","=","student"]],fields=["parent"])
+	if branch!=None and semester!=None and academic_term!=None:
+		student_data=frappe.get_all("Current Educational Details",filters=[["programs","=",branch],
+									["semesters","in",tuple(semester)],["parenttype","=","student"],['academic_term',"=",academic_term]],
+									fields=["parent"])
 		# 1 Student No.
 		# 2 ROLL NO
 		# 3 DET No
