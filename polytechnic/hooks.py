@@ -87,8 +87,9 @@ doctype_js = {
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# }
+override_doctype_class = {
+	"Identity Card Tool":"polytechnic.polytechnic.doctype.identity_card_tool.IdentityCardTool",
+}
 
 # Document Events
 # ---------------
@@ -137,6 +138,7 @@ override_whitelisted_methods = {
 	# "kp_edtec.kp_edtec.doctype.program_enrollment.get_students":"polytechnic.polytechnic.validations.program_enrollment.get_students",
 	"kp_edtec.kp_edtec.doctype.student_applicant.enroll_student": "polytechnic.polytechnic.validations.student_applicant.enroll_student",
 	"kp_edtec.kp_edtec.doctype.branch_sliding_application.branch_sliding_application.enroll_student": "polytechnic.polytechnic.validations.branch_sliding_application.enroll_student",
+	"kp_edtec.kp_edtec.doctype.identity_card_tool.identity_card_tool.get_students":"polytechnic.polytechnic.doctype.identity_card_tool.get_students",
 }
 #
 # each overriding function accepts a `data` argument;
