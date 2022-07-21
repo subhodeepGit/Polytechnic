@@ -439,9 +439,18 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Wise Collection",
+   "link_to": "Employee Wise Collection",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-07-08 14:44:57.637501",
+ "modified": "2022-07-21 15:59:46.769011",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
