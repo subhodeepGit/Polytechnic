@@ -442,7 +442,7 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Employee Wise Collection",
    "link_to": "Employee Wise Collection",
    "link_type": "Report",
@@ -450,7 +450,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-07-21 15:59:46.769011",
+ "modified": "2022-07-21 16:02:09.496963",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
