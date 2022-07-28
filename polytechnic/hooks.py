@@ -98,6 +98,7 @@ override_doctype_class = {
 doc_events = {
 	"Payment Entry": {
 		"validate": "polytechnic.polytechnic.validations.payment_entry.validate",
+		"after_insert": "polytechnic.polytechnic.validations.payment_entry.after_insert"
 	},
     "Program Enrollment": {
 		"validate": "polytechnic.polytechnic.validations.program_enrollment.validate",
