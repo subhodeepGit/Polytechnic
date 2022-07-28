@@ -12,8 +12,8 @@ def validate(self, method):
 
     self.letter_head=""
 
-    if not self.get("__islocal"):
-        set_user_permission(self)	
+def after_insert(self, method):
+    set_user_permission(self)	
 
 
 def set_user_permission(self):
