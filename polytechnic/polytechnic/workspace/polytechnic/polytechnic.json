@@ -248,6 +248,32 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Examination",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Exam Type",
+   "link_to": "Exam Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Exam Declaration",
+   "link_to": "Exam Declaration",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Fees",
    "link_type": "DocType",
    "onboard": 0,
@@ -390,6 +416,23 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Review request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Review request",
+   "link_to": "Review Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Reports",
    "link_type": "DocType",
    "onboard": 0,
@@ -450,7 +493,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-07-21 16:02:09.496963",
+ "modified": "2022-08-08 12:55:55.127733",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
