@@ -1,0 +1,62 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:Photos of Identity Card For {class_stream} {session}",
+ "creation": "2022-08-06 12:40:13.122063",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "session",
+  "class_stream",
+  "student_photos"
+ ],
+ "fields": [
+  {
+   "fieldname": "session",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Session",
+   "options": "Academic Year",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "class_stream",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Class/Stream",
+   "options": "Programs",
+   "reqd": 1
+  },
+  {
+   "fieldname": "student_photos",
+   "fieldtype": "Table",
+   "label": "Student Photos",
+   "options": "Student ID Card Details"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-08-08 11:12:35.134301",
+ "modified_by": "Administrator",
+ "module": "Polytechnic",
+ "name": "ID Card Photo Downloader",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
