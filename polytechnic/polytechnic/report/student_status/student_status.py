@@ -274,8 +274,8 @@ def get_data(filters):
 	# student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","kiit_polytechnic_roll_no","vidyarthi_portal_id","title"])	
 	student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","roll_no","vidyarthi_portal_id","title"])
 	student_group=frappe.db.get_list("Student Group",filters={"programs":student_data_info[0]["Programs"]},fields=["name","batch","programs"])
-	if len(student_group)==0:
-		frappe.throw("Student Group Not Found")
+	# if len(student_group)==0:
+	# 	frappe.throw("Student Group Not Found")
 	student_Enrollment=frappe.db.sql(""" select DISTINCT `program_grade` from `tabProgram Enrollment` where `student`='%s'"""%(student))
 
 	g_value=[]
@@ -286,7 +286,10 @@ def get_data(filters):
 	g_value.append(student_info[0]["roll_no"])
 	g_value.append(student_info[0]["vidyarthi_portal_id"])
 	g_value.append(student_info[0]["sams_portal_id"])
-	g_value.append(student_group[0]["batch"])
+	if len(student_group)==0:
+		g_value.append("")
+	else:
+		g_value.append(student_group[0]["batch"])
 	g_value.append("Header")
 	g_value.append(student_Enrollment[0][0])
 	g_value.append(student_data_info[0]["academic_year"])
