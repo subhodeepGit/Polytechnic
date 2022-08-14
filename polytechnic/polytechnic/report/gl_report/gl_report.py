@@ -154,6 +154,7 @@ def get_data(filters):
 		final_list.append(a)	
 	a=["","Grand Total",total,"credit"]	
 	final_list.append(a)
+
 	######################################
 
 
@@ -178,6 +179,8 @@ def get_data(filters):
 		a=[Sl_no,x,sum(credit_head_dic[x]),"credit-Pay"]
 		final_list.append(a)	
 	a=["","Grand Total",total,"credit-Pay"]	
+	final_list.append(a)
+	a=["","",len(credit_head_dic),"credit-Pay-len"]	
 	final_list.append(a)
 	######################################
 

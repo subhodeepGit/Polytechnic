@@ -25,8 +25,8 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 	<p>{%= __("Payment Refund Closing MR No  : ") %}{%= data[3].amount %}</p>
     <p>{%= __("No of MR Prepared   : ") %}{%= data[5].amount %}</p>
     <p>{%= __("No of MR Submitted    : ") %}{%= data[4].amount %}</p>
-	<p>{%= __("No of MR Canceled    : ") %}{%= data[6].amount %}</p>
-    <p>{%= __("No of MR Skipped     : ") %}{%= data[7].amount %}</p>
+	<p>{%= __("No of MR Canceled    : ") %}{%= data[7].amount %}</p>
+    <p>{%= __("No of MR Skipped     : ") %}{%= data[6].amount %}</p>
 <div>
 
 </div>
@@ -57,8 +57,6 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 </h5> -->
 <!-- <hr> -->
 <br>
-<br>
-<br>
 <p>{%= __("Received as per following details :") %}
 <table class="table table-bordered">
 	<thead>
@@ -81,8 +79,10 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 	</tbody>
 </table>
 <br>
-<br>
-<p>{%= __("Paid as per following details :") %}
+{% for(var i=6, l=data.length; i<l; i++) { %}
+{% if((data[i].debit)=="credit-Pay-len" && (data[i].amount)!=0) { %}
+<p>{%= __("Paid as per following details :") %}</p>
+
 <table class="table table-bordered">
 	<thead>
 		<tr>
@@ -103,6 +103,9 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 		{% } %}
 	</tbody>
 </table>
+
+{% } %}
+{% } %}
 <br>
 <div>
 	<p>{%= __("Received as per following details :") %}
@@ -127,6 +130,8 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 		</tbody>
 	</table>
 
+	{% for(var i=6, l=data.length; i<l; i++) { %}
+	{% if((data[i].debit)=="credit-Pay-len" && (data[i].amount)!=0) { %}
 	<p>{%= __("Paid as per following details :") %}
 		<table>
 			<thead>
@@ -148,6 +153,9 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 				{% } %}
 			</tbody>
 		</table>
+	{% } %}
+	{% } %}	
+
 </div>
 
 <footer>

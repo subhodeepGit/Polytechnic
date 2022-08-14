@@ -15,7 +15,6 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 <h2 class="text-center" style="font-family:verdana; font-weight: bold;">{%= __("For The Period: ") %}{%= filters.from %}{%= __(" To ") %}{%= filters.to %}</h2>
 </div>
 <br>
-<br>
 </div>
     <p>{%= __("Opening MR No        : ") %}{%= data[0].amount %}</p>
     <p>{%= __("Closing MR No        : ") %}{%= data[1].amount %}</p>
@@ -55,8 +54,6 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 </h5> -->
 <!-- <hr> -->
 <br>
-<br>
-<br>
 <p>{%= __("Received as per following details :") %}
 <table class="table table-bordered">
 	<thead>
@@ -79,8 +76,10 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 	</tbody>
 </table>
 <br>
-<br>
-<p>{%= __("Paid as per following details :") %}
+
+{% for(var i=6, l=data.length; i<l; i++) { %}
+{% if((data[i].debit)=="credit-Pay-len" && (data[i].amount)!=0) { %}
+<p>{%= __("Paid as per following details :") %}</p>
 <table class="table table-bordered">
 	<thead>
 		<tr>
@@ -101,6 +100,8 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 		{% } %}
 	</tbody>
 </table>
+{% } %}
+{% } %}
 <br>
 <div>
 	<p>{%= __("Received as per following details :") %}
@@ -124,7 +125,8 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 			{% } %}
 		</tbody>
 	</table>
-
+	{% for(var i=6, l=data.length; i<l; i++) { %}
+	{% if((data[i].debit)=="credit-Pay-len" && (data[i].amount)!=0) { %}
 	<p>{%= __("Paid as per following details :") %}
 		<table>
 			<thead>
@@ -146,6 +148,8 @@ Tel. 0674-2725272, 2742103, 2725347<br> <br>
 				{% } %}
 			</tbody>
 		</table>
+	{% } %}
+	{% } %}
 </div>
 
 <footer>
