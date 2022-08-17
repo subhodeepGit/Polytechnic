@@ -202,3 +202,6 @@ after_migrate = [
         # 'polytechnic.patches.migrate_patch.add_roles',
         'polytechnic.patches.migrate_patch.set_custom_role_permission',
 ]
+override_doctype_dashboards = {
+    "Student": "polytechnic.polytechnic.dashboard.student_dashboard.get_data",	
+}

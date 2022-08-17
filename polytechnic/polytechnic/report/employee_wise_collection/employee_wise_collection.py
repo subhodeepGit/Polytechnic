@@ -90,7 +90,7 @@ def get_data(filters):
 	if employee_id == None:
 		frappe.throw("Enter the Employee Id")
 		# filter.append(["name","=",'employee_id'])
-	employee=frappe.db.get_value('Employee',{"name":employee_id}, ['user_id'], as_dict=True)['user_id']
+	employee=frappe.db.get_value('Employee',{"name":employee_id}, ['personal_email'], as_dict=True)['personal_email']
 	Gl_entry=frappe.db.get_list('GL Entry', filters=[['posting_date', 'between', [start_date, end_date]],["owner","=",employee]])
 	debit=[]
 	credit=[]
