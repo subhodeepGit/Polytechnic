@@ -491,9 +491,53 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Batch Wise Outstanding Dues Student",
+   "link_to": "BATCH WISE OUTSTANDING DUES STUDENT",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Identity Card",
+   "link_to": "Identity Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Identity Card Tool",
+   "link_to": "Identity Card Tool",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "ID Card Photo Downloader",
+   "link_to": "ID Card Photo Downloader",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-08-08 12:55:55.127733",
+ "modified": "2022-08-18 17:00:26.457882",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
