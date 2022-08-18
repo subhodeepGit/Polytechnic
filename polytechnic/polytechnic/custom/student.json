@@ -3016,14 +3016,14 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2022-08-08 18:40:15.501830",
+   "creation": "2022-08-18 12:53:52.567534",
    "default_value": null,
    "doc_type": "Student",
    "docstatus": 0,
    "doctype_or_field": "DocType",
    "field_name": null,
    "idx": 0,
-   "modified": "2022-08-08 18:40:15.501830",
+   "modified": "2022-08-18 12:53:52.567534",
    "modified_by": "Administrator",
    "name": "Student-main-search_fields",
    "owner": "Administrator",
@@ -3033,7 +3033,7 @@
    "property": "search_fields",
    "property_type": "Data",
    "row_name": null,
-   "value": "sams_portal_id,vidyarthi_portal_id,roll_no"
+   "value": "sams_portal_id,vidyarthi_portal_id,roll_no,permanant_registration_number"
   },
   {
    "_assign": null,
