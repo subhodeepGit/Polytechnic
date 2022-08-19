@@ -103,9 +103,9 @@ doc_events = {
     "Program Enrollment": {
 		"validate": "polytechnic.polytechnic.validations.program_enrollment.validate",
 	},
-	"Student": {
-		"validate": "polytechnic.polytechnic.validations.student.validate",
-	},
+	# "Student": {
+	# 	"validate": "polytechnic.polytechnic.validations.student.validate",
+	# },
 }
 
 # Scheduled Tasks
