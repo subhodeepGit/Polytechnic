@@ -160,9 +160,13 @@ def student_info(batch,gender,branch):
 	# 4 Vidyarthi Portal ID
 	# 5 SEX
 	# 6 CATEGORY
-	count=0
+	student_info=[]
 	for t in student_data:
-		data=frappe.get_all("Student",{"name":t['student']},['name',"roll_no","sams_portal_id","vidyarthi_portal_id","title",
+		student_info.append(t['student'])
+	student_info = list(set(student_info))
+	count=0
+	for t in student_info:
+		data=frappe.get_all("Student",{"name":t},['name',"roll_no","sams_portal_id","vidyarthi_portal_id","title",
 														"gender","student_category","enabled"])
 		if data[0]['enabled']==1:
 			stu_info={}
