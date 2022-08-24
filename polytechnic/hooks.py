@@ -105,6 +105,7 @@ doc_events = {
 	},
 	"Student": {
 		"validate": "polytechnic.polytechnic.validations.student.validate",
+		"on_change": "polytechnic.polytechnic.validations.student.on_change",
 	},
 }
 
