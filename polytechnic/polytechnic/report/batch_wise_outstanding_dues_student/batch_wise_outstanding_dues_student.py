@@ -11,6 +11,7 @@ def execute(filters=None):
 	return  get_columns_info,get_data_info
 
 def get_data(filters):
+	print("\n\n\n\n\n")
 	batch=filters.get('batch')
 	gender=filters.get('gender')
 	branch=filters.get('programs')
@@ -26,6 +27,7 @@ def get_data(filters):
 	if studnet_info:
 		########## Gl Entry data
 		Gl_entry_Pay_Rec=gl_entry(studnet_info,start_date,end_date)
+		print(Gl_entry_Pay_Rec)
 		######################## payment and Fee segression 
 		list_for_fee=[]
 		list_of_payment=[]
@@ -84,6 +86,7 @@ def get_data(filters):
 		final_list=[]	
 		for t in studnet_info:
 			stu_info=list(t.values())
+			print(stu_info)
 			stu_info=['' if v is None else v for v in stu_info]
 			stu_info.append(currency_info)
 			############## net due
@@ -137,11 +140,14 @@ def get_data(filters):
 			balance=net_due-adj_balance
 			stu_info.append(balance)
 			#####################
+			print(len(stu_info))
 			final_list.append(stu_info)
 			################### end fee waiver
 		####################### 
 		return final_list,head_name		
-	return final_list,head_name
+	else:
+		frappe.throw("No studnet record found")
+	# return final_list,head_name
 
 def student_info(batch,gender,branch):
 	filter=[]
