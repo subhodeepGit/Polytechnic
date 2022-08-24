@@ -11,7 +11,6 @@ def execute(filters=None):
 	return  get_columns_info,get_data_info
 
 def get_data(filters):
-	print("\n\n\n\n\n")
 	batch=filters.get('batch')
 	gender=filters.get('gender')
 	branch=filters.get('programs')
@@ -27,7 +26,6 @@ def get_data(filters):
 	if studnet_info:
 		########## Gl Entry data
 		Gl_entry_Pay_Rec=gl_entry(studnet_info,start_date,end_date)
-		print(Gl_entry_Pay_Rec)
 		######################## payment and Fee segression 
 		list_for_fee=[]
 		list_of_payment=[]
@@ -86,7 +84,6 @@ def get_data(filters):
 		final_list=[]	
 		for t in studnet_info:
 			stu_info=list(t.values())
-			print(stu_info)
 			stu_info=['' if v is None else v for v in stu_info]
 			stu_info.append(currency_info)
 			############## net due
@@ -120,19 +117,23 @@ def get_data(filters):
 				if t['stu_no']==z['student']:
 					stu_info.append(z['net_due'])	
 			################## end of fee waiver 
-			##################### 	Fees Refundable / Adjustable collection		
+			##################### 	Fees Refundable / Adjustable collection
+			refundable_collection=0		
 			for z in refundable_entry_student:
 				if t['stu_no']==z['student']:
 					stu_info.append(z['refundable_amount_collected'])
+					refundable_collection=z['refundable_amount_collected']
 			################################end Fees Refundable / Adjustable collection
 			# #########################################  	Fees Refundable / Adjustable  paid	
+			refundable_paid=0
 			for z in refunded_amount_student:
 				if t['stu_no']==z['student']:
-					stu_info.append(z['refunded_amount'])		
+					stu_info.append(z['refunded_amount'])	
+					refundable_paid=z['refunded_amount']	
 			#################### End Fees Refundable / Adjustable  paid	
 			########################### ADJUSTMENT AMOUNT = Fees Refundable / Adjustable collection - Fees Refundable / Adjustable  paid
-			refundable_collection=stu_info[19]
-			refundable_paid=stu_info[20]
+			# refundable_collection=stu_info[19]
+			# refundable_paid=stu_info[20]
 			adj_balance=refundable_collection-refundable_paid
 			stu_info.append(adj_balance)
 			########################### end ADJUSTMENT AMOUNT = Fees Refundable / Adjustable collection - Fees Refundable / Adjustable  paid
@@ -140,7 +141,6 @@ def get_data(filters):
 			balance=net_due-adj_balance
 			stu_info.append(balance)
 			#####################
-			print(len(stu_info))
 			final_list.append(stu_info)
 			################### end fee waiver
 		####################### 
