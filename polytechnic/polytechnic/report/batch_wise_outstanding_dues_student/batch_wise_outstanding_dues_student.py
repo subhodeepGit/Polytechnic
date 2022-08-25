@@ -117,19 +117,23 @@ def get_data(filters):
 				if t['stu_no']==z['student']:
 					stu_info.append(z['net_due'])	
 			################## end of fee waiver 
-			##################### 	Fees Refundable / Adjustable collection		
+			##################### 	Fees Refundable / Adjustable collection
+			refundable_collection=0		
 			for z in refundable_entry_student:
 				if t['stu_no']==z['student']:
 					stu_info.append(z['refundable_amount_collected'])
+					refundable_collection=z['refundable_amount_collected']
 			################################end Fees Refundable / Adjustable collection
 			# #########################################  	Fees Refundable / Adjustable  paid	
+			refundable_paid=0
 			for z in refunded_amount_student:
 				if t['stu_no']==z['student']:
-					stu_info.append(z['refunded_amount'])		
+					stu_info.append(z['refunded_amount'])	
+					refundable_paid=z['refunded_amount']	
 			#################### End Fees Refundable / Adjustable  paid	
 			########################### ADJUSTMENT AMOUNT = Fees Refundable / Adjustable collection - Fees Refundable / Adjustable  paid
-			refundable_collection=stu_info[19]
-			refundable_paid=stu_info[20]
+			# refundable_collection=stu_info[19]
+			# refundable_paid=stu_info[20]
 			adj_balance=refundable_collection-refundable_paid
 			stu_info.append(adj_balance)
 			########################### end ADJUSTMENT AMOUNT = Fees Refundable / Adjustable collection - Fees Refundable / Adjustable  paid
@@ -141,7 +145,9 @@ def get_data(filters):
 			################### end fee waiver
 		####################### 
 		return final_list,head_name		
-	return final_list,head_name
+	else:
+		frappe.throw("No studnet record found")
+	# return final_list,head_name
 
 def student_info(batch,gender,branch):
 	filter=[]
