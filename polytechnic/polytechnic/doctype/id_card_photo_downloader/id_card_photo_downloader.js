@@ -32,29 +32,12 @@ frappe.ui.form.on('ID Card Photo Downloader', {
 	refresh(frm) {
 		frm.fields_dict["student_photos"].grid.add_custom_button(__('Download Photos'), 
 			function() {
-				// let selected = frm.get_selected();
-				// console.log(selected);
-				// let checkKeys = Object.keys(selected);
-				// console.log(checkKeys);
+				let selected = frm.get_selected();
+				// alert(JSON.stringify(selected));
+				let sel = selected["student_photos"];
+				// alert(sel);
 
-				// code in working order
-				for (var i = 0; i < cur_frm.doc.student_photos.length; i++) {
-					if (cur_frm.doc.student_photos[i].student_passport_photo) {
-					const data = cur_frm.doc.student_photos[i].student_passport_photo;
-					const roll = cur_frm.doc.student_photos[i].student_roll_number;
-					const a = document.createElement('a');
-					a.href = data;
-					a.download = data.split('/').pop();
-					a.setAttribute('download', roll);
-					document.body.appendChild(a);
-					a.click();
-					document.body.removeChild(a);
-					}
-					}
-
-				// for (const key in selected) {
-				// 	console.log(key);
-				// }
+				// code to download all rows
 				// for (var i = 0; i < cur_frm.doc.student_photos.length; i++) {
 				// 	if (cur_frm.doc.student_photos[i].student_passport_photo) {
 				// 	const data = cur_frm.doc.student_photos[i].student_passport_photo;
@@ -68,9 +51,28 @@ frappe.ui.form.on('ID Card Photo Downloader', {
 				// 	document.body.removeChild(a);
 				// 	}
 				// 	}
+
+
+				// code to download selected rows
+				for (var i = 0; i < cur_frm.doc.student_photos.length; i++) {
+					// alert(cur_frm.doc.student_photos[i].name)
+					for (var j = 0; j < sel.length; j++) {
+						if(sel[j]==cur_frm.doc.student_photos[i].name){
+							// alert(cur_frm.doc.student_photos[i].name)
+							const data = cur_frm.doc.student_photos[i].student_passport_photo;
+							const roll = cur_frm.doc.student_photos[i].student_roll_number;
+							const a = document.createElement('a');
+							a.href = data;
+							a.download = data.split('/').pop();
+							a.setAttribute('download', roll);
+							document.body.appendChild(a);
+							a.click();
+							document.body.removeChild(a);
+						}
+					}
+					}
         });
         frm.fields_dict["student_photos"].grid.grid_buttons.find('.btn-custom').removeClass('btn-default').addClass('btn-primary');
-
 	}
 });
 
