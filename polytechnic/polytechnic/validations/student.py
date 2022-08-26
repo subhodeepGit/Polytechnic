@@ -1,5 +1,6 @@
 import frappe
 from frappe.model.document import Document
+from polytechnic.polytechnic.notification.custom_notification import student_disabled
 
 def validate(self, method):
     dob = self.date_of_birth
@@ -9,11 +10,16 @@ def validate(self, method):
         words_date=mydate.strftime("%A,%d %B, %Y")
         self.dob_in_words = words_date
 
-
-
-
-
 def on_change(self, method):
+    student_disabled_notification(self)
+    user_update(self)
+    roll_no_update(self)
+
+def student_disabled_notification(self):
+    if self.enabled==0:
+        student_disabled(self)
+
+def user_update(self):
     user_info=frappe.get_list("User",{"location":self.name},["name","location","username"])
     if user_info:
         if user_info[0]["name"]!=self.student_email_id:
@@ -29,3 +35,6 @@ def on_change(self, method):
 
     else:
         frappe.db.sql(""" update `tabUser` set location="%s" where name="%s" """%(self.name,self.student_email_id))
+
+def roll_no_update(slef):
+    pass
