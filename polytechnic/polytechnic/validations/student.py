@@ -10,10 +10,12 @@ def validate(self, method):
         words_date=mydate.strftime("%A,%d %B, %Y")
         self.dob_in_words = words_date
 
+
 def on_change(self, method):
     student_disabled_notification(self)
     user_update(self)
-    roll_no_update(self)
+    roll(self)
+
 
 def student_disabled_notification(self):
     if self.enabled==0:
@@ -36,5 +38,7 @@ def user_update(self):
     else:
         frappe.db.sql(""" update `tabUser` set location="%s" where name="%s" """%(self.name,self.student_email_id))
 
-def roll_no_update(slef):
-    pass
+def roll(self):
+    fee = frappe.get_all("Fees",filters=[["student","=",self.name]],fields=["name"])
+    fees_info=tuple([t["name"] for t in fee])
+    frappe.db.sql(""" update `tabFees` set roll_no="%s" where name in %s"""%(self.roll_no,fees_info), as_list=True)
