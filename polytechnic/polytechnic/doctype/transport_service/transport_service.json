@@ -1,0 +1,371 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "TRNSP-.####",
+ "creation": "2022-08-29 17:10:28.850728",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "student_name",
+  "roll_number",
+  "student_mobile_number",
+  "column_break_4",
+  "sams_portal_id",
+  "vidyarthi_portal_id",
+  "permanent_registration_number",
+  "image",
+  "student_details_section",
+  "program_enrollment",
+  "programs",
+  "semester",
+  "student_batch",
+  "student_email",
+  "column_break_15",
+  "student_category",
+  "academic_year",
+  "academic_term",
+  "home_address_section",
+  "address_line_1",
+  "address_line_2",
+  "post_office",
+  "pincode",
+  "column_break_23",
+  "cityvillage",
+  "state",
+  "district",
+  "block",
+  "guardian_details_section",
+  "fathers_name",
+  "fathers_contact_number",
+  "emergency_contact_number",
+  "column_break_24",
+  "mothers_name",
+  "mothers_contact_number",
+  "section_break_27",
+  "location",
+  "fees_section",
+  "fees_applicable",
+  "due_date",
+  "column_break_31",
+  "amount",
+  "fees_id",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Student",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "student.title",
+   "fieldname": "student_name",
+   "fieldtype": "Read Only",
+   "label": "Student Name"
+  },
+  {
+   "fetch_from": "student.roll_no",
+   "fieldname": "roll_number",
+   "fieldtype": "Read Only",
+   "label": "Roll Number"
+  },
+  {
+   "fetch_from": "student.sams_portal_id",
+   "fieldname": "sams_portal_id",
+   "fieldtype": "Read Only",
+   "label": "SAMS Portal ID"
+  },
+  {
+   "fetch_from": "student.vidyarthi_portal_id",
+   "fieldname": "vidyarthi_portal_id",
+   "fieldtype": "Data",
+   "label": "Vidyarthi Portal ID",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "student.permanant_registration_number",
+   "fieldname": "permanent_registration_number",
+   "fieldtype": "Read Only",
+   "label": "Registration Number"
+  },
+  {
+   "fetch_from": "program_enrollment.program",
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Semester",
+   "options": "Program",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "student.student_mobile_number",
+   "fieldname": "student_mobile_number",
+   "fieldtype": "Read Only",
+   "label": "Student Mobile Number"
+  },
+  {
+   "fieldname": "home_address_section",
+   "fieldtype": "Section Break",
+   "label": "Home Address"
+  },
+  {
+   "fetch_from": "student.address_line_1",
+   "fieldname": "address_line_1",
+   "fieldtype": "Read Only",
+   "label": "Address Line 1"
+  },
+  {
+   "fetch_from": "student.address_line_2",
+   "fieldname": "address_line_2",
+   "fieldtype": "Read Only",
+   "label": "Address Line 2"
+  },
+  {
+   "fetch_from": "student.at_post",
+   "fieldname": "post_office",
+   "fieldtype": "Read Only",
+   "label": "Post Office"
+  },
+  {
+   "fetch_from": "student.pin_code",
+   "fieldname": "pincode",
+   "fieldtype": "Read Only",
+   "label": "Pincode"
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "student.city",
+   "fieldname": "cityvillage",
+   "fieldtype": "Read Only",
+   "label": "City/Village"
+  },
+  {
+   "fetch_from": "student.state",
+   "fieldname": "state",
+   "fieldtype": "Read Only",
+   "label": "State"
+  },
+  {
+   "fetch_from": "student.district",
+   "fieldname": "district",
+   "fieldtype": "Read Only",
+   "label": "District"
+  },
+  {
+   "fetch_from": "student.block",
+   "fieldname": "block",
+   "fieldtype": "Read Only",
+   "label": "Block"
+  },
+  {
+   "fieldname": "guardian_details_section",
+   "fieldtype": "Section Break",
+   "label": "Guardian Details"
+  },
+  {
+   "fetch_from": "student.fathers_name",
+   "fieldname": "fathers_name",
+   "fieldtype": "Read Only",
+   "label": "Father's Name"
+  },
+  {
+   "fetch_from": "student.fathers_contact_number",
+   "fieldname": "fathers_contact_number",
+   "fieldtype": "Read Only",
+   "label": "Father's Contact Number"
+  },
+  {
+   "fieldname": "emergency_contact_number",
+   "fieldtype": "Data",
+   "label": "Emergency Contact Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_24",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "student.mothers_name",
+   "fieldname": "mothers_name",
+   "fieldtype": "Read Only",
+   "label": "Mother's Name"
+  },
+  {
+   "fetch_from": "student.mothers_contact_number",
+   "fieldname": "mothers_contact_number",
+   "fieldtype": "Read Only",
+   "label": "Mother's Contact Number"
+  },
+  {
+   "fieldname": "section_break_27",
+   "fieldtype": "Section Break",
+   "label": "Location"
+  },
+  {
+   "description": "Location from which the student wants to picked up and dropped",
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fees_section",
+   "fieldtype": "Section Break",
+   "label": "Fees"
+  },
+  {
+   "fieldname": "fees_applicable",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Fees Applicable",
+   "options": "Yes\nNo",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.fees_applicable == \"Yes\"",
+   "fieldname": "amount",
+   "fieldtype": "Data",
+   "label": "Amount",
+   "mandatory_depends_on": "eval:doc.fees_applicable == \"Yes\""
+  },
+  {
+   "fieldname": "column_break_31",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "program_enrollment.programs",
+   "fieldname": "programs",
+   "fieldtype": "Link",
+   "label": "Programs",
+   "options": "Programs",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.fees_applicable == \"Yes\"",
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "label": "Due Date",
+   "mandatory_depends_on": "eval:doc.fees_applicable == \"Yes\""
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "student_details_section",
+   "fieldtype": "Section Break",
+   "label": "Student Details"
+  },
+  {
+   "fieldname": "program_enrollment",
+   "fieldtype": "Link",
+   "label": "Program Enrollment",
+   "options": "Program Enrollment",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "program_enrollment.student_batch_name",
+   "fieldname": "student_batch",
+   "fieldtype": "Link",
+   "label": "Student Batch",
+   "options": "Student Batch Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "student.student_email_id",
+   "fieldname": "student_email",
+   "fieldtype": "Data",
+   "label": "Student Email",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "program_enrollment.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "program_enrollment.academic_term",
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "program_enrollment.student_category",
+   "fieldname": "student_category",
+   "fieldtype": "Link",
+   "label": "Student Category",
+   "options": "Student Category",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "student.image",
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "hidden": 1,
+   "label": "Image"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Transport Service",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "fees_id",
+   "fieldtype": "Link",
+   "label": "Fees",
+   "options": "Fees",
+   "read_only": 1
+  }
+ ],
+ "image_field": "image",
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-08-29 23:56:09.463013",
+ "modified_by": "Administrator",
+ "module": "Polytechnic",
+ "name": "Transport Service",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
