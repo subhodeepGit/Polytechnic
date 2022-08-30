@@ -2,7 +2,11 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Transport Service', {
-
+	refresh: function(frm){
+		if(frappe.user.has_role(["Student"]) && !frappe.user.has_role(["Administrator","Education Administrator"]) && frm.doc.docstatus != 1){
+			frm.set_df_property('statusf', 'read_only', 1)
+		}
+	},
 	student: function(frm) {
 		frm.trigger("set_program_enrollment");
 		frm.set_query("programs", function() {
