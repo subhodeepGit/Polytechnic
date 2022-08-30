@@ -14,9 +14,14 @@ def validate(self, method):
 def on_change(self, method):
     student_disabled_notification(self)
     user_update(self)
-    roll(self)
-    payment(self)
-    refund(self)
+
+
+def before_save(self, method):
+    student = frappe.get_all("Student",{"name":self.name},{"roll_no"})
+    if self.roll_no!=student[0]["roll_no"]:
+        roll(self)
+        payment(self)
+        refund(self)
 
 
 def student_disabled_notification(self):
@@ -41,16 +46,19 @@ def user_update(self):
         frappe.db.sql(""" update `tabUser` set location="%s" where name="%s" """%(self.name,self.student_email_id))
 
 def roll(self):
-    fee = frappe.get_all("Fees",filters=[["student","=",self.name]],fields=["name"])
-    fees_info=tuple([t["name"] for t in fee])
-    frappe.db.sql(""" update `tabFees` set roll_no="%s" where name in %s"""%(self.roll_no,fees_info), as_list=True)
+    fee = frappe.db.get_all("Fees",filters=[["student","=",self.name]],fields=["name"])
+    if fee:
+            fees_info=tuple([t["name"] for t in fee])
+            frappe.db.sql(""" update `tabFees` set roll_no="%s" where name in %s"""%(self.roll_no,fees_info))
 
 def payment(self):
-    payment = frappe.get_all("Payment Entry",filters=[["party","=",self.name]],fields=["name"])
-    payment_info=tuple([t["name"] for t in payment])
-    frappe.db.sql(""" update `tabPayment Entry` set roll_no="%s" where name in %s"""%(self.roll_no,payment_info), as_list=True)
+    payment = frappe.db.get_all("Payment Entry",filters=[["party","=",self.name]],fields=["name"])
+    if payment:
+        payment_info=tuple([t["name"] for t in payment])
+        frappe.db.sql(""" update `tabPayment Entry` set roll_no="%s" where name in %s"""%(self.roll_no,payment_info))
 
 def refund(self):
-    refund = frappe.get_all("Payment Refund",filters=[["party","=",self.name]],fields=["name"])
-    refund_info = tuple([t["name"] for t in refund])
-    frappe.db.sql(""" update `tabPayment Refund` set roll_no="%s" where name in %s"""%(self.roll_no,refund_info), as_list=True)
+    refund = frappe.db.get_all("Payment Refund",filters=[["party","=",self.name]],fields=["name"])
+    if refund:
+        refund_info = tuple([t["name"] for t in refund])
+        frappe.db.sql(""" update `tabPayment Refund` set roll_no="%s" where name in %s"""%(self.roll_no,refund_info))
