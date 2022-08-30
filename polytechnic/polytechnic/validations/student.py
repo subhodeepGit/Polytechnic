@@ -15,6 +15,8 @@ def on_change(self, method):
     student_disabled_notification(self)
     user_update(self)
     roll(self)
+    payment(self)
+    refund(self)
 
 
 def student_disabled_notification(self):
@@ -42,3 +44,13 @@ def roll(self):
     fee = frappe.get_all("Fees",filters=[["student","=",self.name]],fields=["name"])
     fees_info=tuple([t["name"] for t in fee])
     frappe.db.sql(""" update `tabFees` set roll_no="%s" where name in %s"""%(self.roll_no,fees_info), as_list=True)
+
+def payment(self):
+    payment = frappe.get_all("Payment Entry",filters=[["party","=",self.name]],fields=["name"])
+    payment_info=tuple([t["name"] for t in payment])
+    frappe.db.sql(""" update `tabPayment Entry` set roll_no="%s" where name in %s"""%(self.roll_no,payment_info), as_list=True)
+
+def refund(self):
+    refund = frappe.get_all("Payment Refund",filters=[["party","=",self.name]],fields=["name"])
+    refund_info = tuple([t["name"] for t in refund])
+    frappe.db.sql(""" update `tabPayment Refund` set roll_no="%s" where name in %s"""%(self.roll_no,refund_info), as_list=True)
