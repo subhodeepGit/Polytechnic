@@ -49,7 +49,7 @@ def roll(self):
     fee = frappe.db.get_all("Fees",filters=[["student","=",self.name]],fields=["name"])
     if fee:
         if len(fee)==1:
-                frappe.db.sql(""" update `tabFees` set roll_no="%s" where name = %s"""%(self.roll_no,fee[0]["name"]))
+            frappe.db.sql(""" update `tabFees` set roll_no="%s" where name = %s"""%(self.roll_no,fee[0]["name"]))
         else:
             fees_info=tuple([t["name"] for t in fee])
             frappe.db.sql(""" update `tabFees` set roll_no="%s" where name in %s"""%(self.roll_no,fees_info))
