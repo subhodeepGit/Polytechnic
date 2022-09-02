@@ -18,10 +18,11 @@ def on_change(self, method):
 
 def before_save(self, method):
     student = frappe.get_all("Student",{"name":self.name},{"roll_no"})
-    if self.roll_no!=student[0]["roll_no"]:
-        roll(self)
-        payment(self)
-        refund(self)
+    if student:
+        if self.roll_no!=student[0]["roll_no"]:
+            roll(self)
+            payment(self)
+            refund(self)
 
 
 def student_disabled_notification(self):
