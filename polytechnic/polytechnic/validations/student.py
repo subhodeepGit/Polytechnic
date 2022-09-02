@@ -49,7 +49,7 @@ def roll(self):
     fee = frappe.db.get_all("Fees",filters=[["student","=",self.name]],fields=["name"])
     if fee:
         if len(fee)==1:
-            frappe.db.sql(""" update `tabFees` set roll_no="%s" where name = %s"""%(self.roll_no,fee[0]["name"]))
+            frappe.db.sql(""" update `tabFees` set roll_no="%s" where name = "%s" """%(self.roll_no,fee[0]["name"]))
         else:
             fees_info=tuple([t["name"] for t in fee])
             frappe.db.sql(""" update `tabFees` set roll_no="%s" where name in %s"""%(self.roll_no,fees_info))
@@ -58,7 +58,7 @@ def payment(self):
     payment = frappe.db.get_all("Payment Entry",filters=[["party","=",self.name]],fields=["name"])
     if payment:
         if len(payment)==1:
-            frappe.db.sql(""" update `tabPayment Entry` set roll_no="%s" where name = %s"""%(self.roll_no,payment[0]["name"]))
+            frappe.db.sql(""" update `tabPayment Entry` set roll_no="%s" where name = "%s" """%(self.roll_no,payment[0]["name"]))
         else:
             payment_info=tuple([t["name"] for t in payment])
             frappe.db.sql(""" update `tabPayment Entry` set roll_no="%s" where name in %s"""%(self.roll_no,payment_info))
@@ -67,7 +67,7 @@ def refund(self):
     refund = frappe.db.get_all("Payment Refund",filters=[["party","=",self.name]],fields=["name"])
     if refund:
         if len(refund)==1:
-            frappe.db.sql(""" update `tabPayment Refund` set roll_no="%s" where name = %s"""%(self.roll_no,refund[0]["name"]))
+            frappe.db.sql(""" update `tabPayment Refund` set roll_no="%s" where name = "%s" """%(self.roll_no,refund[0]["name"]))
         else:
             refund_info = tuple([t["name"] for t in refund])   
             frappe.db.sql(""" update `tabPayment Refund` set roll_no="%s" where name in %s"""%(self.roll_no,refund_info))
