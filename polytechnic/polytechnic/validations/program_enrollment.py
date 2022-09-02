@@ -4,12 +4,13 @@ import frappe
 def validate(doc,method):
         student=frappe.get_doc("Student",doc.student)
         student.vidyarthi_portal_id=doc.vidyarthi_portal_id
+        student.sams_portal_id=doc.sams_portal_id
         student.save()
 
 
 @frappe.whitelist()
 def get_roll(student):
-        id_student=frappe.get_all("Student",filters=[['name','=',student]],fields=['name','vidyarthi_portal_id','permanant_registration_number'])
+        id_student=frappe.get_all("Student",filters=[['name','=',student]],fields=['name','vidyarthi_portal_id','permanant_registration_number','sams_portal_id'])
         # branch_sliding=frappe.get_all("")
         return id_student[0]
 

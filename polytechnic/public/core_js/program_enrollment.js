@@ -216,9 +216,37 @@ frappe.ui.form.on('Program Enrollment', {
                             frm.set_value('vidyarthi_portal_id',info.vidyarthi_portal_id)
                             frm.set_df_property('vidyarthi_portal_id','read_only',1)
                         }
+                        if(info.sams_portal_id!=null){
+                            frm.set_value('sams_portal_id',info.sams_portal_id)
+                            frm.set_df_property('sams_portal_id','read_only',1)
+                        }
 					}
 				}
 			});
 		}
 	},
+});
+
+frappe.ui.form.on("Program Enrollment", {
+	refresh: function(frm) {
+		if(frm.doc.roll_no) {
+			frm.set_df_property("roll_no", "read_only", 1);
+		}
+	}
+});
+
+frappe.ui.form.on("Program Enrollment", {
+	refresh: function(frm) {
+		if(frm.doc.permanant_registration_number) {
+			frm.set_df_property("permanant_registration_number", "read_only", 1);
+		}
+	}
+});
+frappe.ui.form.on("Program Enrollment", {
+	refresh: function(frm) {
+		if(frm.doc.admission_status=="Admitted" && frm.doc.docstatus ==1) {
+			frm.set_df_property("admission_status", "read_only", 1);
+            frm.set_df_property("is_provisional_admission", "read_only", 1);
+		}
+	}
 });
