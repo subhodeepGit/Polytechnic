@@ -226,22 +226,6 @@ frappe.ui.form.on('Program Enrollment', {
 		}
 	},
 });
-
-frappe.ui.form.on("Program Enrollment", {
-	refresh: function(frm) {
-		if(frm.doc.roll_no) {
-			frm.set_df_property("roll_no", "read_only", 1);
-		}
-	}
-});
-
-frappe.ui.form.on("Program Enrollment", {
-	refresh: function(frm) {
-		if(frm.doc.permanant_registration_number) {
-			frm.set_df_property("permanant_registration_number", "read_only", 1);
-		}
-	}
-});
 frappe.ui.form.on("Program Enrollment", {
 	refresh: function(frm) {
 		if(frm.doc.admission_status=="Admitted" && frm.doc.docstatus ==1) {
