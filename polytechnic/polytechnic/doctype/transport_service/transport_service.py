@@ -49,8 +49,9 @@ class TransportService(Document):
 			frappe.db.set_value("Transport Service",self.name,"fees_id",fees.name)
 			
 	def cancel_fees(self):
-		cancel_doc = frappe.get_doc("Fees",self.fees_id)
-		cancel_doc.cancel()
+		if self.fees_id:
+			cancel_doc = frappe.get_doc("Fees",self.fees_id)
+			cancel_doc.cancel()
 
 	def mobile_number_validation(self):
 		if self.emergency_contact_number:
