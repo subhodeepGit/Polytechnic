@@ -416,23 +416,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Review request",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Review request",
-   "link_to": "Review Request",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Reports",
    "link_type": "DocType",
    "onboard": 0,
@@ -537,7 +520,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-08-18 17:00:26.457882",
+ "modified": "2022-09-08 16:03:48.639468",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
