@@ -72,15 +72,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Class Room",
-   "link_to": "Room",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Academic Year",
    "link_to": "Academic Year",
    "link_type": "DocType",
@@ -134,28 +125,10 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Student Log",
-   "link_to": "Student Log",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Admission Master",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Document Template",
-   "link_to": "Documents Template",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
   },
   {
    "hidden": 0,
@@ -187,15 +160,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Eligibility Parameters",
-   "link_to": "Eligibility Parameters",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Application and Enrollment",
    "link_type": "DocType",
    "onboard": 0,
@@ -215,6 +179,15 @@
    "is_query_report": 0,
    "label": "Course Enrollment",
    "link_to": "Course Enrollment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Student Reregistration Tool",
+   "link_to": "Student Reregistration Tool Fees",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -345,16 +318,7 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Auto Reconciliation",
-   "link_to": "Auto Reconciliation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Tools",
+   "label": "Miscellaneous",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -362,8 +326,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Student Reregistration Tool",
-   "link_to": "Student Reregistration Tool Fees",
+   "label": "Transport Service",
+   "link_to": "Transport Service",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -409,6 +373,15 @@
    "is_query_report": 0,
    "label": "Student Payment Details Upload",
    "link_to": "Payment Details Upload",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Auto Reconciliation",
+   "link_to": "Auto Reconciliation",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -520,7 +493,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-09-08 16:03:48.639468",
+ "modified": "2022-09-09 13:11:38.258065",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
