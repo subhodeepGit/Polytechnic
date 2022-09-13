@@ -86,4 +86,19 @@ frappe.ui.form.on('Transport Service', {
 			}
 		});
 	},
+
+	location_map: function(frm) {
+		let mapdata = JSON.parse(cur_frm.doc.location_map).features[0];
+		if (mapdata && mapdata.geometry.type=='Point') {
+			let lat = mapdata.geometry.coordinates[1];
+			let lon = mapdata.geometry.coordinates[0];
+			frappe.call({
+				type: "GET",
+				url: `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
+				callback: function(r) {
+					frm.set_value('geo_location_name', r.display_name);
+				}
+			})
+		}
+	}
 });
