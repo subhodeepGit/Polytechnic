@@ -72,5 +72,18 @@ frappe.ui.form.on('Transport Service', {
             
         }); 
     },
-
+	setup: function(frm) {
+		var today = new Date();
+		var dd = String(today.getDate()).padStart(2, '0');
+		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		var yyyy = today.getFullYear();
+		today = yyyy + '-' + mm + '-' + dd;
+		frm.set_query("transport_fee_structure", function () {
+			return {
+				filters: [
+					["Transport Fee Structure", "end_date", ">", today],
+				]
+			}
+		});
+	},
 });
