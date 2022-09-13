@@ -160,5 +160,23 @@
     "role": "Fee Waiver"
    }
   ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "modified": "2022-09-13 16:59:40.458336",
+  "name": "Transport User",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "role_profile": "Transport User",
+  "roles": [
+   {
+    "parent": "Transport User",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Transport User"
+   }
+  ]
  }
 ]
