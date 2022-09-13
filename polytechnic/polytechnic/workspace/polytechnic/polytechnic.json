@@ -459,6 +459,15 @@
   },
   {
    "hidden": 0,
+   "is_query_report": 1,
+   "label": "Collection Report Base On Payment Entry",
+   "link_to": "Collection Report Base On Payment Entry",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
    "is_query_report": 0,
    "label": "Card",
    "link_type": "DocType",
@@ -493,7 +502,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-09-09 13:11:38.258065",
+ "modified": "2022-09-13 16:01:31.903508",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
