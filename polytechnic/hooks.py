@@ -37,6 +37,9 @@ app_include_js = [
 doctype_js = {
 	"Program Enrollment":"public/core_js/program_enrollment.js",
 }
+doctype_js = {
+	"Student" : "public/core_js/student.js",
+}
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}

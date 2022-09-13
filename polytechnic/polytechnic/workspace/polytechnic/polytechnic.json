@@ -326,6 +326,16 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Transport Fee Structure",
+   "link_to": "Transport Fee Structure",
+   "link_type": "DocType",
+   "onboard": 0,
+   "only_for": "",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Transport Service",
    "link_to": "Transport Service",
    "link_type": "DocType",
@@ -459,6 +469,15 @@
   },
   {
    "hidden": 0,
+   "is_query_report": 1,
+   "label": "Collection Report Base On Payment Entry",
+   "link_to": "Collection Report Base On Payment Entry",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
    "is_query_report": 0,
    "label": "Card",
    "link_type": "DocType",
@@ -493,7 +512,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-09-09 13:11:38.258065",
+ "modified": "2022-09-13 18:03:11.637768",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",

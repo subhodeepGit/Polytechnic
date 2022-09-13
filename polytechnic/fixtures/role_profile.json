@@ -142,5 +142,41 @@
     "role": "Education Administrator"
    }
   ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "modified": "2022-09-13 11:14:33.972477",
+  "name": "Fee Waiver",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "role_profile": "Fee Waiver",
+  "roles": [
+   {
+    "parent": "Fee Waiver",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Fee Waiver"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "modified": "2022-09-13 16:59:40.458336",
+  "name": "Transport User",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "role_profile": "Transport User",
+  "roles": [
+   {
+    "parent": "Transport User",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Transport User"
+   }
+  ]
  }
 ]
