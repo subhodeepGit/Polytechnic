@@ -1,31 +1,58 @@
 # Copyright (c) 2022, SUSTAINABLE OUTREACH AND UNIVERSAL LEADERSHIP LIMITED and contributors
 # For license information, please see license.txt
 
+from dataclasses import field
 import frappe
 from frappe import _
 
 def execute(filters=None):
-	columns, data = [], []
-	get_data(filters)
-	return columns, data
+	payment_entry,head_list=get_data(filters)
+	get_columns_info=get_columns(head_list)
+	return  get_columns_info,payment_entry
 
 def get_data(filters):
 	mode_of_payment=filters.get('mode_of_payment')
 	start_date=filters.get('start_date')
 	end_date=filters.get('end_date')
-	print("\n\n\n\n\n\n")
-	print(mode_of_payment,start_date,end_date)
 	payment_entry=frappe.get_all("Payment Entry",filters=[["mode_of_payment","=",mode_of_payment],['posting_date', 'between',[start_date, end_date]],["docstatus","=",1]],
-											fields=["name","mode_of_payment","party","party_name","roll_no","academic_year","permanent_registration_number"])
-	
-	print("\n\n\n\n\n\n")
-	print(payment_entry)
-	payment_entry_list=[]
-	for t in payment_entry:
-		payment_entry_list.append(t["name"])
-	print(payment_entry_list)
-	filters=[]
-	payment_entry_reference=frappe.get_all("Payment Entry Reference")
+											fields=["name","mode_of_payment","party","party_name","roll_no","academic_year","permanent_registration_number",
+														"sams_portal_id","vidyarthi_portal_id","total_allocated_amount"])
+	if payment_entry:
+		payment_entry_list=[]
+		for t in payment_entry:
+			payment_entry_list.append(t["name"])
+		filters=[]
+		if len(payment_entry_list)==1:
+			payment_entry_reference=frappe.get_all("Payment Entry Reference",filters=[["parent","=",payment_entry_list[0]]],
+													fields=["name","parent","fees_category","account_paid_from","allocated_amount"])
+		else:
+			payment_entry_reference=frappe.get_all("Payment Entry Reference",filters=[["parent","in",tuple(payment_entry_list)]],
+												fields=["name","parent","fees_category","account_paid_from","allocated_amount"])
+		
+		head_list=[]
+		for t in payment_entry_reference:
+			head_list.append(t["account_paid_from"])
+		head_list=list(set(head_list))
+
+		count=0
+		for t in payment_entry:
+			count=count+1
+			t["sl_no"]=count
+			for z in head_list:
+				t[z]=[]
+
+		for t in payment_entry:
+			for j in payment_entry_reference:
+				if t["name"]==j["parent"]:
+					for z in head_list:
+						if j["account_paid_from"]==z:
+							t[z].append(j["allocated_amount"])
+
+		for t in payment_entry:
+			for z in head_list:
+				t[z]=sum(t[z])
+		return payment_entry,head_list
+
 
 def get_columns(head_name=None):
 	columns = [
@@ -37,7 +64,7 @@ def get_columns(head_name=None):
 		},
 		{
 			"label": _("Student No"),
-			"fieldname": "stu_no",
+			"fieldname": "party",
 			"fieldtype": "Data",
 			"width":200
 		},
@@ -61,34 +88,26 @@ def get_columns(head_name=None):
 		},
 		{
 			"label": _("Student Name"),
-			"fieldname": "student_name",
+			"fieldname": "party_name",
 			"fieldtype": "Data",
 			"width":200
 		},
 		{
-			"label": _("Gender"),
-			"fieldname": "gender",
-			"fieldtype": "Data",
-			"width":200
-		},
-		{
-			"label": _("Student Category"),
-			"fieldname": "student_category",
-			"fieldtype": "Data",
-			"width":200
-		},
-		{
-			"label": _("Currency Info"),
-			"fieldname": "currency_info",
-			"fieldtype": "Data",
-			"width":200
-		},
-		{
-			"label": _("DUES AMOUNT"),
-			"fieldname": "due_amount",
+			"label": _("Paid Amount"),
+			"fieldname": "total_allocated_amount",
 			"fieldtype": "Data",
 			"width":200
 		},
 
 	]
+	if len(head_name)!=0:
+		for t in head_name:
+			label=t
+			columns_add={
+				"label": _("%s"%(label)),
+				"fieldname": "%s"%(label),
+				"fieldtype": "Data",
+				"width":200
+			}
+			columns.append(columns_add)
 	return columns	
