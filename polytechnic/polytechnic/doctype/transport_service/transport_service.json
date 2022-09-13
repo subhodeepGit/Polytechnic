@@ -54,6 +54,7 @@
   "fees_applicable",
   "due_date",
   "column_break_31",
+  "transport_fee_structure",
   "amount",
   "fees_id",
   "amended_from"
@@ -239,6 +240,7 @@
   },
   {
    "depends_on": "eval:doc.fees_applicable == \"Yes\"",
+   "fetch_from": "transport_fee_structure.amount",
    "fieldname": "amount",
    "fieldtype": "Currency",
    "label": "Amount",
@@ -260,6 +262,7 @@
   },
   {
    "depends_on": "eval:doc.fees_applicable == \"Yes\"",
+   "fetch_from": "transport_fee_structure.end_date",
    "fieldname": "due_date",
    "fieldtype": "Date",
    "label": "Due Date",
@@ -373,13 +376,20 @@
    "fieldtype": "Select",
    "label": "Status",
    "options": "\nApproved\nRejected"
+  },
+  {
+   "depends_on": "eval:doc.fees_applicable == \"Yes\"",
+   "fieldname": "transport_fee_structure",
+   "fieldtype": "Link",
+   "label": "Transport Fee Structure",
+   "options": "Transport Fee Structure"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-02 22:31:27.070375",
+ "modified": "2022-09-13 11:50:24.215739",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Transport Service",
