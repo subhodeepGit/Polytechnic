@@ -49,6 +49,7 @@
   "mothers_contact_number",
   "section_break_27",
   "location_map",
+  "geo_location_name",
   "location",
   "fees_section",
   "fees_applicable",
@@ -383,13 +384,19 @@
    "fieldtype": "Link",
    "label": "Transport Fee Structure",
    "options": "Transport Fee Structure"
+  },
+  {
+   "fieldname": "geo_location_name",
+   "fieldtype": "Data",
+   "label": "Geo Location Name",
+   "read_only": 1
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-13 11:50:24.215739",
+ "modified": "2022-09-13 18:01:13.125376",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Transport Service",
