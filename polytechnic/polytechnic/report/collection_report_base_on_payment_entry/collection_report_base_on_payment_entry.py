@@ -52,6 +52,8 @@ def get_data(filters):
 			for z in head_list:
 				t[z]=sum(t[z])
 		return payment_entry,head_list
+	else:
+		frappe.throw("No Record Found")	
 
 
 def get_columns(head_name=None):
