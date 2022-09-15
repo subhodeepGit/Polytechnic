@@ -38,5 +38,4 @@ def enable_user(self):
                 if status == 0:
                         update_doc = frappe.get_doc("User",stu_name)
                         update_doc.enabled=1
-                        update_doc.send_welcome_email=1
                         update_doc.save()

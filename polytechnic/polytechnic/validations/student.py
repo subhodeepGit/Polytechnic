@@ -34,7 +34,6 @@ def disable_user(self, method):
     if status == 1:
         update_doc = frappe.get_doc("User",stu_name)
         update_doc.enabled=0
-        update_doc.send_welcome_email=0
         update_doc.save()
 
 def student_disabled_notification(self):
