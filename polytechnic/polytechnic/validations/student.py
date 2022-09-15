@@ -25,9 +25,6 @@ def before_save(self, method):
             refund(self)
 
 def after_insert(self, method):
-    disable_user(self)
-
-def disable_user(self, method):
     sten=frappe.db.get_all("User", {'email':self.student_email_id},['name','enabled'])
     status=sten[0]['enabled']
     stu_name = sten[0]['name']
