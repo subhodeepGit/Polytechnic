@@ -7,6 +7,8 @@ def validate(doc,method):
         student.sams_portal_id=doc.sams_portal_id
         student.save()
 
+def on_submit(self,method):
+        enable_user(self)
 
 @frappe.whitelist()
 def get_roll(student):
@@ -25,3 +27,15 @@ def get_students(doctype, txt, searchfield, start, page_len, filters):
                                 where enabled=1 and (st.`{0}` LIKE %(txt)s or st.title  LIKE %(txt)s or 
                                 st.vidyarthi_portal_id LIKE %(txt)s or
                                 st.sams_portal_id LIKE %(txt)s ) and ced.programs='{1}'""".format(searchfield,filters.get("programs")),dict(txt="%{}%".format(txt)))  
+
+def enable_user(self):
+        stu_info =  frappe.get_all("Student",{"name":self.student},["student_email_id"])
+        if stu_info:
+                student_email_id=stu_info[0]['student_email_id']
+                sten=frappe.db.get_all("User", {'email':student_email_id},['name','enabled'])
+                status=sten[0]['enabled']
+                stu_name = sten[0]['name']
+                if status == 0:
+                        update_doc = frappe.get_doc("User",stu_name)
+                        update_doc.enabled=1
+                        update_doc.save()

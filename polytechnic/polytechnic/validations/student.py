@@ -24,6 +24,14 @@ def before_save(self, method):
             payment(self)
             refund(self)
 
+def after_insert(self, method):
+    sten=frappe.db.get_all("User", {'email':self.student_email_id},['name','enabled'])
+    status=sten[0]['enabled']
+    stu_name = sten[0]['name']
+    if status == 1:
+        update_doc = frappe.get_doc("User",stu_name)
+        update_doc.enabled=0
+        update_doc.save()
 
 def student_disabled_notification(self):
     if self.enabled==0:
