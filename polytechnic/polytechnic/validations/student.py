@@ -14,6 +14,17 @@ def validate(self, method):
 def on_change(self, method):
     student_disabled_notification(self)
     user_update(self)
+    sten=frappe.db.get_all("Student",{"name":self.name},{"enabled","student_email_id"})
+    status=sten[0]['enabled']
+    stu_name = sten[0]['student_email_id']
+    if status == 0:
+        update_doc = frappe.get_doc("User",stu_name)
+        update_doc.enabled=0
+        update_doc.save()
+    elif frappe.get_all("Program Enrollment",{"student":self.name,"docstatus":1},{"student"}):
+        update_doc = frappe.get_doc("User",stu_name)
+        update_doc.enabled=1
+        update_doc.save()
 
 
 def before_save(self, method):
