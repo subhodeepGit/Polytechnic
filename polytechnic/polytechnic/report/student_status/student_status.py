@@ -136,7 +136,6 @@ def get_data(filters):
 	for t in fees_head_dic:
 		for j in Payment_head_dic:
 			if t==j:
-				
 				Outsatnding_dict['%s'%(t)]=fees_head_dic[t]-Payment_head_dic[j]
 				break
 			else:
@@ -185,9 +184,7 @@ def get_data(filters):
 	################## Extra amount collected during payment refund
 	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['against','=',party],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["credit","!=",0]],
-								fields=["name","account","debit","credit"])	
-	print("\n\n\n\n\n")
-	print(Gl_entry_payment_ref)												
+								fields=["name","account","debit","credit"])												
 	payment_refund_adj_collection={}
 	if Gl_entry_payment_ref:
 		for t in Gl_entry_payment_ref:
@@ -599,6 +596,11 @@ def get_data(filters):
 		g_value.append("")
 		g_value.append("")
 		Final_list.append(g_value)	
+
+	print("\n\n\n\n\n")
+	print(Final_list)
+	for t in Final_list:
+		print(len(t))
 	return Final_list
 
 def get_columns():
