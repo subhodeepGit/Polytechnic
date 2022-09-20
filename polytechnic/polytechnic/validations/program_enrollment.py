@@ -11,18 +11,14 @@ def validate(doc,method):
         student.sams_portal_id=doc.sams_portal_id
         student.save()
 
-# def before_submit(self,method):
-#         password = frappe.get_all("Program Enrollment",{"student":self.student,"docstatus":1},{"student"})
-#         if password:
-#                 if len(password)==1:
-#                         reset_password(self)
+def before_submit(self,method):
+                reset_password(self)
         
 def on_submit(self,method):
         enable_user(self)
         email = frappe.get_all("Program Enrollment",{"student":self.student,"docstatus":1},{"student"})
         if email:
                 if len(email)==1:
-                        reset_password(self)
                         url_link(self)
 
 @frappe.whitelist()

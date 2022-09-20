@@ -106,6 +106,7 @@ doc_events = {
     "Program Enrollment": {
 		"validate": "polytechnic.polytechnic.validations.program_enrollment.validate",
 		"on_submit": "polytechnic.polytechnic.validations.program_enrollment.on_submit",
+		"before_submit": "polytechnic.polytechnic.validations.program_enrollment.before_submit",
 	},
 	"Student": {
 		"validate": "polytechnic.polytechnic.validations.student.validate",
