@@ -19,7 +19,7 @@ def get_data(filters):
 	end_date=filters.get('to') 
 	# party_type=filters.get("party_type")
 	party=filters.get("party")
-	Gl_entry_Pay_Rec=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['party','=',party],['posting_date', 'between', 
+	Gl_entry_Pay_Rec=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['party','=',party],['posting_date', 'between', 
 								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","docstatus"])														
 	list_for_fee=[]
 	list_of_payment=[]
@@ -170,7 +170,7 @@ def get_data(filters):
 		Fee_cal['%s'%(head_fee[t])]=[]
 	############################################ Fees Refundable / Adjustable reconcelation 
 	########### Extra amount colleted during payment entry
-	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['party','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
+	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['party','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["debit","=",0]],
 								fields=["name","account","debit","credit"])						
 	fees_ref_adj_balance={}
@@ -183,9 +183,11 @@ def get_data(filters):
 
 	fees_ref_adj_balance=dict(zip(fees_ref_adj_balance.keys(),[sum(items) for items in fees_ref_adj_balance.values()]))
 	################## Extra amount collected during payment refund
-	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
+	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['against','=',party],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["credit","!=",0]],
-								fields=["name","account","debit","credit"])						
+								fields=["name","account","debit","credit"])	
+	print("\n\n\n\n\n")
+	print(Gl_entry_payment_ref)												
 	payment_refund_adj_collection={}
 	if Gl_entry_payment_ref:
 		for t in Gl_entry_payment_ref:
@@ -196,7 +198,7 @@ def get_data(filters):
 
 	payment_refund_adj_collection=dict(zip(payment_refund_adj_collection.keys(),[sum(items) for items in payment_refund_adj_collection.values()]))
 	###################### Payment Refund (mode of payment - pay)
-	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
+	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['against','=',party],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["debit","!=",0]],
 								fields=["name","account","debit","credit"])	
 	payment_refund_adj_payment={}
@@ -209,7 +211,7 @@ def get_data(filters):
 
 	payment_refund_adj_payment=dict(zip(payment_refund_adj_payment.keys(),[sum(items) for items in payment_refund_adj_payment.values()]))
 	######################## payment entry (mode of pay - pay)
-	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
+	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["credit","=",0]],
 								fields=["name","account","debit","credit"]) 
 												
@@ -544,7 +546,7 @@ def get_data(filters):
 	g_value.append(Payment_ref)
 	Final_list.append(g_value)	
 	############################################################# payment entry
-	Gl_entry_Type_payment=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
+	Gl_entry_Type_payment=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['against','=',party],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
 								[start_date, end_date]]],fields=["name","account","debit","credit","voucher_no","voucher_type","account_currency","posting_date"])	
 	list_for_payment=[]					
 	for payment in Gl_entry_Type_payment:
