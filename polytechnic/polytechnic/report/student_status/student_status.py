@@ -582,9 +582,9 @@ def get_data(filters):
 		g_value=[]
 		g_value.append(Count)
 		g_value.append(t["posting_date"])
-		if t['payment_type']=="Pay":
+		if t['payment_type']=="Pay" :
 			g_value.append(t['paid_from_account_currency'])
-		if t['payment_type']=="Receive":
+		if t['payment_type']=="Receive" or t['payment_type']=="Closing Balance":
 			g_value.append(t['paid_to_account_currency'])
 		g_value.append(t['mode_of_payment'])
 		g_value.append("")
@@ -597,10 +597,6 @@ def get_data(filters):
 		g_value.append("")
 		Final_list.append(g_value)	
 
-	print("\n\n\n\n\n")
-	print(Final_list)
-	for t in Final_list:
-		print(len(t))
 	return Final_list
 
 def get_columns():
