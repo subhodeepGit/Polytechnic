@@ -14,26 +14,40 @@ def validate(self, method):
 def on_change(self, method):
     student_disabled_notification(self)
     user_update(self)
-    sten=frappe.db.get_all("Student",{"name":self.name},{"enabled","student_email_id"})
-    status=sten[0]['enabled']
-    stu_name = sten[0]['student_email_id']
-    if status == 0:
-        update_doc = frappe.get_doc("User",stu_name)
-        update_doc.enabled=0
-        update_doc.save()
-    elif frappe.get_all("Program Enrollment",{"student":self.name,"docstatus":1},{"student"}):
-        update_doc = frappe.get_doc("User",stu_name)
-        update_doc.enabled=1
-        update_doc.save()
 
 
 def before_save(self, method):
+    student = frappe.get_all("Student",{"name":self.name},{"image"})
+    if student:
+        if self.image!=student[0]["image"]:
+            identity_card_photo(self)
+            transport_service_photo(self)
+
     student = frappe.get_all("Student",{"name":self.name},{"roll_no"})
     if student:
         if self.roll_no!=student[0]["roll_no"]:
             roll(self)
             payment(self)
-            refund(self)
+            refund(self) 
+            transport_roll_update(self)
+
+def identity_card_photo(self):
+    photo = frappe.db.get_all("Identity Card",filters=[["student","=",self.name]],fields=["name"])
+    if photo:
+        if len(photo)==1:
+            frappe.db.sql(""" update `tabIdentity Card` set passport_photo="%s" where name = "%s" """%(self.image,photo[0]["name"]))
+        else:
+            photo_info=tuple([t["name"] for t in photo])
+            frappe.db.sql(""" update `tabIdentity Card` set passport_photo="%s" where name in %s"""%(self.image,photo_info))
+        
+def transport_service_photo(self):
+    photo = frappe.db.get_all("Transport Service",filters=[["student","=",self.name]],fields=["name"])
+    if photo:
+        if len(photo)==1:
+            frappe.db.sql(""" update `tabTransport Service` set image="%s" where name = "%s" """%(self.image,photo[0]["name"]))
+        else:
+            photo_info=tuple([t["name"] for t in photo])
+            frappe.db.sql(""" update `tabTransport Service` set image="%s" where name in %s"""%(self.image,photo_info))
 
 def after_insert(self, method):
     sten=frappe.db.get_all("User", {'email':self.student_email_id},['name','enabled'])
@@ -91,3 +105,13 @@ def refund(self):
         else:
             refund_info = tuple([t["name"] for t in refund])   
             frappe.db.sql(""" update `tabPayment Refund` set roll_no="%s" where name in %s"""%(self.roll_no,refund_info))
+
+
+def transport_roll_update(self):
+    roll_no = frappe.db.get_all("Student",filters=[["student","=",self.name]],fields=["name"])
+    if roll_no:
+        if len(roll_no)==1:
+            frappe.db.sql(""" update `tabTransport Service` set roll_no="%s" where name = "%s" """%(self.roll_no,roll_no[0]["name"]))
+        else:
+           roll_no_info=tuple([t["name"] for t in roll_no])
+           frappe.db.sql(""" update `tabTransport Service` set roll_no="%s" where name in %s"""%(self.roll_no,roll_no_info))            
