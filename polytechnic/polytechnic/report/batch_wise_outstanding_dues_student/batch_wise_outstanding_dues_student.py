@@ -380,7 +380,7 @@ def refunded_amount(studnet_info,start_date,end_date):
 		party.append(t['stu_no'])	
 
 	###################### Payment Refund (mode of payment - pay)
-	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],['against','in',tuple(party)],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
+	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['against','in',tuple(party)],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["debit","!=",0]],
 								fields=["name","account","debit","credit","party","voucher_no","against"])
 	refunded_amount_student=[]
