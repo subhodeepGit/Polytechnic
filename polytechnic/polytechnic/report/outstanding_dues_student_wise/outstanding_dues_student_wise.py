@@ -364,7 +364,7 @@ def refunded_amount(studnet_info,start_date,end_date):
 	###################### Payment Refund (mode of payment - pay)
 	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['against','in',tuple(party)],['voucher_type',"=",'Journal Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["debit","!=",0]],
-								fields=["name","account","debit","credit","party","voucher_no"])
+								fields=["name","account","debit","credit","party","voucher_no","against"])		
 	refunded_amount_student=[]
 	for t in studnet_info:
 		refundable_head_dic={}	
@@ -383,11 +383,11 @@ def refunded_amount(studnet_info,start_date,end_date):
 	######################## payment entry (mode of pay - pay)
 	Gl_entry_payment_ref=frappe.db.get_list('GL Entry', filters=[["docstatus",'=',1],["is_cancelled",'=',0],['against','in',tuple(party)],['voucher_type',"=",'Payment Entry'],['posting_date', 'between', 
 								[start_date, end_date]],["account","like","%Fees Refundable / Adjustable%"],["credit","=",0]],
-								fields=["name","account","debit","credit","party","voucher_no"]) 
-
+								fields=["name","account","debit","credit","party","against","voucher_no"]) 
+							
 	for t in Gl_entry_payment_ref:
 		for z in refunded_amount_student:
-			if z['student']==t["party"]:
+			if z['student']==t["against"]:
 				z['refunded_amount'].append(t['debit'])
 				z['payment_voucher'].append(t['voucher_no'])	
 
@@ -395,7 +395,6 @@ def refunded_amount(studnet_info,start_date,end_date):
 		for z in student:
 			if z!="student" and z !="payment_voucher":
 				student[z]=sum(student[z])
-
 	return refunded_amount_student
 
 
