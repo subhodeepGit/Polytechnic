@@ -487,6 +487,15 @@
   },
   {
    "hidden": 0,
+   "is_query_report": 1,
+   "label": "Student Wise Exemption Summary",
+   "link_to": "STUDENT WISE EXEMPTION SUMMARY",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
    "is_query_report": 0,
    "label": "Card",
    "link_type": "DocType",
@@ -547,7 +556,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-09-19 15:25:53.598064",
+ "modified": "2022-09-22 18:26:23.644560",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
