@@ -5,7 +5,7 @@
 frappe.query_reports["STUDENT WISE EXEMPTION SUMMARY"] = {
 	"filters": [
 		{
-			"fieldname": "batch",
+			"fieldname": "student_batch",
 			"label": __("Student Batch Name"),
 			"fieldtype": "Link",
 			"options": "Student Batch Name",
@@ -18,31 +18,23 @@ frappe.query_reports["STUDENT WISE EXEMPTION SUMMARY"] = {
 			"fieldtype": "Link",
 			"options": "Programs",
 			"width": 150,
-			// "reqd": 1,
+			"reqd": 1,
 		},
 		{
-			"fieldname": "gender",
-			"label": __("Gender"),
-			"fieldtype": "Link",
-			"options": "Gender",
-			"width": 150,
-			// "reqd": 1,
-		},
-		{
-			"fieldname": "start_date",
+			"fieldname": "posting_date1",
 			"label": __("Start Date"),
 			"fieldtype": "Date",
 			"width": 80,
 			"reqd": 1,
-			"default": dateutil.year_start()
+			// "default": dateutil.year_start()
 		},
 		{
-			"fieldname": "end_date",
+			"fieldname": "posting_date2",
 			"label": __("End Date"),
 			"fieldtype": "Date",
 			"width": 80,
-			"reqd": 1,
-			"default": dateutil.year_end()
+			// "reqd": 1,
+			// "default": dateutil.year_end()
 		},
 	]
 };
