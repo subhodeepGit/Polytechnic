@@ -298,7 +298,6 @@ def get_data(filters):
 	# [1, 'Debtors - SOUL', 'INR', 80000.0, 80000.0, '', 'Body', 0.0, 160000.0, 0.0]
 		
 	# Final_list=["Sl_no","Fees Head","Currency","Dues","paid","Balance","Paid amount","Body","Waver_amount","Grand_total","Refund_fees_head_dic","Refund_Payment_head_dic"]	
-
 	Count=0
 	for t in fees_head_dic:
 		g_value=[]
@@ -318,8 +317,22 @@ def get_data(filters):
 		########################paid
 		for j in Payment_head_dic:
 			if t==j:
-				flag="Done"
-				g_value.append(Payment_head_dic[j])		
+				if ('Fees Refundable / Adjustable' in t)==True:
+					deduction_amount=0
+					ref_fee=frappe.get_all("Payment Refund",{"party":party,"payment_type":"Closing Balance","docstatus":1},["name"])
+					if ref_fee:
+						ref_fee_table_list=[]
+						for ref_fees in ref_fee:
+							ref_fee_table=frappe.get_all("Payment Entry Reference Refund",{"parent":ref_fees["name"]},["name","total_amount"])
+							ref_fee_table_list.append(ref_fee_table[0])
+						for cal in ref_fee_table_list:
+							deduction_amount=deduction_amount+cal["total_amount"]
+					flag="Done"
+					value=Payment_head_dic[j]-deduction_amount
+					g_value.append(value)	
+				else:
+					flag="Done"
+					g_value.append(Payment_head_dic[j])		
 		if flag!="Done":
 			g_value.append(0)
 			flag=""	
