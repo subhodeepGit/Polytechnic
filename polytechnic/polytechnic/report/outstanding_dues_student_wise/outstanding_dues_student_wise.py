@@ -107,26 +107,36 @@ def get_data(filters):
 			#################### paid amount
 			for z in payment_entry_student:
 				if t['stu_no']==z['student']:
-					stu_info.append(z['paid_amount'])		
+					closing_balance=0
+					ref_fee=frappe.get_all("Payment Refund",{"party":z['student'],"payment_type":"Closing Balance","docstatus":1},["name"])
+					if ref_fee:
+						for l in ref_fee:
+							ref_fee_table=frappe.get_all("Payment Entry Reference Refund",{"parent":l["name"]},["name","total_amount"])
+							closing_balance=closing_balance+ref_fee_table[0]["total_amount"]
+					stu_info.append(z['paid_amount']-closing_balance)		
 			######################### end paid amount
 			################### fee waiver 
 			for z in fee_waiver_student:
 				if t['stu_no']==z['student']:
 					stu_info.append(z['net_due'])	
 			################## end of fee waiver 
-			##################### 	Fees Refundable / Adjustable collection		
+			##################### 	Fees Refundable / Adjustable collection
+			refundable_collection=0		
 			for z in refundable_entry_student:
 				if t['stu_no']==z['student']:
 					stu_info.append(z['refundable_amount_collected'])
+					refundable_collection=z['refundable_amount_collected']
 			################################end Fees Refundable / Adjustable collection
-			# #########################################  	Fees Refundable / Adjustable  paid	
+			# #########################################  	Fees Refundable / Adjustable  paid
+			refundable_paid=0	
 			for z in refunded_amount_student:
 				if t['stu_no']==z['student']:
-					stu_info.append(z['refunded_amount'])		
+					stu_info.append(z['refunded_amount'])
+					refundable_paid=z['refunded_amount']		
 			#################### End Fees Refundable / Adjustable  paid	
 			########################### ADJUSTMENT AMOUNT = Fees Refundable / Adjustable collection - Fees Refundable / Adjustable  paid
-			refundable_collection=stu_info[19]
-			refundable_paid=stu_info[20]
+			# refundable_collection=stu_info[19]
+			# refundable_paid=stu_info[20]
 			adj_balance=refundable_collection-refundable_paid
 			stu_info.append(adj_balance)
 			########################### end ADJUSTMENT AMOUNT = Fees Refundable / Adjustable collection - Fees Refundable / Adjustable  paid
@@ -144,8 +154,9 @@ def student_info(branch=None,semester=None,academic_term=None):
 	student_all_data=[]
 	if branch!=None and semester!=None and academic_term!=None:
 		student_data=frappe.get_all("Current Educational Details",filters=[["programs","=",branch],
-									["semesters","in",tuple(semester)],["parenttype","=","student"],['academic_term',"=",academic_term]],
-									fields=["parent"])
+									["semesters","in",tuple(semester)],["parenttype","=","student"],['academic_term',"=",academic_term],
+									],
+									fields=["parent"])						
 		# 1 Student No.
 		# 2 ROLL NO
 		# 3 DET No
