@@ -110,7 +110,13 @@ def get_data(filters):
 			#################### paid amount
 			for z in payment_entry_student:
 				if t['stu_no']==z['student']:
-					stu_info.append(z['paid_amount'])		
+					closing_balance=0
+					ref_fee=frappe.get_all("Payment Refund",{"party":z['student'],"payment_type":"Closing Balance","docstatus":1},["name"])
+					if ref_fee:
+						for l in ref_fee:
+							ref_fee_table=frappe.get_all("Payment Entry Reference Refund",{"parent":l["name"]},["name","total_amount"])
+							closing_balance=closing_balance+ref_fee_table[0]["total_amount"]
+					stu_info.append(z['paid_amount']-closing_balance)		
 			######################### end paid amount
 			################### fee waiver 
 			for z in fee_waiver_student:
@@ -157,6 +163,8 @@ def student_info(batch,gender,branch):
 		filter.append(["programs","=",branch])
 	if gender!=None:
 		filter.append(["gender","=",gender])
+
+	filter.append(["docstatus","=",1])
 
 	student_all_data=[]
 	student_data=frappe.get_all("Program Enrollment",filters=filter,fields=["student"])
@@ -370,6 +378,8 @@ def fees_refundable_adjustable(studnet_info,start_date,end_date):
 		for z in student:
 			if z!="student" and z !="payment_voucher":
 				student[z]=sum(student[z])
+
+
 	return refundable_entry_student
 
 
