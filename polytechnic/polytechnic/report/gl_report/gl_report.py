@@ -17,7 +17,7 @@ def get_data(filters):
 	final_list=[]
 
 	Heading_info=frappe.db.sql(""" SELECT `voucher_no` from `tabGL Entry`
-					WHERE `voucher_type`="Payment Entry" and (`posting_date`>="%s" and `posting_date`<="%s")  
+					WHERE `voucher_type`="Payment Entry" and (`posting_date`>="%s" and `posting_date`<="%s") 
 					ORDER BY `tabGL Entry`.`voucher_no`  ASC """%(start_date,end_date))
 
 	Payment_Heading_info=frappe.db.sql(""" SELECT `name` from `tabPayment Refund` WHERE `posting_date`>="%s" and `posting_date`<="%s"  ORDER BY 
@@ -38,7 +38,8 @@ def get_data(filters):
 		a=["","Payment Refund Clossing MR No",clossing_mr_no,"Heading_info"]
 		final_list.append(a)
 
-	Payment_Heading_info=frappe.db.sql(""" SELECT count(name) from `tabPayment Refund` WHERE `posting_date`>="%s" and `posting_date`<="%s" """%(start_date,end_date))	
+	Payment_Heading_info=frappe.db.sql(""" SELECT count(name) from `tabPayment Refund` WHERE 
+										`posting_date`>="%s" and `posting_date`<="%s" """%(start_date,end_date))	
 	Heading_info=frappe.db.sql(""" SELECT count(name) from `tabPayment Entry` WHERE posting_date>="%s" and posting_date<="%s" """%(start_date,end_date))
 
 	if len(Heading_info)!=0:
@@ -83,7 +84,7 @@ def get_data(filters):
 		a=["","No of MR Canceled",Mr_Canceled,"Heading_info"]
 		final_list.append(a)	
 	
-	Gl_entry=frappe.db.get_list('GL Entry', filters=[['posting_date', 'between', [start_date, end_date]]])
+	Gl_entry=frappe.db.get_list('GL Entry', filters=[['posting_date', 'between', [start_date, end_date]],['docstatus',"=",1],["is_cancelled",'=',0]])
 	debit=[]
 	credit=[]
 	for t in Gl_entry:
@@ -105,31 +106,33 @@ def get_data(filters):
 	for i in Gl_entry:
 		com_data=[]
 		JV_entry_info=frappe.get_all("GL Entry",{"name":i["name"],"voucher_type":"Journal Entry"},["name","account","debit","credit","voucher_no"])
-		if len(JV_entry_info):
+		if JV_entry_info:
 			JV_entry_info=JV_entry_info[0]
-			# {'name': 'ACC-GLE-2022-00158', 'account': 'Fees Refundable / Adjustable - KP', 'debit': 500.0, 'credit': 0.0, 'voucher_no': 'ACC-JV-2022-00002'}
-			# {'name': 'ACC-GLE-2022-00157', 'account': 'Cash - KP', 'debit': 0.0, 'credit': 500.0, 'voucher_no': 'ACC-JV-2022-00002'}
-			# {'name': 'ACC-GLE-2022-00156', 'account': 'Fees Refundable / Adjustable - KP', 'debit': 0.0, 'credit': 10000.0, 'voucher_no': 'ACC-JV-2022-00001'}
-			# {'name': 'ACC-GLE-2022-00155', 'account': 'Cash - KP', 'debit': 10000.0, 'credit': 0.0, 'voucher_no': 'ACC-JV-2022-00001'}
-			if ("Fees Refundable / Adjustable" in JV_entry_info['account'])==True:
+			ref_fee=frappe.get_all("Payment Refund",{"jv_entry_voucher_no":JV_entry_info["voucher_no"],"payment_type":"Closing Balance","docstatus":1},["name"])
+			if len(ref_fee)==0:
 				# {'name': 'ACC-GLE-2022-00158', 'account': 'Fees Refundable / Adjustable - KP', 'debit': 500.0, 'credit': 0.0, 'voucher_no': 'ACC-JV-2022-00002'}
-				# {'name': 'ACC-GLE-2022-00156', 'account': 'Fees Refundable / Adjustable - KP', 'debit': 0.0, 'credit': 10000.0, 'voucher_no': 'ACC-JV-2022-00001'}
-				if JV_entry_info['debit']!=0:
-					com_data=[JV_entry_info["debit"],JV_entry_info["account"]]
-					credit_refund.append(com_data) #### pay entry
-
-				if 	JV_entry_info['credit']!=0:
-					com_data=[JV_entry_info['credit'],JV_entry_info["account"]]
-					credit.append(com_data)
-			else:
 				# {'name': 'ACC-GLE-2022-00157', 'account': 'Cash - KP', 'debit': 0.0, 'credit': 500.0, 'voucher_no': 'ACC-JV-2022-00002'}
+				# {'name': 'ACC-GLE-2022-00156', 'account': 'Fees Refundable / Adjustable - KP', 'debit': 0.0, 'credit': 10000.0, 'voucher_no': 'ACC-JV-2022-00001'}
 				# {'name': 'ACC-GLE-2022-00155', 'account': 'Cash - KP', 'debit': 10000.0, 'credit': 0.0, 'voucher_no': 'ACC-JV-2022-00001'}
-				if JV_entry_info["debit"]!=0:
-					com_data=[JV_entry_info["debit"],JV_entry_info["account"]]
-					debit.append(com_data)
-				if JV_entry_info["credit"]!=0: 	
-					com_data=[JV_entry_info["credit"],JV_entry_info["account"]]
-					debit_refund.append(com_data) #### pay entry
+				if ("Fees Refundable / Adjustable" in JV_entry_info['account'])==True:
+					# {'name': 'ACC-GLE-2022-00158', 'account': 'Fees Refundable / Adjustable - KP', 'debit': 500.0, 'credit': 0.0, 'voucher_no': 'ACC-JV-2022-00002'}
+					# {'name': 'ACC-GLE-2022-00156', 'account': 'Fees Refundable / Adjustable - KP', 'debit': 0.0, 'credit': 10000.0, 'voucher_no': 'ACC-JV-2022-00001'}
+					if JV_entry_info['debit']!=0:
+						com_data=[JV_entry_info["debit"],JV_entry_info["account"]]
+						credit_refund.append(com_data) #### pay entry
+
+					if 	JV_entry_info['credit']!=0:
+						com_data=[JV_entry_info['credit'],JV_entry_info["account"]]
+						credit.append(com_data)
+				else:
+					# {'name': 'ACC-GLE-2022-00157', 'account': 'Cash - KP', 'debit': 0.0, 'credit': 500.0, 'voucher_no': 'ACC-JV-2022-00002'}
+					# {'name': 'ACC-GLE-2022-00155', 'account': 'Cash - KP', 'debit': 10000.0, 'credit': 0.0, 'voucher_no': 'ACC-JV-2022-00001'}
+					if JV_entry_info["debit"]!=0:
+						com_data=[JV_entry_info["debit"],JV_entry_info["account"]]
+						debit.append(com_data)
+					if JV_entry_info["credit"]!=0: 	
+						com_data=[JV_entry_info["credit"],JV_entry_info["account"]]
+						debit_refund.append(com_data) #### pay entry
 
 		
 	#################################### credit --- Receive
