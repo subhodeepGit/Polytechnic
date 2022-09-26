@@ -270,11 +270,29 @@
     "parent": "Student",
     "parentfield": "block_modules",
     "parenttype": "Module Profile"
+   },
+   {
+    "module": "Kp Edtec",
+    "parent": "Student",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile"
+   },
+   {
+    "module": "Hostel",
+    "parent": "Student",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile"
+   },
+   {
+    "module": "Education",
+    "parent": "Student",
+    "parentfield": "block_modules",
+    "parenttype": "Module Profile"
    }
   ],
   "docstatus": 0,
   "doctype": "Module Profile",
-  "modified": "2021-12-21 11:02:19.804729",
+  "modified": "2022-09-26 16:04:28.570360",
   "module_profile_name": "Student",
   "name": "Student",
   "parent": null,

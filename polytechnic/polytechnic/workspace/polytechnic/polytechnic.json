@@ -309,6 +309,16 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Online Payment",
+   "link_to": "ICICI Online Payment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "only_for": "",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Payment Refund",
    "link_to": "Payment Refund",
    "link_type": "DocType",
@@ -556,7 +566,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-09-22 18:26:23.644560",
+ "modified": "2022-09-26 17:16:54.232867",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
