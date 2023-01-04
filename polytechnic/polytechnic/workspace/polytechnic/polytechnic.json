@@ -409,6 +409,24 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Bank Auto Reconciliation",
+   "link_to": "Bank Auto Reconciliation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payment Detail Upload report",
+   "link_to": "Payment Detail Upload report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Reports",
    "link_type": "DocType",
    "onboard": 0,
@@ -566,7 +584,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-09-26 17:16:54.232867",
+ "modified": "2023-01-04 13:36:43.417148",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
