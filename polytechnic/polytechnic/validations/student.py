@@ -5,10 +5,15 @@ from polytechnic.polytechnic.notification.custom_notification import student_dis
 def validate(self, method):
     dob = self.date_of_birth
     if dob:
-        from datetime import date,datetime 
-        mydate = datetime.strptime(str(dob),'%Y-%m-%d')
-        words_date=mydate.strftime("%A,%d %B, %Y")
-        self.dob_in_words = words_date
+        try:
+            from datetime import date,datetime 
+            mydate = datetime.strptime(str(dob),'%Y-%m-%d')
+            words_date=mydate.strftime("%A,%d %B, %Y")
+            self.dob_in_words = words_date
+        except:
+            mydate = datetime.strptime(str(dob),'%Y-%m-%d %H:%M:%S')
+            words_date=mydate.strftime("%A,%d %B, %Y")
+            self.dob_in_words = words_date
 
 
 def on_change(self, method):
