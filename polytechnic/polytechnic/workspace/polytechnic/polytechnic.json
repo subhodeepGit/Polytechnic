@@ -426,7 +426,7 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": " ICICI Online Payment Report",
    "link_to": "ICICI Online Payment",
    "link_type": "Report",
@@ -593,7 +593,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-01-05 12:37:18.308240",
+ "modified": "2023-01-05 12:58:37.575508",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
