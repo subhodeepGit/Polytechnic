@@ -417,9 +417,18 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Payment Detail Upload report",
+   "is_query_report": 1,
+   "label": "Payment Detail Upload Report",
    "link_to": "Payment Detail Upload report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": " ICICI Online Payment Report",
+   "link_to": "ICICI Online Payment",
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
@@ -584,7 +593,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-01-04 13:36:43.417148",
+ "modified": "2023-01-05 12:37:18.308240",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
