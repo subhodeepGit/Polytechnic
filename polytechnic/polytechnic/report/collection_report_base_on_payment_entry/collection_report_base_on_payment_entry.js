@@ -7,10 +7,13 @@ frappe.query_reports["Collection Report Base On Payment Entry"] = {
 		{
 			"fieldname": "mode_of_payment",
 			"label": __("Mode of Payment"),
-			"fieldtype": "Link",
+			"fieldtype": "MultiSelectList",
 			"options": "Mode of Payment",
 			"width": 150,
 			"reqd": 1,
+			get_data: function(txt) {
+				return frappe.db.get_link_options('Mode of Payment')
+			}
 		},
 		{
 			"fieldname": "start_date",

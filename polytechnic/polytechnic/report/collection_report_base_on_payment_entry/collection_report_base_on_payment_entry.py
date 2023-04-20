@@ -14,7 +14,7 @@ def get_data(filters):
 	mode_of_payment=filters.get('mode_of_payment')
 	start_date=filters.get('start_date')
 	end_date=filters.get('end_date')
-	payment_entry=frappe.get_all("Payment Entry",filters=[["mode_of_payment","=",mode_of_payment],['posting_date', 'between',[start_date, end_date]],["docstatus","=",1]],
+	payment_entry=frappe.get_all("Payment Entry",filters=[["mode_of_payment","in",tuple(mode_of_payment)],['posting_date', 'between',[start_date, end_date]],["docstatus","=",1]],
 											fields=["name","mode_of_payment","party","party_name","roll_no","academic_year","permanent_registration_number",
 														"sams_portal_id","vidyarthi_portal_id","total_allocated_amount"])
 	if payment_entry:
@@ -58,12 +58,12 @@ def get_data(filters):
 
 def get_columns(head_name=None):
 	columns = [
-		{
-			"label": _("Sl no"),
-			"fieldname": "sl_no",
-			"fieldtype": "Data",
-			"width":200
-		},
+		# {
+		# 	"label": _("Sl no"),
+		# 	"fieldname": "sl_no",
+		# 	"fieldtype": "Data",
+		# 	"width":200
+		# },
 		{
 			"label": _("Student No"),
 			"fieldname": "party",
@@ -71,13 +71,13 @@ def get_columns(head_name=None):
 			"width":200
 		},
 		{
-			"label": _("Roll no"),
+			"label": _("Roll No"),
 			"fieldname": "roll_no",
 			"fieldtype": "Data",
 			"width":200
 		},
 		{
-			"label": _("DET No"),
+			"label": _("SAMS Portal ID"),
 			"fieldname": "sams_portal_id",
 			"fieldtype": "Data",
 			"width":200
