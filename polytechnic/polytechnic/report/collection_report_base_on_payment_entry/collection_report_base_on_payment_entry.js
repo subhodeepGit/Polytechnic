@@ -21,7 +21,7 @@ frappe.query_reports["Collection Report Base On Payment Entry"] = {
 			"fieldtype": "Date",
 			"width": 80,
 			"reqd": 1,
-			"default": dateutil.year_start()
+			// "default": dateutil.year_start()
 		},
 		{
 			"fieldname": "end_date",
@@ -29,7 +29,7 @@ frappe.query_reports["Collection Report Base On Payment Entry"] = {
 			"fieldtype": "Date",
 			"width": 80,
 			"reqd": 1,
-			"default": dateutil.year_end()
+			// "default": dateutil.year_end()
 		},
 	]
 };

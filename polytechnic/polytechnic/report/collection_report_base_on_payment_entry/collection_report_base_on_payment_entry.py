@@ -16,7 +16,7 @@ def get_data(filters):
 	end_date=filters.get('end_date')
 	payment_entry=frappe.get_all("Payment Entry",filters=[["mode_of_payment","in",tuple(mode_of_payment)],['posting_date', 'between',[start_date, end_date]],["docstatus","=",1]],
 											fields=["name","mode_of_payment","party","party_name","roll_no","academic_year","permanent_registration_number",
-														"sams_portal_id","vidyarthi_portal_id","total_allocated_amount"])
+														"sams_portal_id","vidyarthi_portal_id","total_allocated_amount","posting_date"])
 	if payment_entry:
 		payment_entry_list=[]
 		for t in payment_entry:
@@ -51,6 +51,7 @@ def get_data(filters):
 		for t in payment_entry:
 			for z in head_list:
 				t[z]=sum(t[z])
+		print('\n\n\n\n\n',payment_entry)
 		return payment_entry,head_list
 	else:
 		frappe.throw("No Record Found")	
@@ -58,12 +59,6 @@ def get_data(filters):
 
 def get_columns(head_name=None):
 	columns = [
-		# {
-		# 	"label": _("Sl no"),
-		# 	"fieldname": "sl_no",
-		# 	"fieldtype": "Data",
-		# 	"width":200
-		# },
 		{
 			"label": _("Student No"),
 			"fieldname": "party",
@@ -95,12 +90,53 @@ def get_columns(head_name=None):
 			"width":200
 		},
 		{
+			"label": _("Posting Date"),
+			"fieldname": "posting_date",
+			"fieldtype": "Date",
+			"width":200
+		},
+		{
+			"label": _("Money Receipt Number"),
+			"fieldname": "name",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
+			"label": _("Programs"),
+			"fieldname": "program",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
+			"label": _("Semester"),
+			"fieldname": "semester",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
+			"label": _("Batch"),
+			"fieldname": "batch",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
+			"label": _("Gender"),
+			"fieldname": "gender",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
+			"label": _("Student Category"),
+			"fieldname": "student_category",
+			"fieldtype": "Data",
+			"width":200
+		},
+		{
 			"label": _("Paid Amount"),
 			"fieldname": "total_allocated_amount",
 			"fieldtype": "Data",
 			"width":200
-		},
-
+		}
 	]
 	if len(head_name)!=0:
 		for t in head_name:
@@ -112,4 +148,11 @@ def get_columns(head_name=None):
 				"width":200
 			}
 			columns.append(columns_add)
+	prepared_by={
+		"label": _("Prepared By"),
+		"fieldname": "prepared_by",
+		"fieldtype": "Data",
+		"width":200
+	}
+	columns.append(prepared_by)
 	return columns	
