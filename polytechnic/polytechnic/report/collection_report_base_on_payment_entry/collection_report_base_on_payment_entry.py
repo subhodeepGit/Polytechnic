@@ -16,7 +16,7 @@ def get_data(filters):
 	end_date=filters.get('end_date')
 	payment_entry=frappe.get_all("Payment Entry",filters=[["mode_of_payment","in",tuple(mode_of_payment)],['posting_date', 'between',[start_date, end_date]],["docstatus","=",1]],
 											fields=["name","mode_of_payment","party","party_name","roll_no","academic_year","permanent_registration_number",
-														"sams_portal_id","vidyarthi_portal_id","total_allocated_amount","posting_date"])
+														"sams_portal_id","vidyarthi_portal_id","total_allocated_amount","posting_date","owner"])
 	if payment_entry:
 		payment_entry_list=[]
 		for t in payment_entry:
@@ -34,10 +34,22 @@ def get_data(filters):
 			head_list.append(t["account_paid_from"])
 		head_list=list(set(head_list))
 
-		count=0
+		# count=0
 		for t in payment_entry:
-			count=count+1
-			t["sl_no"]=count
+			# count=count+1
+			# t["sl_no"]=count
+			if frappe.get_all('Employee',{'personal_email':t["owner"]},['employee_name']):
+				prepared_by=frappe.get_all("Employee",{'personal_email':t["owner"]},["employee_name"])[0]['employee_name']
+				t["prepared_by"]=prepared_by
+			
+			stu_info=frappe.get_all("Student",{"name":t["party"]},["gender","student_category"])
+			stu_program = frappe.get_all("Current Educational Details",{"parenttype":"Student","parent":t["party"]},["programs","semesters","student_batch_name"])
+			t["program"]=stu_program[0]["programs"]
+			t["semester"]=stu_program[0]["semesters"]
+			t["batch"]=stu_program[0]["student_batch_name"]
+			t["gender"]=stu_info[0]["gender"]
+			t["student_category"]=stu_info[0]["student_category"]
+			
 			for z in head_list:
 				t[z]=[]
 
@@ -51,7 +63,6 @@ def get_data(filters):
 		for t in payment_entry:
 			for z in head_list:
 				t[z]=sum(t[z])
-		print('\n\n\n\n\n',payment_entry)
 		return payment_entry,head_list
 	else:
 		frappe.throw("No Record Found")	
@@ -62,80 +73,84 @@ def get_columns(head_name=None):
 		{
 			"label": _("Student No"),
 			"fieldname": "party",
-			"fieldtype": "Data",
-			"width":200
+			"fieldtype": "Link",
+			"options": "Student",
+			"width":180
 		},
 		{
 			"label": _("Roll No"),
 			"fieldname": "roll_no",
 			"fieldtype": "Data",
-			"width":200
+			"width":100
 		},
 		{
 			"label": _("SAMS Portal ID"),
 			"fieldname": "sams_portal_id",
 			"fieldtype": "Data",
-			"width":200
+			"width":100
 		},
-		{
-			"label": _("Vidyarthi Portal ID"),
-			"fieldname": "vidyarthi_portal_id",
-			"fieldtype": "Data",
-			"width":200
-		},
+		# {
+		# 	"label": _("Vidyarthi Portal ID"),
+		# 	"fieldname": "vidyarthi_portal_id",
+		# 	"fieldtype": "Data",
+		# 	"width":200
+		# },
 		{
 			"label": _("Student Name"),
 			"fieldname": "party_name",
 			"fieldtype": "Data",
-			"width":200
+			"width":180
 		},
 		{
 			"label": _("Posting Date"),
 			"fieldname": "posting_date",
 			"fieldtype": "Date",
-			"width":200
+			"width":100
 		},
 		{
 			"label": _("Money Receipt Number"),
 			"fieldname": "name",
-			"fieldtype": "Data",
-			"width":200
+			"fieldtype": "Link",
+			"options": "Payment Entry",
+			"width":180
 		},
 		{
 			"label": _("Programs"),
 			"fieldname": "program",
-			"fieldtype": "Data",
-			"width":200
+			"fieldtype": "Link",
+			"options": "Programs",
+			"width":180
 		},
 		{
 			"label": _("Semester"),
 			"fieldname": "semester",
-			"fieldtype": "Data",
-			"width":200
+			"fieldtype": "Link",
+			"options": "Program",
+			"width":180
 		},
 		{
-			"label": _("Batch"),
+			"label": _("Student Batch Name"),
 			"fieldname": "batch",
 			"fieldtype": "Data",
-			"width":200
+			"width":180
 		},
 		{
 			"label": _("Gender"),
 			"fieldname": "gender",
 			"fieldtype": "Data",
-			"width":200
+			"width":180
 		},
 		{
 			"label": _("Student Category"),
 			"fieldname": "student_category",
 			"fieldtype": "Data",
-			"width":200
+			"width":180
 		},
 		{
 			"label": _("Paid Amount"),
 			"fieldname": "total_allocated_amount",
 			"fieldtype": "Data",
-			"width":200
+			"width":180
 		}
 	]
 	if len(head_name)!=0:
@@ -145,14 +160,14 @@ def get_columns(head_name=None):
 				"label": _("%s"%(label)),
 				"fieldname": "%s"%(label),
 				"fieldtype": "Data",
-				"width":200
+				"width":180
 			}
 			columns.append(columns_add)
 	prepared_by={
 		"label": _("Prepared By"),
 		"fieldname": "prepared_by",
 		"fieldtype": "Data",
-		"width":200
+		"width":180
 	}
 	columns.append(prepared_by)
 	return columns	
