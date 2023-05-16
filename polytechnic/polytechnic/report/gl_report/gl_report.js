@@ -10,7 +10,7 @@ frappe.query_reports["GL Report"] = {
 			"fieldtype": "Date",
 			"width": 80,
 			"reqd": 1,
-			"default": dateutil.year_start()
+			"default": frappe.datetime.get_today()
 		},
 		{
 			"fieldname": "to",
@@ -18,7 +18,7 @@ frappe.query_reports["GL Report"] = {
 			"fieldtype": "Date",
 			"width": 80,
 			"reqd": 1,
-			"default": dateutil.year_end()
+			"default": frappe.datetime.get_today()
 		},
 	]
 };
