@@ -21,17 +21,17 @@ def get_data(filters):
 	surplus_payment_entry=frappe.get_all("Payment Refund",filters=[["payment_type","=",payment_type],["mode_of_payment","=",mode_of_payment],
 														['posting_date', 'between',[start_date, end_date]],["docstatus","=",1]],
 														fields=["name","mode_of_payment","payment_type","party","party_name","roll_no","permanent_registration_number",
-																"sams_portal_id","vidyarthi_portal_id","jv_entry_voucher_no"
-																])
+																"sams_portal_id","vidyarthi_portal_id","jv_entry_voucher_no"])
 	if surplus_payment_entry:
 		surplus_payment_list=[]
 		for t in surplus_payment_entry:
 			surplus_payment_list.append(t["name"])
 		if len(surplus_payment_list)==1:
-			surplus_payment_amount=frappe.get_all("Payment Entry Reference Refund",{"parent":surplus_payment_list},["parent","name","allocated_amount","Account_paid_to"])
+			surplus_payment_amount=frappe.get_all("Payment Entry Reference Refund",{"parent":surplus_payment_list[0]},
+					 ["parent","name","allocated_amount","account_paid_to","fees_category"])
 		else:
 			surplus_payment_amount=frappe.get_all("Payment Entry Reference Refund",filters=[["parent","in",surplus_payment_list]],
-												fields=["parent","name","allocated_amount","Account_paid_to","fees_category"])	
+												fields=["parent","name","allocated_amount","account_paid_to","fees_category"])	
 
 		head_list=[]
 		for t in surplus_payment_amount:
