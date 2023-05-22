@@ -41,7 +41,7 @@ def get_data(filters):
 					if gl['debit']!=0:
 						je_entry_debit.append(gl)
 					if gl['credit']!=0:
-						je_enrty_credit.append(gl)	
+						je_enrty_credit.append(gl) 
 			except:
 				pass
 			# if ck_out[0]["docstatus"]==1:
@@ -269,7 +269,7 @@ def get_data(filters):
 	Final_list=[]
 
 	student=party
-	student_data_info=frappe.db.get_list("Current Educational Details",filters={"parent":student},fields=["name","Semesters","Programs","academic_year"])
+	student_data_info=frappe.db.get_list("Current Educational Details",filters={"parent":student},fields=["name","Semesters","Programs","academic_year","student_batch_name"])
 	# student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","kiit_polytechnic_roll_no","vidyarthi_portal_id","title"])	
 	student_info=frappe.db.get_list("Student",filters={"name":student},fields=["sams_portal_id","roll_no","vidyarthi_portal_id","title"])
 	student_group=frappe.db.get_list("Student Group",filters={"programs":student_data_info[0]["Programs"]},fields=["name","batch","programs"])
@@ -285,10 +285,10 @@ def get_data(filters):
 	g_value.append(student_info[0]["roll_no"])
 	g_value.append(student_info[0]["vidyarthi_portal_id"])
 	g_value.append(student_info[0]["sams_portal_id"])
-	if len(student_group)==0:
-		g_value.append("")
-	else:
-		g_value.append(student_group[0]["batch"])
+	# if len(student_group)==0:
+	# 	g_value.append("")
+	# else:
+	g_value.append(student_data_info[0]["student_batch_name"])
 	g_value.append("Header")
 	g_value.append(student_Enrollment[0][0])
 	g_value.append(student_data_info[0]["academic_year"])

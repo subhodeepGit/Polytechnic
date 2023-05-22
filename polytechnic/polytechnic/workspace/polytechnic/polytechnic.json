@@ -507,6 +507,15 @@
   {
    "hidden": 0,
    "is_query_report": 1,
+   "label": "Student Wise Collection Summary",
+   "link_to": "Student Wise Collection Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
    "label": "Collection Report Base On Payment Entry",
    "link_to": "Collection Report Base On Payment Entry",
    "link_type": "Report",
@@ -593,7 +602,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-01-05 12:58:37.575508",
+ "modified": "2023-05-19 14:50:57.706518",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
