@@ -471,6 +471,15 @@
   {
    "hidden": 0,
    "is_query_report": 1,
+   "label": "Fee Head Wise Adjustment",
+   "link_to": "Fee Head Wise Adjustment",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
    "label": "Student Fee Collection Report",
    "link_to": "Student Fee Collection",
    "link_type": "Report",
@@ -584,7 +593,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-05-30 17:02:13.209678",
+ "modified": "2023-06-05 10:45:27.239866",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
