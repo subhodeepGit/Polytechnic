@@ -13,6 +13,7 @@ def execute(filters=None):
 def get_data(filters):
     start_date=filters.get('start_date')
     end_date=filters.get('end_date')
+
     payment_entry=frappe.get_all("Payment Entry",filters=[['posting_date', 'between',[start_date, end_date]],["docstatus","=",1]],
                                             fields=["name","mode_of_payment","party","party_name","roll_no","academic_year","permanent_registration_number",
                                                         "sams_portal_id","vidyarthi_portal_id","total_allocated_amount","posting_date","owner","payment_type"])
@@ -56,6 +57,7 @@ def get_data(filters):
             t["batch"]=stu_program[0]["student_batch_name"]
             t["gender"]=stu_info[0]["gender"]
             t["student_category"]=stu_info[0]["student_category"]
+            t['dt']="Payment Entry"
             
             for z in head_list:
                 t[z]=[]
@@ -111,6 +113,7 @@ def get_data(filters):
         a["batch"]=stu_program[0]["student_batch_name"]
         a["gender"]=stu_info[0]["gender"]
         a["student_category"]=stu_info[0]["student_category"]
+        a["dt"]="Surplus Payment"
         payment_entry.append(a)
 
     return payment_entry,head_list
@@ -153,6 +156,12 @@ def get_columns(head_name=None):
             "fieldname": "mode_of_payment",
             "fieldtype": "Data",
             "width":200
+        },
+        {
+            "label": _("Collection Type"),
+            "fieldname": "dt",
+            "fieldtype": "Data",
+            "width":180
         },
         {
             "label": _("Posting Date"),
