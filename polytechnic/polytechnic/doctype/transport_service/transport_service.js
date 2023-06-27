@@ -100,5 +100,20 @@ frappe.ui.form.on('Transport Service', {
 				}
 			})
 		}
+	},
+
+	transport_fee_structure: function(frm){
+		frappe.call({
+            method: "polytechnic.polytechnic.doctype.transport_service.transport_service.get_end_date",
+            args: {
+                transport_fee_structure: frm.doc.transport_fee_structure,
+            },
+            callback: function(r) { 
+                if (r.message){
+                    frm.set_value("due_date",r.message)
+                }
+            } 
+            
+        }); 
 	}
 });
