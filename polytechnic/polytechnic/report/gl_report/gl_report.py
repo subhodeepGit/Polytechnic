@@ -100,6 +100,20 @@ def get_data(filters):
 				elif Gl_entry_info["credit"]!=0:
 					com_data=[Gl_entry_info["credit"],Gl_entry_info["account"]]
 					credit.append(com_data)
+
+	#########Payment Dishonour
+	payment_entry=frappe.db.get_list('Payment Entry', filters=[['posting_date', 'between', [start_date, end_date]],['docstatus',"=",2],["payment_status",'=',"Dishonoured"],["mode_of_payment","!=","Fees Refundable / Adjustable"],["payment_type","=","Receive"]],fields=['name','mode_of_payment'])
+	for p in payment_entry:
+		account = frappe.get_all("Mode of Payment Account",{"parent":p['mode_of_payment']},["default_account"])
+		account=account[0]['default_account']
+		payment_entry_reference=frappe.db.get_all('Payment Entry Reference',{'parent':p['name']},['account_paid_from','allocated_amount'])
+
+		for t in payment_entry_reference:
+			credit_data=[t['allocated_amount'],t['account_paid_from']]
+			debit_data=[t['allocated_amount'],account]
+		credit.append(credit_data)
+		debit.append(debit_data)
+
 	credit_refund=[]   #### pay entry
 	debit_refund=[]    #### pay entry
 	#######Payment Refund - Receive / Pay
