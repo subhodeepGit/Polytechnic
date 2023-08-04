@@ -617,21 +617,23 @@ def get_data(filters):
 	################################### payment dishonour
 	payment_entry_dishonour= frappe.db.get_all('Payment Entry', filters=[["docstatus","=",2],['party','=',party],['posting_date', 'between',[start_date, end_date]],["payment_status","=","Dishonoured"]], fields=['name', 'mode_of_payment',"reference_date","reference_no","paid_amount","payment_dishonour","posting_date","payment_type"])
 	for t in payment_entry_dishonour:
-		Count=Count+1
-		g_value=[]
-		g_value.append(Count)
-		g_value.append(t["posting_date"])
-		g_value.append(currency_info)
-		g_value.append(t['mode_of_payment'])
-		g_value.append(t['reference_date'])
-		g_value.append(t["reference_no"])
-		g_value.append(t['paid_amount'])
-		g_value.append("Lower")
-		g_value.append(t['payment_dishonour'])
-		g_value.append(" ".join(["Dishonoured",t['name']]))
-		g_value.append("")
-		g_value.append("")
-		Final_list.append(g_value)
+		payment_dishonour = frappe.db.get_all('Payment Dishonor', filters=[["docstatus","=",1],['payment_entry','=',t['name']]], fields=['name', "dishonour_date"])
+		for p in payment_dishonour:
+			Count=Count+1
+			g_value=[]
+			g_value.append(Count)
+			g_value.append(p["dishonour_date"])
+			g_value.append(currency_info)
+			g_value.append(t['mode_of_payment'])
+			g_value.append(t['reference_date'])
+			g_value.append(t["reference_no"])
+			g_value.append(t['paid_amount'])
+			g_value.append("Lower")
+			g_value.append(t['payment_dishonour'])
+			g_value.append(" ".join(["Dishonoured",t['name']]))
+			g_value.append("")
+			g_value.append("")
+			Final_list.append(g_value)
 
 	return Final_list
 
