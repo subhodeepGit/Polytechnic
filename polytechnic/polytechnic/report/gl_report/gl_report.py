@@ -111,8 +111,8 @@ def get_data(filters):
 		for t in payment_entry_reference:
 			credit_data=[t['allocated_amount'],t['account_paid_from']]
 			debit_data=[t['allocated_amount'],account]
-		credit.append(credit_data)
-		debit.append(debit_data)
+			credit.append(credit_data)
+			debit.append(debit_data)
 
 	credit_refund=[]   #### pay entry
 	debit_refund=[]    #### pay entry

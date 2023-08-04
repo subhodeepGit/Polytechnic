@@ -374,6 +374,15 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Payment Dishonour",
+   "link_to": "Payment Dishonor",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Bank Reconcilation",
    "link_type": "DocType",
    "onboard": 0,
@@ -593,7 +602,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-06-05 10:45:27.239866",
+ "modified": "2023-08-04 12:02:02.514893",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Polytechnic",
