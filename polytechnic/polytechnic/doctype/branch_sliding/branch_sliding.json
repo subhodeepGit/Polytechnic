@@ -1,0 +1,123 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "BS.#####",
+ "creation": "2023-08-10 11:07:41.518357",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "academic_year",
+  "program_grade",
+  "semester",
+  "column_break",
+  "academic_term",
+  "programs",
+  "section_break_ou5mw",
+  "get_students",
+  "students_details",
+  "section_break_fzwm2",
+  "sliding_in_program",
+  "sliding_in_semester"
+ ],
+ "fields": [
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Semester",
+   "options": "Program",
+   "reqd": 1
+  },
+  {
+   "fieldname": "programs",
+   "fieldtype": "Link",
+   "label": "Programs",
+   "options": "Programs",
+   "reqd": 1
+  },
+  {
+   "fieldname": "program_grade",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Program Grade",
+   "options": "Program Grades",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_ou5mw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "get_students",
+   "fieldtype": "Button",
+   "label": "Get Students"
+  },
+  {
+   "fieldname": "students_details",
+   "fieldtype": "Table",
+   "label": "Students",
+   "options": "Branch Sliding Students"
+  },
+  {
+   "fieldname": "section_break_fzwm2",
+   "fieldtype": "Section Break",
+   "label": "Branch Sliding Details"
+  },
+  {
+   "fieldname": "sliding_in_program",
+   "fieldtype": "Link",
+   "label": "Sliding In Program",
+   "options": "Programs"
+  },
+  {
+   "fieldname": "sliding_in_semester",
+   "fieldtype": "Link",
+   "label": "Sliding in Semester",
+   "options": "Program"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-08-10 12:42:17.867605",
+ "modified_by": "Administrator",
+ "module": "Polytechnic",
+ "name": "Branch Sliding",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
