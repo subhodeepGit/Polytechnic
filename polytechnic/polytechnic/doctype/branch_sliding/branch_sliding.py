@@ -5,17 +5,52 @@ import frappe
 from frappe.model.document import Document
 
 class BranchSliding(Document):
-	def validate(self):
-		print(self.sliding_in_program)
-		print(self.sliding_in_semester)
+	def on_submit(self):
+		for t in self.get("students_details"):
+			frappe.db.set_value('Program Enrollment', t.program_enrollment , {
+				'programs': self.sliding_in_program,
+				'program': self.sliding_in_semester
+			})
+			student = frappe.get_doc('Student', t.student)
+			student.set("current_education",[])
+			for enroll in frappe.get_all("Program Enrollment",{"docstatus":1,"student":t.student},["program_grade","student_batch_name","school_house","programs","program","academic_year","academic_term"],order_by='creation desc',limit=1):
+				student.append("current_education",{
+					"programs":enroll.programs,
+					"semesters":enroll.program,
+					"program_grade":enroll.program_grade,
+					"school_house":enroll.school_house,
+					"student_batch_name":enroll.student_batch_name,
+					"academic_year":enroll.academic_year,
+					"academic_term":enroll.academic_term
+				})
+			student.save()
+	
+	def on_cancel(self):
+		for t in self.get("students_details"):
+			frappe.db.set_value('Program Enrollment', t.program_enrollment , {
+				'programs': self.programs,
+				'program': self.semester
+			})
+			student = frappe.get_doc('Student', t.student)
+			student.set("current_education",[])
+			for enroll in frappe.get_all("Program Enrollment",{"docstatus":1,"student":t.student},["program_grade","student_batch_name","school_house","programs","program","academic_year","academic_term"],order_by='creation desc',limit=1):
+				student.append("current_education",{
+					"programs":enroll.programs,
+					"semesters":enroll.program,
+					"program_grade":enroll.program_grade,
+					"school_house":enroll.school_house,
+					"student_batch_name":enroll.student_batch_name,
+					"academic_year":enroll.academic_year,
+					"academic_term":enroll.academic_term
+				})
+			student.save()
+
 
 
 @frappe.whitelist()
 def get_students(academic_term=None, programs=None,class_data=None,
 				semester=None):
 	enrolled_students = get_program_enrollment(academic_term,programs,class_data)
-	# print("\n\n\n")
-	# print(enrolled_students)
 	if enrolled_students:
 		student_list = []
 		for s in enrolled_students:
@@ -24,7 +59,6 @@ def get_students(academic_term=None, programs=None,class_data=None,
 			else:
 				s.update({"active": 0})
 			student_list.append(s)
-		print("\n\n\n",student_list)
 		return student_list
 		
 	else:

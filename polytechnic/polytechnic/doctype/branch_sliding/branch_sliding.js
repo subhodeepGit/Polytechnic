@@ -3,6 +3,7 @@
 
 frappe.ui.form.on('Branch Sliding', {
 	onload: function(frm) {
+		frm.set_df_property('students_details', 'cannot_add_rows', true);
 		frm.set_query("academic_term", function() {
 			return {
 				filters: {
@@ -24,12 +25,20 @@ frappe.ui.form.on('Branch Sliding', {
 				}
 			};
 		});
-		frm.set_query("sliding_in_semester", function() {
+		frm.set_query("sliding_in_program", function () {
 			return {
-				filters: {
-					"programs":frm.doc.sliding_in_program
-				}
-			};
+				filters: [
+					["name", "not in", frm.doc.programs],
+				]
+			}
+		});
+		frm.set_query("sliding_in_semester", function () {
+			return {
+				filters: [
+					["name", "not in", frm.doc.semester],
+					["programs", "=", frm.doc.sliding_in_program],
+				]
+			}
 		});
 	},
 
@@ -47,6 +56,10 @@ frappe.ui.form.on('Branch Sliding', {
 
 	sliding_in_program: function(frm){
 		frm.set_value("sliding_in_semester","")
+	},
+
+	academic_term: function(frm){
+		frm.set_value("programs","")
 	},
 
 	get_students: function(frm){

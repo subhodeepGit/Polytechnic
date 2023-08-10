@@ -18,7 +18,8 @@
   "students_details",
   "section_break_fzwm2",
   "sliding_in_program",
-  "sliding_in_semester"
+  "sliding_in_semester",
+  "amended_from"
  ],
  "fields": [
   {
@@ -95,11 +96,21 @@
    "fieldtype": "Link",
    "label": "Sliding in Semester",
    "options": "Program"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Branch Sliding",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2023-08-10 12:42:17.867605",
+ "modified": "2023-08-10 17:33:13.630705",
  "modified_by": "Administrator",
  "module": "Polytechnic",
  "name": "Branch Sliding",
