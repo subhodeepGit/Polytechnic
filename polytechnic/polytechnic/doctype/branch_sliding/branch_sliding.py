@@ -3,6 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe.desk.form.linked_with import get_linked_doctypes
 
 class BranchSliding(Document):
 	def on_submit(self):
@@ -24,6 +25,7 @@ class BranchSliding(Document):
 					"academic_term":enroll.academic_term
 				})
 			student.save()
+			update_program_enrollment_in_linked_doctype(self, t.program_enrollment)
 	
 	def on_cancel(self):
 		for t in self.get("students_details"):
@@ -86,3 +88,53 @@ def get_program_enrollment(academic_term,programs=None,class_data=None):
 			pe.student_name asc
 		'''.format(condition1=condition1, condition2=condition2),
 				({"academic_term": academic_term,"programs": programs}), as_dict=1) 
+
+
+def update_program_enrollment_in_linked_doctype(self, pe):
+	linked_doctypes = get_linked_doctypes("Program Enrollment")
+	for d in linked_doctypes:
+		meta = frappe.get_meta(d)
+		if not meta.issingle:
+			if "programs" in [f.fieldname for f in meta.fields]:
+				if d != "Program Enrollment" and d != "Branch Sliding" and d != "Transport Service" and d != "Fee Waiver":
+					print(d)
+					print(linked_doctypes[d]["fieldname"][0])
+					print(self.programs)
+					print(self.name)
+					print("\n\n\n")
+					frappe.db.sql(
+						"""UPDATE `tab{0}` set programs = %s where {1} = %s""".format(
+							d, linked_doctypes[d]["fieldname"][0]
+						),
+						(self.sliding_in_program, pe),
+					)
+			
+			if "program" in [f.fieldname for f in meta.fields]:
+				if d != "Program Enrollment" and d != "Branch Sliding" and d != "Transport Service" and d != "Fee Waiver":
+					frappe.db.sql(
+						"""UPDATE `tab{0}` set program = %s where {1} = %s""".format(
+							d, linked_doctypes[d]["fieldname"][0]
+						),
+						(self.sliding_in_semester, pe),
+					)
+
+			if "semester" in [f.fieldname for f in meta.fields]:
+				if d != "Program Enrollment" and d != "Branch Sliding":
+					frappe.db.sql(
+						"""UPDATE `tab{0}` set semester = %s where {1} = %s""".format(
+							d, linked_doctypes[d]["fieldname"][0]
+						),
+						(self.sliding_in_semester, pe),
+					)
+
+
+			# if "child_doctype" in linked_doctypes[d].keys() and "student_name" in [
+			# 	f.fieldname for f in frappe.get_meta(linked_doctypes[d]["child_doctype"]).fields
+			# ]:
+			# 	frappe.db.sql(
+			# 		"""UPDATE `tab{0}` set student_name = %s where {1} = %s""".format(
+			# 			linked_doctypes[d]["child_doctype"], linked_doctypes[d]["fieldname"][0]
+			# 		),
+			# 		(self.title, self.name),
+			# 	)
+			
