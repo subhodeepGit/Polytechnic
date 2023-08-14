@@ -9,8 +9,10 @@ from frappe.utils.background_jobs import enqueue
 class BranchSliding(Document):
 	def on_submit(self):
 		frappe.enqueue(on_submit_enqueue, queue='long', self=self, timeout=None)
+		# on_submit_enqueue(self)
 	def on_cancel(self):
 		frappe.enqueue(on_cancel_enqueue, queue='long',self=self, timeout=None)
+		# on_cancel_enqueue(self)
 
 
 
@@ -95,7 +97,7 @@ def update_program_enrollment_in_linked_doctype_cancel(self, pe):
 		meta = frappe.get_meta(d)
 		if not meta.issingle:
 			if "programs" in [f.fieldname for f in meta.fields]:
-				if d != "Program Enrollment" and d != "Branch Sliding" and d != "Transport Service" and d != "Fee Waiver":
+				if d != "Program Enrollment" and d != "Branch Sliding":
 					frappe.db.sql(
 						"""UPDATE `tab{0}` set programs = %s where {1} = %s""".format(
 							d, linked_doctypes[d]["fieldname"][0]
@@ -141,6 +143,13 @@ def on_submit_enqueue(self):
 					"academic_term":enroll.academic_term
 				})
 			student.save()
+			ha_key = frappe.get_all("Student Hostel Admission",{"docstatus":1,"student":t.student},["name"])
+			ha_list = [item['name'] for item in ha_key]
+			if ha_list:
+				for ha in ha_list:
+					for enr in frappe.get_all("Program Enrollment",{"docstatus":1,"student":t.student},["program_grade","student_batch_name","school_house","programs","program","academic_year","academic_term"],order_by='creation desc',limit=1):
+						frappe.db.sql("""UPDATE `tabCurrent Educational Details` SET program_grade = %s, programs = %s, semesters = %s, student_batch_name = %s, academic_year = %s, academic_term = %s WHERE parenttype = 'Student Hostel Admission' AND parent = %s""",(enr.program_grade,enr.programs,enr.program,enr.student_batch_name,enr.academic_year,enr.academic_term,ha))
+			
 
 	def on_submit_enqueue_2(self):
 		for t in self.get("students_details"):
@@ -169,6 +178,12 @@ def on_cancel_enqueue(self):
 					"academic_term":enroll.academic_term
 				})
 			student.save()
+			ha_key = frappe.get_all("Student Hostel Admission",{"docstatus":1,"student":t.student},["name"])
+			ha_list = [item['name'] for item in ha_key]
+			if ha_list:
+				for ha in ha_list:
+					for enr in frappe.get_all("Program Enrollment",{"docstatus":1,"student":t.student},["program_grade","student_batch_name","school_house","programs","program","academic_year","academic_term"],order_by='creation desc',limit=1):
+						frappe.db.sql("""UPDATE `tabCurrent Educational Details` SET program_grade = %s, programs = %s, semesters = %s, student_batch_name = %s, academic_year = %s, academic_term = %s WHERE parenttype = 'Student Hostel Admission' AND parent = %s""",(enr.program_grade,enr.programs,enr.program,enr.student_batch_name,enr.academic_year,enr.academic_term,ha))
 
 	def on_cancel_enqueue_2(self):
 		for t in self.get("students_details"):
