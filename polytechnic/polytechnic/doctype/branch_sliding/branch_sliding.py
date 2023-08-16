@@ -53,7 +53,7 @@ def get_program_enrollment(academic_term,programs=None,class_data=None):
 		where
 			pe.academic_term = %(academic_term)s  {condition1} and pe.docstatus = 1
 		order by
-			pe.student_name asc
+			pe.permanant_registration_number asc
 		'''.format(condition1=condition1, condition2=condition2),
 				({"academic_term": academic_term,"programs": programs}), as_dict=1) 
 
